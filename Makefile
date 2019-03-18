@@ -13,11 +13,12 @@ GOBJS    = main-gui.o gui.o unixtime.o gpx-read.o correlate.o exif-gps.o latlong
 CFLAGS   = -Wall -O2
 CFLAGSINC := $(shell $(PKG_CONFIG) --cflags libxml-2.0 exiv2)
 # Add the gtk+ flags only when building the GUI
-gpscorrelate-gui$(EXEEXT): CFLAGSINC += $(shell $(PKG_CONFIG) --cflags gtk+-2.0)
+GTK      = 2
+gpscorrelate-gui$(EXEEXT): CFLAGSINC += $(shell $(PKG_CONFIG) --cflags gtk+-$(GTK).0)
 LIBS :=
 LDFLAGS   = -Wall -O2
 LDFLAGSALL := $(shell $(PKG_CONFIG) --libs libxml-2.0 exiv2) -lm
-LDFLAGSGUI := $(shell $(PKG_CONFIG) --libs gtk+-2.0)
+LDFLAGSGUI := $(shell $(PKG_CONFIG) --libs gtk+-$(GTK).0)
 
 # Put --nonet here to avoid downloading DTDs while building documentation
 XSLTFLAGS =
