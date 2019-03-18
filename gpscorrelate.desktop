@@ -4,6 +4,7 @@ Version=1.0
 Name=GPSCorrelate
 GenericName=Geotagging tool
 Comment=Add coordinates to jpeg images using gpx files
+Comment[ru]=Добавление геоданных в jpeg фотографии на основе gpx трека
 TryExec=gpscorrelate-gui
 Exec=gpscorrelate-gui
 Terminal=false
