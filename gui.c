@@ -980,7 +980,7 @@ void SetListItem(GtkTreeIter* Iter, const char* Filename, const char* Time, doub
 			/* Radius of earth ~6000km */
 			if (Elev > -7000000)
 			{
-				snprintf(ElevScratch, sizeof(ElevScratch), "%.2fm", Elev);
+				snprintf(ElevScratch, sizeof(ElevScratch), "%.2f%s", Elev, _("m"));
 			} else {
 				snprintf(ElevScratch, sizeof(ElevScratch), " ");
 			}

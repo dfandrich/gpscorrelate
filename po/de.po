@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: dan@coneharvesters.com\n"
-"POT-Creation-Date: 2019-02-09 14:36+0100\n"
+"POT-Creation-Date: 2019-03-19 10:35+0300\n"
 "PO-Revision-Date: 2018-07-21 14:20+0200\n"
 "Last-Translator: Dan Fandrich <dan@coneharvesters.com>\n"
 "Language-Team: deutsch\n"
@@ -293,6 +293,10 @@ msgstr "W"
 #: gui.c:970
 msgid "E"
 msgstr "O"
+
+#: gui.c:977
+msgid "m"
+msgstr "m"
 
 #: gui.c:983
 msgid "Ready"
