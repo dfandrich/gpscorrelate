@@ -43,6 +43,7 @@
 
 #include "exiv2/image.hpp"
 #include "exiv2/exif.hpp"
+#include "exiv2/error.hpp"
 
 #include "gpsstructure.h"
 #include "exif-gps.h"
