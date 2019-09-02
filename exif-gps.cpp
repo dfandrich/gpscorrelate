@@ -10,7 +10,7 @@
  * From http://home.arcor.de/ahuggel/exiv2/
  */
 
-/* Copyright 2005-2015 Daniel Foote, Dan Fandrich.
+/* Copyright 2005-2019 Daniel Foote, Dan Fandrich.
  *
  * This file is part of gpscorrelate.
  *

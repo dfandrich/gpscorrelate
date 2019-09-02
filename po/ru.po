@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpscorrelate 1.6.2git\n"
 "Report-Msgid-Bugs-To: dan@coneharvesters.com\n"
-"POT-Creation-Date: 2019-08-12 23:27+0200\n"
+"POT-Creation-Date: 2019-09-02 22:25+0200\n"
 "PO-Revision-Date: 2019-03-18 10:12+0300\n"
 "Last-Translator: Nikolay Korotkiy <sikmir@gmail.com>\n"
 "Language-Team: russian\n"
@@ -412,144 +412,148 @@ msgstr "Авторские права © 2005-2019 Daniel Foote, Dan Fandrich"
 
 #: main-command.c:74
 #, c-format
-msgid "%s, ver. %s. Daniel Foote, Dan Fandrich, 2005-2016. GNU GPL\n"
-msgstr ""
+msgid "%s, ver. %s. %s\n"
+msgstr "%s, ver. %s. %s\n"
 
-#: main-command.c:81
+#: main-command.c:76
+msgid "Copyright (c) 2005-2019 Daniel Foote, Dan Fandrich"
+msgstr "Авторские права © 2005-2019 Daniel Foote, Dan Fandrich"
+
+#: main-command.c:82
 #, c-format
 msgid "Usage: %s [options] file.jpg ...\n"
 msgstr ""
 
-#: main-command.c:82
-msgid "-g, --gps file.gpx       Specifies GPX file with GPS data"
-msgstr ""
-
 #: main-command.c:83
-msgid ""
-"-l, --latlong LAT,LONG[,E] Specifies latitude/longitude/elevation directly"
+msgid "-g, --gps file.gpx       Specifies GPX file with GPS data"
 msgstr ""
 
 #: main-command.c:84
 msgid ""
-"-z, --timeadd +/-HH[:MM] Time to add to GPS data to make it match photos"
+"-l, --latlong LAT,LONG[,E] Specifies latitude/longitude/elevation directly"
 msgstr ""
 
 #: main-command.c:85
+msgid ""
+"-z, --timeadd +/-HH[:MM] Time to add to GPS data to make it match photos"
+msgstr ""
+
+#: main-command.c:86
 msgid ""
 "-i, --no-interpolation   Disable interpolation between points; "
 "interpolation\n"
 "                         is linear, points rounded if disabled"
 msgstr ""
 
-#: main-command.c:87
-msgid "-d, --datum DATUM        Specify measurement datum (defaults to WGS-84)"
-msgstr ""
-
 #: main-command.c:88
-msgid ""
-"-n, --no-write           Do not write the EXIF data. Useful with --verbose"
+msgid "-d, --datum DATUM        Specify measurement datum (defaults to WGS-84)"
 msgstr ""
 
 #: main-command.c:89
 msgid ""
-"-R, --replace            Overwrite any GPS tags already in the image file"
+"-n, --no-write           Do not write the EXIF data. Useful with --verbose"
 msgstr ""
 
 #: main-command.c:90
 msgid ""
-"-m, --max-dist SECS      Max time outside points that photo will be matched"
+"-R, --replace            Overwrite any GPS tags already in the image file"
 msgstr ""
 
 #: main-command.c:91
-msgid "-s, --show               Just show the GPS data from the given files"
+msgid ""
+"-m, --max-dist SECS      Max time outside points that photo will be matched"
 msgstr ""
 
 #: main-command.c:92
+msgid "-s, --show               Just show the GPS data from the given files"
+msgstr ""
+
+#: main-command.c:93
 msgid ""
 "-o, --machine            Similar to --show but with machine-readable output"
 msgstr ""
 
-#: main-command.c:93
+#: main-command.c:94
 msgid "-r, --remove             Strip GPS tags from the given files"
 msgstr ""
 
-#: main-command.c:94
+#: main-command.c:95
 msgid "-t, --ignore-tracksegs   Interpolate between track segments, too"
 msgstr ""
 
-#: main-command.c:95
+#: main-command.c:96
 msgid "-M, --no-mtime           Don't change mtime of modified files"
 msgstr ""
 
-#: main-command.c:96
+#: main-command.c:97
 msgid ""
 "-f, --fix-datestamps     Fix broken GPS datestamps written with ver. < 1.5.2"
 msgstr ""
 
-#: main-command.c:97
+#: main-command.c:98
 msgid ""
 "    --degmins            Write location as DD MM.MM (was default before "
 "v1.5.3)"
 msgstr ""
 
-#: main-command.c:98
+#: main-command.c:99
 msgid ""
 "-O, --photooffset SECS   Offset added to photo time to make it match the GPS"
 msgstr ""
 
-#: main-command.c:99
+#: main-command.c:100
 msgid "-h, --help               Display this help message"
 msgstr ""
 
-#: main-command.c:100
+#: main-command.c:101
 msgid "-v, --verbose            Show more detailed output"
 msgstr ""
 
-#: main-command.c:101
+#: main-command.c:102
 msgid "-V, --version            Display version information"
 msgstr ""
 
-#: main-command.c:147 main-command.c:312 main-command.c:350
+#: main-command.c:148 main-command.c:313 main-command.c:351
 #, c-format
 msgid "Out of memory.\n"
 msgstr ""
 
-#: main-command.c:158
+#: main-command.c:159
 #, c-format
 msgid "%s: %s, Lat %f, Long %f, Elevation "
 msgstr ""
 
-#: main-command.c:163
+#: main-command.c:164
 #, c-format
 msgid "(unknown)"
 msgstr ""
 
-#: main-command.c:172
+#: main-command.c:173
 #, c-format
 msgid "%s: %s, No GPS Data.\n"
 msgstr ""
 
-#: main-command.c:181 main-command.c:224
+#: main-command.c:182 main-command.c:225
 #, c-format
 msgid "%s: No EXIF data.\n"
 msgstr ""
 
-#: main-command.c:200
+#: main-command.c:201
 #, c-format
 msgid "%s: Removed GPS tags.\n"
 msgstr ""
 
-#: main-command.c:203
+#: main-command.c:204
 #, c-format
 msgid "%s: Tag removal failure.\n"
 msgstr ""
 
-#: main-command.c:227
+#: main-command.c:228
 #, c-format
 msgid "%s: No GPS data.\n"
 msgstr ""
 
-#: main-command.c:253
+#: main-command.c:254
 #, c-format
 msgid ""
 "%s: Wrong timestamp:\n"
@@ -558,135 +562,135 @@ msgid ""
 "   Corrected: %s\n"
 msgstr ""
 
-#: main-command.c:258
+#: main-command.c:259
 #, c-format
 msgid "%s: Timestamp is OK: Photo %s (localtime), GPS %s (UTC).\n"
 msgstr ""
 
-#: main-command.c:336
+#: main-command.c:337
 #, c-format
 msgid "Reading GPS Data..."
 msgstr ""
 
-#: main-command.c:362
+#: main-command.c:363
 #, c-format
 msgid "Error parsing location.\n"
 msgstr ""
 
-#: main-command.c:367 main-command.c:376
+#: main-command.c:368 main-command.c:377
 #, c-format
 msgid "Out of memory\n"
 msgstr ""
 
-#: main-command.c:448
+#: main-command.c:449
 #, c-format
 msgid ""
 "This is free software; see the source for copying conditions.  There is NO\n"
 "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
 msgstr ""
 
-#: main-command.c:499
+#: main-command.c:500
 #, c-format
 msgid "At least one image file name must be given.\n"
 msgstr ""
 
-#: main-command.c:532
+#: main-command.c:533
 #, c-format
 msgid "A time offset must be given with the -z option to fix photos.\n"
 msgstr ""
 
-#: main-command.c:556
+#: main-command.c:557
 #, c-format
 msgid "Cannot continue since no GPS data is available.\n"
 msgstr ""
 
-#: main-command.c:564
+#: main-command.c:565
 #, c-format
 msgid ""
 "Legend: . = Ok, / = Interpolated, < = Rounded, - = No match, ^ = Too far\n"
 "        w = Write Fail, ? = No EXIF date, ! = GPS already present\n"
 msgstr ""
 
-#: main-command.c:586
+#: main-command.c:587
 #, c-format
 msgid ""
 "\n"
 "Correlate: "
 msgstr ""
 
-#: main-command.c:622
+#: main-command.c:623
 #, c-format
 msgid "%s: Exact match: "
 msgstr ""
 
-#: main-command.c:632
+#: main-command.c:633
 #, c-format
 msgid "%s: Interpolated: "
 msgstr ""
 
-#: main-command.c:642
+#: main-command.c:643
 #, c-format
 msgid "%s: Rounded: "
 msgstr ""
 
-#: main-command.c:652
+#: main-command.c:653
 #, c-format
 msgid "%s: EXIF write failure: "
 msgstr ""
 
-#: main-command.c:660
+#: main-command.c:661
 #, c-format
 msgid "Lat %f, Long %f, Elev "
 msgstr ""
 
-#: main-command.c:665
+#: main-command.c:666
 #, c-format
 msgid "(unknown).\n"
 msgstr ""
 
-#: main-command.c:676
+#: main-command.c:677
 #, c-format
 msgid "%s: No match.\n"
 msgstr ""
 
-#: main-command.c:686
+#: main-command.c:687
 #, c-format
 msgid "%s: Too far from nearest point.\n"
 msgstr ""
 
-#: main-command.c:696
+#: main-command.c:697
 #, c-format
 msgid "%s: No EXIF date tag present.\n"
 msgstr ""
 
-#: main-command.c:706
+#: main-command.c:707
 #, c-format
 msgid "%s: GPS Data already present.\n"
 msgstr ""
 
-#: main-command.c:731
+#: main-command.c:732
 #, c-format
 msgid ""
 "\n"
 "Completed correlation process.\n"
 msgstr ""
 
-#: main-command.c:736
+#: main-command.c:737
 #, c-format
 msgid "Used time zone offset %d:%02d\n"
 msgstr ""
 
-#: main-command.c:738
+#: main-command.c:739
 #, c-format
 msgid "Matched: %5d (%d Exact, %d Interpolated, %d Rounded).\n"
 msgstr ""
 
-#: main-command.c:741
+#: main-command.c:742
 #, c-format
 msgid "Failed:  %5d (%d Not matched, %d Write failure, %d Too Far,\n"
 msgstr ""
 
-#: main-command.c:744
+#: main-command.c:745
 #, c-format
 msgid "                %d No Date, %d GPS Already Present.)\n"
 msgstr ""

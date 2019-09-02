@@ -6,7 +6,7 @@
  * functions in correlate.c.
  */
 
-/* Copyright 2005-2012 Daniel Foote, Dan Fandrich.
+/* Copyright 2005-2018 Daniel Foote, Dan Fandrich.
  *
  * This file is part of gpscorrelate.
  *

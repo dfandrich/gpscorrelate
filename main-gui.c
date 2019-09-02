@@ -11,7 +11,7 @@
  * to get the GUI up and running. However, this seems to work for me!
  * All the action really happens in gui.c. */
 
-/* Copyright 2005-2013 Daniel Foote, Dan Fandrich.
+/* Copyright 2005-2019 Daniel Foote, Dan Fandrich.
  *
  * This file is part of gpscorrelate.
  *

@@ -4,4 +4,4 @@ PRECOMMAND='for f in baddate.jpg noexif.jpg notime.jpg point1-1.jpg point1-2.jpg
 COMMAND='env LC_ALL=C $PROGRAM --verbose -t -z 0 -g "$STAGINGDIR/track3.gpx" "$LOGDIR"/test-baddate.jpg "$LOGDIR"/test-noexif.jpg "$LOGDIR"/test-notime.jpg "$LOGDIR"/test-point1-1.jpg "$LOGDIR"/test-point1-2.jpg "$LOGDIR"/test-point2-1.jpg "$LOGDIR"/test-point2-2.jpg "$LOGDIR"/test-point7-1.jpg "$LOGDIR"/test-point3-1.jpg "$LOGDIR"/test-point4-1.jpg "$LOGDIR"/test-withgps.jpg > "$OUTFILE" 2>&1'
 POSTCOMMAND='for f in baddate.jpg noexif.jpg notime.jpg point1-1.jpg point1-2.jpg point2-1.jpg point2-2.jpg point7-1.jpg point3-1.jpg point4-1.jpg withgps.jpg; do rm -f "$LOGDIR/test-$f"; done'
 RESULTCODE=1
-SEDCOMMAND='s@^([a-zA-Z]:)?/.*/|.*GPL@@' # strip path and copyright line
+SEDCOMMAND='s@^([a-zA-Z]:)?/.*/|.*Copyright.*$@@' # strip path and copyright line

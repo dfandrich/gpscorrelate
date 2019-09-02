@@ -6,4 +6,4 @@ PRECOMMAND='cat "$STAGINGDIR/point2-1.jpg" >"$LOGDIR/test.jpg"'
 COMMAND='env LC_ALL=C TZ="PST8PDT,M3.2.0,M11.1.0" $PROGRAM -v -g "$STAGINGDIR/track4.gpx" "$LOGDIR/test.jpg" > "$OUTFILE" 2>&1 && exiv2 -pv pr "$LOGDIR/test.jpg" >> "$OUTFILE" 2>&1'
 POSTCOMMAND='rm -f "$LOGDIR/test.jpg"'
 RESULTCODE=0
-SEDCOMMAND='s@^/.*/|.*GPL@@' # strip path and copyright line
+SEDCOMMAND='s@^/.*/|.*Copyright.*$@@' # strip path and copyright line

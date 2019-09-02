@@ -5,4 +5,4 @@ RESULTCODE=0
 # format of the line. All other tests that could see this line strip it
 # completely, so this one also acts as a basic check that the line is being
 # output at all.
-SEDCOMMAND='s@^([a-zA-Z]:)?(.*[/\\])?(gpscorrelate)(\.exe)?.*( Daniel).*( 200.-).*( GPL)|([a-zA-Z]:)?.*/@\3\5\6\7@'
+SEDCOMMAND='s@^([a-zA-Z]:)?(.*[/\\])?(gpscorrelate)(\.exe)?.*( Copyright.*200.-).*( Daniel).*$@\3\5\6@'

@@ -6,7 +6,7 @@
  * to a unix time, given a format string.
  */
 
-/* Copyright 2005-2013 Daniel Foote, Dan Fandrich.
+/* Copyright 2005-2018 Daniel Foote, Dan Fandrich.
  *
  * This file is part of gpscorrelate.
  *

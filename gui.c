@@ -12,7 +12,7 @@
  * part of the gui program is main-gui.c, but that ended up
  * being little more than a "stub" to get the GUI up and running. */
 
-/* Copyright 2005-2014 Daniel Foote, Dan Fandrich.
+/* Copyright 2005-2019 Daniel Foote, Dan Fandrich.
  *
  * This file is part of gpscorrelate.
  *
