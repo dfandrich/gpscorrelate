@@ -33,8 +33,9 @@ datadir  = $(prefix)/share
 mandir   = $(datadir)/man
 docdir   = $(datadir)/doc/gpscorrelate
 applicationsdir = $(datadir)/applications
+localedir = $(datadir)/locale
 
-DEFS = -DPACKAGE_VERSION=\"$(PACKAGE_VERSION)\"
+DEFS = -DPACKAGE_VERSION=\"$(PACKAGE_VERSION)\" -DPACKAGE_LOCALE_DIR=\"$(localedir)\"
 
 TARGETS = gpscorrelate-gui$(EXEEXT) gpscorrelate$(EXEEXT) doc/gpscorrelate.1 doc/gpscorrelate.html
 

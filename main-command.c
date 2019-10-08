@@ -268,6 +268,7 @@ int main(int argc, char** argv)
 {
 	/* Initialize locale & gettext */
 	setlocale (LC_ALL, "");
+	(void) bindtextdomain(TEXTDOMAIN, PACKAGE_LOCALE_DIR);
 	(void) textdomain(TEXTDOMAIN);
 
 	/* If you didn't pass any arguments... */

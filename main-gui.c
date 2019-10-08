@@ -40,6 +40,7 @@
 int main(int argc, char* argv[])
 {
 	/* Initialize gettext (gtk_init initializes the locale) */
+	(void) bindtextdomain(TEXTDOMAIN, PACKAGE_LOCALE_DIR);
 	(void) textdomain(TEXTDOMAIN);
 	(void) bind_textdomain_codeset(TEXTDOMAIN, "UTF-8");
 
