@@ -36,9 +36,12 @@ struct CorrelateOptions {
 	int TimeZoneMins;
 	int AutoTimeZone;
 	int FeatherTime;
-	char* Datum;     /* Datum of the data; when writing. */
+	int WriteHeading;
+	int HeadingOffset;
+	int MaxHeadingDelta;
+	char* Datum;	 /* Datum of the data; when writing. */
 	int DoBetweenTrkSeg; /* Match between track segments. */
-	int DegMinSecs;   /* Write out data as DD MM SS.SS (more accurate than in the past) */
+	int DegMinSecs;	  /* Write out data as DD MM SS.SS (more accurate than in the past) */
 	
 	int Result;
 

@@ -72,6 +72,9 @@ static const struct option program_options[] = {
 	{ "fix-datestamps", no_argument, 0, 'f'},
 	{ "degmins", no_argument, 0, 'p'},
 	{ "photooffset", required_argument, 0, 'O'},
+	{ "heading", no_argument, 0, '('},
+	{ "direction", required_argument, 0, 'b'},
+	{ "max-heading", required_argument, 0, 'B'},
 	{ 0, 0, 0, 0 }
 };
 
@@ -96,6 +99,9 @@ static void PrintUsage(const char* ProgramName)
 	puts(  _("-n, --no-write           Do not write the EXIF data. Useful with --verbose"));
 	puts(  _("-R, --replace            Overwrite any GPS tags already in the image file"));
 	puts(  _("-m, --max-dist SECS      Max time outside points that photo will be matched"));
+	puts(  _("    --heading            Store the direction of movement in the image"));
+	puts(  _("-B, --max-heading DEG    Max degrees between points that will be matched"));
+	puts(  _("-b, --direction DEG      Angular offset of camera from forward direction"));
 	puts(  _("-s, --show               Just show the GPS data from the given files"));
 	puts(  _("-o, --machine            Similar to --show but with machine-readable output"));
 	puts(  _("-x, --show-gpx           Similar to --show but with GPX output"));
@@ -392,6 +398,9 @@ int main(int argc, char** argv)
 	int FixDatestamps = 0;
 	int DegMinSecs = 1;
 	int PhotoOffset = 0;
+	int WriteHeading = 0;
+	int HeadingOffset = -1;      /* Negative means disabled */
+	int MaxHeadingDelta = -1;    /* Negative means disabled */
 	struct GPSPoint *LatLong = NULL;
 
 	/* Create the empty terminating array entry */
@@ -406,7 +415,7 @@ int main(int argc, char** argv)
 	{
 		/* Call getopt to do all the hard work
 		 * for us... */
-		c = getopt_long(argc, argv, "g:z:il:hvd:m:nsortxRMVfO:",
+		c = getopt_long(argc, argv, "b:B:g:z:il:hvd:m:nsortxRMVfO:",
 				program_options, 0);
 
 		if (c == -1) break;
@@ -534,6 +543,39 @@ int main(int argc, char** argv)
 					FeatherTime = atoi(optarg);
 				}
 				break;
+			case '(':
+				/* This option specifies to write the GPSTrack tag, if possible. */
+				WriteHeading = 1;
+				break;
+			case 'b':
+				/* This option gives us the offset of the camera from forward. */
+				if (optarg)
+				{
+					HeadingOffset = atoi(optarg);
+					if (HeadingOffset <= -360 || HeadingOffset >= 360)
+					{
+						fprintf(stderr, _("The --direction value must be between -359..359\n"));
+						exit(EXIT_FAILURE);
+					}
+					if (HeadingOffset < 0)
+					{
+						// Ensure the offset is positive
+						HeadingOffset += 360;
+					}
+				}
+				break;
+			case 'B':
+				/* This option gives us the maximum change of heading to accept. */
+				if (optarg)
+				{
+					MaxHeadingDelta = atoi(optarg);
+					if (MaxHeadingDelta < 0 || MaxHeadingDelta >= 180)
+					{
+						fprintf(stderr, _("The --max-heading value must be between 0..179\n"));
+						exit(EXIT_FAILURE);
+					}
+				}
+				break;
 			case 'h':
 				/* Display the help/usage information. And then quit. */
 				PrintUsage(argv[0]);
@@ -624,6 +666,9 @@ int main(int argc, char** argv)
 	Options.DegMinSecs    = DegMinSecs;
 	Options.PhotoOffset   = PhotoOffset;
 	Options.Track         = Track;
+	Options.WriteHeading  = WriteHeading;
+	Options.HeadingOffset = HeadingOffset;
+	Options.MaxHeadingDelta = MaxHeadingDelta;
 
 	/* If we only wanted to display info on the passed photos, do so now. */
 	if (ShowOnlyDetails)

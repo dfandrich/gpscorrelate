@@ -1,0 +1,5 @@
+TITLE='Correlate a file with direction with interpolation across segments'
+PRECOMMAND='cat "$STAGINGDIR/point1-1.jpg" >"$LOGDIR/test.jpg"'
+COMMAND='$PROGRAM --direction -40 -z 0 -t -g "$STAGINGDIR/track13.gpx" "$LOGDIR/test.jpg" > "$OUTFILE" 2>&1 && exiv2 -pv pr "$LOGDIR/test.jpg" >> "$OUTFILE" 2>&1'
+POSTCOMMAND='rm -f "$LOGDIR/test.jpg"'
+RESULTCODE=0

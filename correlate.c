@@ -29,6 +29,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <math.h>
 
 #include "gpsstructure.h"
 #include "exif-gps.h"
@@ -39,9 +40,22 @@
 
 /* Internal functions used to make it work. */
 static void Round(const struct GPSPoint* First, struct GPSPoint* Result,
-		  time_t PhotoTime);
+	   time_t PhotoTime, int HeadingOffset, int MaxHeadingDelta);
 static void Interpolate(const struct GPSPoint* First, struct GPSPoint* Result,
-			time_t PhotoTime);
+	   time_t PhotoTime, int HeadingOffset, int MaxHeadingDelta);
+static void Exact(const struct GPSPoint* First, struct GPSPoint* Result,
+	   int HeadingOffset);
+
+/* Ensure a heading is between 0..360 */
+static double CanonicalHeading(double Heading)
+{
+	Heading = remainder(Heading, 360.);
+	if (Heading < 0)
+	{
+		Heading += 360.;
+	}
+	return Heading;
+}
 
 /* Set the time zone parameters automatically based on this date. */
 void SetAutoTimeZoneOptions(const char *Time,
@@ -165,14 +179,11 @@ struct GPSPoint* CorrelatePhoto(const char* Filename,
 		{
 			/* This is the point, exactly.
 			 * Copy out the data and return that. */
-			Actual->Lat = Search->Lat;
-			Actual->LatDecimals = Search->LatDecimals;
-			Actual->Long = Search->Long;
-			Actual->LongDecimals = Search->LongDecimals;
-			Actual->Elev = Search->Elev;
-			Actual->ElevDecimals = Search->ElevDecimals;
-			Actual->Time = Search->Time;
-
+			Exact(Search, Actual, Options->HeadingOffset);
+			if (!Options->WriteHeading)
+			{
+				Actual->MoveHeading = -1;  // disabled
+			}
 			Options->Result = CORR_OK;
 			break;
 		}
@@ -230,7 +241,7 @@ struct GPSPoint* CorrelatePhoto(const char* Filename,
 					return NULL;
 				} 
 			}
-		} /* endif (Options->Feather) */
+		} /* endif (Options->FeatherTime) */
 		
 		/* Second test: is it between this and the
 		 * next point? */
@@ -244,12 +255,22 @@ struct GPSPoint* CorrelatePhoto(const char* Filename,
 			if (Options->NoInterpolate)
 			{
 				/* No interpolation. Round. */
-				Round(Search, Actual, PhotoTime);
+				Round(Search, Actual, PhotoTime,
+						Options->HeadingOffset, Options->MaxHeadingDelta);
+				if (!Options->WriteHeading)
+				{
+					Actual->MoveHeading = -1;  // disabled
+				}
 				Options->Result = CORR_ROUND;
 				break;
 			} else {
 				/* Interpolate away! */
-				Interpolate(Search, Actual, PhotoTime);
+				Interpolate(Search, Actual, PhotoTime,
+						Options->HeadingOffset, Options->MaxHeadingDelta);
+				if (!Options->WriteHeading)
+				{
+					Actual->MoveHeading = -1;  // disabled
+				}
 				Options->Result = CORR_INTERPOLATED;
 				break;
 			}
@@ -290,7 +311,7 @@ struct GPSPoint* CorrelatePhoto(const char* Filename,
 }
 
 void Round(const struct GPSPoint* First, struct GPSPoint* Result,
-	   time_t PhotoTime)
+	   time_t PhotoTime, int HeadingOffset, int MaxHeadingDelta)
 {
 	/* Round the point between the two points - ie, it will end
 	 * up being one or the other point. */
@@ -319,6 +340,19 @@ void Round(const struct GPSPoint* First, struct GPSPoint* Result,
 	Result->LongDecimals = CopyFrom->LongDecimals;
 	Result->Elev = CopyFrom->Elev;
 	Result->ElevDecimals = CopyFrom->ElevDecimals;
+	Result->MoveHeading = -1;
+	Result->Heading = -1;
+
+	// Drop this point if too large a change in direction
+	double DeltaHeading = First->Next->MoveHeading - First->MoveHeading;
+	if (MaxHeadingDelta < 0 || fabs(DeltaHeading) <= MaxHeadingDelta)
+	{
+		Result->MoveHeading = CopyFrom->MoveHeading;
+		if (HeadingOffset >= 0 && CopyFrom->MoveHeading >= 0)
+		{
+			Result->Heading = CanonicalHeading(CopyFrom->MoveHeading + HeadingOffset);
+		}
+	}
 	Result->Time = CopyFrom->Time;
 
 	/* Done! */
@@ -326,7 +360,7 @@ void Round(const struct GPSPoint* First, struct GPSPoint* Result,
 }
 
 void Interpolate(const struct GPSPoint* First, struct GPSPoint* Result,
-		 time_t PhotoTime)
+		 time_t PhotoTime, int HeadingOffset, int MaxHeadingDelta)
 {
 	/* Interpolate between the two points. The first point
 	 * is First, the other First->Next. Results into Result. */
@@ -352,9 +386,54 @@ void Interpolate(const struct GPSPoint* First, struct GPSPoint* Result,
 	Result->Elev = First->Elev + ((First->Next->Elev - First->Elev) * Scale);
 	Result->ElevDecimals = MIN(First->ElevDecimals, First->Next->ElevDecimals);
 
+	/* Heading and Direction */
+	Result->MoveHeading = -1;
+	Result->Heading = -1;
+	if (First->MoveHeading >= 0 && First->Next->MoveHeading >= 0)
+	{
+		/* Determine the smallest angle between the two headings, regardless
+		 * of which way around the compass you need to go.
+		 */
+		double DeltaHeading1 = First->Next->MoveHeading - First->MoveHeading;
+		double DeltaHeading2 = (First->Next->MoveHeading > First->MoveHeading) ?
+			First->Next->MoveHeading - (360 + First->MoveHeading) :
+			(360 + First->Next->MoveHeading) - First->MoveHeading;
+		double DeltaHeading = fabs(DeltaHeading1) < fabs(DeltaHeading2) ?
+			DeltaHeading1 : DeltaHeading2;
+
+		// Drop this point unles the change in direction is small enough
+		if (MaxHeadingDelta < 0 || fabs(DeltaHeading) <= MaxHeadingDelta)
+		{
+			Result->MoveHeading = CanonicalHeading(
+					First->MoveHeading + DeltaHeading * Scale);
+			if (HeadingOffset >= 0)
+			{
+				Result->Heading = CanonicalHeading(Result->MoveHeading + HeadingOffset);
+			}
+		}
+	}
+
 	/* The time is not interpolated, but matches photo. */
 	Result->Time = PhotoTime;
 
 	/* And that should have fixed us... */
+}
 
+void Exact(const struct GPSPoint* First, struct GPSPoint* Result,
+	   int HeadingOffset)
+{
+	Result->Lat = First->Lat;
+	Result->LatDecimals = First->LatDecimals;
+	Result->Long = First->Long;
+	Result->LongDecimals = First->LongDecimals;
+	Result->Elev = First->Elev;
+	Result->ElevDecimals = First->ElevDecimals;
+	Result->MoveHeading = First->MoveHeading;
+	if (HeadingOffset >= 0 && First->MoveHeading >= 0)
+	{
+		Result->Heading = CanonicalHeading(First->MoveHeading + HeadingOffset);
+	} else {
+		Result->Heading = -1;  // disabled or unknown
+	}
+	Result->Time = First->Time;
 }

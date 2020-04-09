@@ -589,7 +589,7 @@ int WriteGPSData(const char* File, const struct GPSPoint* Point,
 		ExifToWrite["Exif.GPSInfo.GPSLongitudeRef"] = "W";
 	} else {
 		// More than Zero: ie, plus: means
-		// Eastern hemisphere. Where I live.
+		// Eastern hemisphere.
 		ExifToWrite["Exif.GPSInfo.GPSLongitudeRef"] = "E";
 	}
 	// Now the actual longitude itself, in the same way as latitude
@@ -603,6 +603,34 @@ int WriteGPSData(const char* File, const struct GPSPoint* Point,
 	}
 	Value->read(ScratchBuf);
 	replace(ExifToWrite, Exiv2::ExifKey("Exif.GPSInfo.GPSLongitude"), Value.get());
+
+	// Heading.
+	if (Point->Heading >= 0) {
+		// Direction reference: byte "T" meaning true direction
+		// or "M" meaning magnetic direction.
+		Value = Exiv2::Value::create(Exiv2::asciiString);
+		Value->read("T");  // TODO: is T right?
+		replace(ExifToWrite, Exiv2::ExifKey("Exif.GPSInfo.GPSImgDirectionRef"), Value.get());
+		// And the actual heading.
+		Value = Exiv2::Value::create(Exiv2::unsignedRational);
+		ConvertToRational(Point->Heading, 0, ScratchBuf, sizeof(ScratchBuf));
+		Value->read(ScratchBuf);
+		replace(ExifToWrite, Exiv2::ExifKey("Exif.GPSInfo.GPSImgDirection"), Value.get());
+    }
+
+	// Track.
+	if (Point->MoveHeading >= 0) {
+		// Direction reference: byte "T" meaning true direction
+		// or "M" meaning magnetic direction.
+		Value = Exiv2::Value::create(Exiv2::asciiString);
+		Value->read("T");  // TODO: is T right?
+		replace(ExifToWrite, Exiv2::ExifKey("Exif.GPSInfo.GPSTrackRef"), Value.get());
+		// And the actual heading.
+		Value = Exiv2::Value::create(Exiv2::unsignedRational);
+		ConvertToRational(Point->MoveHeading, 0, ScratchBuf, sizeof(ScratchBuf));
+		Value->read(ScratchBuf);
+		replace(ExifToWrite, Exiv2::ExifKey("Exif.GPSInfo.GPSTrack"), Value.get());
+	}
 
 	// The timestamp.
 	// Make up the timestamp...

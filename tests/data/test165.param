@@ -1,0 +1,5 @@
+TITLE='Correlate a file with heading and direction with delta outside --max-heading'
+PRECOMMAND='cat "$STAGINGDIR/point1-2.jpg" >"$LOGDIR/test.jpg"'
+COMMAND='$PROGRAM --heading --direction 10 --max-heading 25 -z 0 -g "$STAGINGDIR/track13.gpx" "$LOGDIR/test.jpg" > "$OUTFILE" 2>&1 && exiv2 -pv pr "$LOGDIR/test.jpg" >> "$OUTFILE" 2>&1'
+POSTCOMMAND='rm -f "$LOGDIR/test.jpg"'
+RESULTCODE=0

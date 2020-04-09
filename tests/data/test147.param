@@ -1,0 +1,5 @@
+TITLE='--max-heading too large'
+PRECOMMAND='cat "$STAGINGDIR/point1-1.jpg" >"$LOGDIR/test.jpg"'
+COMMAND='$PROGRAM --heading --max-heading 360 -z 0 -g "$STAGINGDIR/track13.gpx" "$LOGDIR/test.jpg" > "$OUTFILE" 2>&1'
+POSTCOMMAND='rm -f "$LOGDIR/test.jpg"'
+RESULTCODE=1

@@ -1,0 +1,37 @@
+Reading GPS Data...
+Legend: . = Ok, / = Interpolated, < = Rounded, - = No match, ^ = Too far
+        w = Write Fail, ? = No EXIF date, ! = GPS already present
+
+Correlate: .
+
+Completed correlation process.
+Matched:     1 (1 Exact, 0 Interpolated, 0 Rounded).
+Failed:      0 (0 Not matched, 0 Write failure, 0 Too Far,
+                0 No Date, 0 GPS Already Present.)
+0x011a Image        XResolution                 Rational    1  72/1
+0x011b Image        YResolution                 Rational    1  72/1
+0x0128 Image        ResolutionUnit              Short       1  2
+0x0132 Image        DateTime                    Ascii      20  2012:11:22 12:34:56
+0x0213 Image        YCbCrPositioning            Short       1  1
+0x8769 Image        ExifTag                     Long        1  134
+0x9000 Photo        ExifVersion                 Undefined   4  48 50 49 48
+0x9003 Photo        DateTimeOriginal            Ascii      20  2012:11:22 12:34:56
+0x9004 Photo        DateTimeDigitized           Ascii      20  2012:11:22 12:34:56
+0x9101 Photo        ComponentsConfiguration     Undefined   4  1 2 3 0
+0xa000 Photo        FlashpixVersion             Undefined   4  48 49 48 48
+0xa001 Photo        ColorSpace                  Short       1  65535
+0xa002 Photo        PixelXDimension             Long        1  64
+0xa003 Photo        PixelYDimension             Long        1  64
+0x8825 Image        GPSTag                      Long        1  276
+0x0000 GPSInfo      GPSVersionID                Byte        4  2 2 0 0
+0x0001 GPSInfo      GPSLatitudeRef              Ascii       2  N
+0x0002 GPSInfo      GPSLatitude                 Rational    3  31/1 27/1 314816/10000
+0x0003 GPSInfo      GPSLongitudeRef             Ascii       2  E
+0x0004 GPSInfo      GPSLongitude                Rational    3  35/1 23/1 593916/10000
+0x0005 GPSInfo      GPSAltitudeRef              Byte        1  1
+0x0006 GPSInfo      GPSAltitude                 Rational    1  421912/1000
+0x0007 GPSInfo      GPSTimeStamp                Rational    3  12/1 35/1 6/1
+0x0010 GPSInfo      GPSImgDirectionRef          Ascii       2  T
+0x0011 GPSInfo      GPSImgDirection             Rational    1  0/1
+0x0012 GPSInfo      GPSMapDatum                 Ascii       7  WGS-84
+0x001d GPSInfo      GPSDateStamp                Ascii      11  2012:11:22

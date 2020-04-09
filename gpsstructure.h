@@ -36,6 +36,8 @@ struct GPSPoint {
 	int LongDecimals;
 	double Elev;
 	int ElevDecimals;
+	double MoveHeading;
+	double Heading;
 	time_t Time;
 	int EndOfSegment;
 	struct GPSPoint* Next;
