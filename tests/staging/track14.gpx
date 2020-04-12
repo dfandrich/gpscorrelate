@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="OSMTracker for Android™ - https://github.com/nguillaumin/osmtracker-android" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd ">
+	<trk>
+		<name><![CDATA[Tracked with OSMTracker for Android™]]></name>
+		<trkseg>
+			<trkpt lat="31.4587340" lon="35.3998730">
+				<ele>-422.0</ele>
+				<time>2012-11-22T12:34:40Z</time>
+				<extensions>
+					<speed>0.9200000166893005</speed>
+					<compass>279.3272247314453</compass>
+					<compass_accuracy>3.0</compass_accuracy>
+				</extensions>
+			</trkpt>
+		</trkseg>
+		<trkseg>
+			<trkpt lat="31.4587449" lon="35.3998310">
+				<ele>-421.9119287</ele>
+				<time>2012-11-22T12:35:06Z</time>
+				<extensions>
+					<speed>0.9200000166893005</speed>
+					<compass>290.4948572714921</compass>
+					<compass_accuracy>3.0</compass_accuracy>
+				</extensions>
+			</trkpt>
+			<trkpt lat="31.4587780" lon="35.3997909">
+				<ele>-420.4048414</ele>
+				<time>2012-11-22T12:35:23Z</time>
+				<extensions>
+					<speed>0.9200000166893005</speed>
+					<compass>320.1098572737215</compass>
+					<compass_accuracy>3.0</compass_accuracy>
+				</extensions>
+			</trkpt>
+			<trkpt lat="31.4588210" lon="35.3997590">
+				<ele>-419.2974105</ele>
+				<time>2012-11-22T12:35:30Z</time>
+			</trkpt>
+		</trkseg>
+	</trk>
+</gpx>

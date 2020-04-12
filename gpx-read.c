@@ -105,6 +105,20 @@ static void ExtractTrackPoints(xmlNodePtr Start)
 					if (CCurrent->children)
 						Time = (const char *)CCurrent->children->content;
 				}
+				else if (strcmp((const char *)CCurrent->name, "extensions") == 0 && !Heading)
+				{
+					// Look for the compass extension written by OSMTracker
+					for (xmlNodePtr Extensions = CCurrent->children; Extensions; Extensions = Extensions->next)
+					{
+						if ((Extensions->type == XML_ELEMENT_NODE) &&
+							(strcmp((const char *)Extensions->name, "compass") == 0))
+						{
+							// compass extension, written by OSMTracker
+							if (Extensions->children)
+								Heading = (const char *)Extensions->children->content;
+						}
+					}
+				}
 				else if (strcmp((const char *)CCurrent->name, "course") == 0)
 				{
 					/* Technically, we want the heading, not the course, but if
@@ -114,7 +128,7 @@ static void ExtractTrackPoints(xmlNodePtr Start)
 					if (CCurrent->children)
 						Heading = (const char *)CCurrent->children->content;
 				}
-			}
+            }
 
 			/* Check that we have all the data. If we're missing something,
 			 * then skip this point... NOTE: Elev is not required. */
