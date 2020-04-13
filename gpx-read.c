@@ -41,6 +41,18 @@
 static struct GPSPoint* FirstPoint;
 static struct GPSPoint* LastPoint;
 
+/* Check whether the node is in a namespace that matches the given namespace prefix */
+static int MatchXmlnsPrefix(xmlNodePtr Node, const char *Prefix)
+{
+	size_t Len = strlen(Prefix);
+	for (xmlNsPtr Ns = Node->ns; Ns; Ns = Ns->next)
+	{
+		if (strncmp((const char *)Ns->href, Prefix, Len) == 0)
+			return 1;  // In the given namespace
+	}
+	return 0;  // Not in the given namespace
+}
+
 static void ExtractTrackPoints(xmlNodePtr Start)
 {
 	/* The pointer passed to us should be the start
@@ -107,7 +119,7 @@ static void ExtractTrackPoints(xmlNodePtr Start)
 				}
 				else if (strcmp((const char *)CCurrent->name, "extensions") == 0 && !Heading)
 				{
-					// Look for the compass extension written by OSMTracker
+					// Look for various extensions holding the heading
 					for (xmlNodePtr Extensions = CCurrent->children; Extensions; Extensions = Extensions->next)
 					{
 						if ((Extensions->type == XML_ELEMENT_NODE) &&
@@ -115,16 +127,36 @@ static void ExtractTrackPoints(xmlNodePtr Start)
 						{
 							// compass extension, written by OSMTracker
 							if (Extensions->children)
+							{
 								Heading = (const char *)Extensions->children->content;
+								break;
+							}
+
+						} else if ((Extensions->type == XML_ELEMENT_NODE) &&
+							(strcmp((const char *)Extensions->name, "TrackPointExtension") == 0) &&
+							MatchXmlnsPrefix(Extensions, "http://www.garmin.com/xmlschemas/TrackPointExtension/"))
+						{
+							// Garmin course extension
+							for (xmlNodePtr TPExt = Extensions->children; TPExt; TPExt = TPExt->next)
+							{
+								if ((TPExt->type == XML_ELEMENT_NODE) &&
+									(strcmp((const char *)TPExt->name, "course") == 0))
+								{
+									if (TPExt->children)
+									{
+										Heading = (const char *)TPExt->children->content;
+									}
+								}
+							}
 						}
 					}
 				}
 				else if (strcmp((const char *)CCurrent->name, "course") == 0)
 				{
-					/* Technically, we want the heading, not the course, but if
-					 * that's all we have to work with, we'll have to use it. */
-					// TODO: is course even relevant? Is it the direction to the
-					// final destination, or is it the current direction of movement?
+					/* course is part of the GPX 1.0 specification but not 1.1.
+					 * Technically, we want the heading, not the course, but if
+					 * that's all we have to work with, we'll have to use it.
+					 * In land vehicles, it's the same, anyway. */
 					if (CCurrent->children)
 						Heading = (const char *)CCurrent->children->content;
 				}

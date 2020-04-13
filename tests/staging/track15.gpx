@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gpx xmlns:tc2="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="TC2 to GPX11 XSLT stylesheet" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd">
+<trk>
+<name>Simulated Garmin track with both bearing/course extensions</name>
+<trkseg>
+<trkpt lat="31.4587449" lon="35.3998310">
+  <ele>-421.91</ele>
+  <time>2012-11-22T12:34:56Z</time>
+  <extensions>
+    <gpxtpx:TrackPointExtension>
+      <gpxtpx:speed>2.61</gpxtpx:speed>
+      <gpxtpx:course>289.76</gpxtpx:course>
+    </gpxtpx:TrackPointExtension>
+  </extensions>
+</trkpt>
+<trkpt lat="31.4587780" lon="35.3997909">
+  <ele>-420.40</ele>
+  <time>2012-11-22T12:35:20Z</time>
+  <extensions>
+    <gpxtpx:TrackPointExtension>
+      <gpxtpx:speed>2.21</gpxtpx:speed>
+      <gpxtpx:course>320.12</gpxtpx:course>
+      <gpxtpx:bearing>333.33</gpxtpx:bearing>
+    </gpxtpx:TrackPointExtension>
+  </extensions>
+</trkpt>
+</trkseg>
+</trk>
+</gpx>
