@@ -4,7 +4,7 @@
 
   <!ENTITY dhfirstname "<firstname>Stefano</firstname>">
   <!ENTITY dhsurname   "<surname>Zacchiroli</surname>">
-  <!ENTITY dhdate      "<date>03 Apr 2020</date>">
+  <!ENTITY dhdate      "<date>01 May 2020</date>">
   <!ENTITY dhsection   "<manvolnum>1</manvolnum>">
   <!ENTITY dhemail     "<email>zack@debian.org</email>">
   <!ENTITY dhusername  "Stefano Zacchiroli">
@@ -98,6 +98,22 @@
       <group>
         <arg choice="plain">-t</arg>
         <arg choice="plain">--ignore-tracksegs</arg>
+      </group>
+
+      <group>
+        <arg choice="plain">--heading</arg>
+      </group>
+
+      <group>
+        <arg choice="plain">-B</arg>
+        <arg choice="plain">--max-heading <replaceable>degrees</replaceable>
+        </arg>
+      </group>
+
+      <group>
+        <arg choice="plain">-b</arg>
+        <arg choice="plain">--direction <replaceable>degrees</replaceable>
+        </arg>
       </group>
 
       <group>
@@ -424,8 +440,8 @@
           <para>Maximum time in seconds from the photo time which a
           logged GPS point can refer and still be used for
           correlation.  This defaults to 0, which means to disable this
-	  check. Only one of the two points need be within this range
-	  for correlation to take place.</para>
+          check. Only one of the two points need be within this range
+          for correlation to take place.</para>
           <para> If the accuracy of the location is paramount and you
           would rather not correlate a position for a photo at all if
           the nearest GPS coordinates were recorded too long ago in the
@@ -449,6 +465,73 @@
           flag, photos taken within the time gap between two
           <userinput>&lt;trkseg&gt;</userinput> tracks in the GPX file
           are not correlated.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>
+          <option>--heading</option>
+        </term>
+        <listitem>
+          <para>Write an EXIF tag showing the direction of movement at the time
+          of image capture. This is only possible if the direction is written
+          in an appropriate tag within a <constant>&lt;trkpt&gt;</constant> entry
+          in the GPX file. Supported tags are <constant>course</constant>
+          (from GPX 1.0), <constant>extensions/TrackPointExtension/course</constant>
+          (a <trademark class='registered'>Garmin</trademark>
+          <constant>TrackPointExtension</constant>), and
+          <constant>extensions/compass</constant>
+          (written by <productname class=''>OSMTracker</productname>).
+          </para>
+          <para><command>gpscorrelate</command> treats each of these tags as holding
+          the true direction of movement, but they aren't very well defined and might
+          not hold exactly what's expected. For example, a phone might store the
+          direction it's facing rather than the direction of movement, or the
+          direction might be the magnetic heading instead of true heading. Or, a
+          device might estimate the heading from GPS movement which will be
+          inaccurate at slow speeds. Use your knowledge of the recording application
+          to determine how much faith you can place in the resulting tags.
+        </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>
+          <option>-B</option>,
+          <option>--max-heading</option> <replaceable>degrees</replaceable>
+        </term>
+        <listitem>
+          <para>Don't write the tags for <option>--heading</option> and
+          <option>--direction</option> for images where the heading has
+          changed by more than the specified number of degrees between the GPX
+          points being used.  This prevents writing a value that is likely to be
+          inaccurate because the image was taken during a sharp turn. This
+          is off by default.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>
+          <option>-b</option>,
+          <option>--direction</option> <replaceable>degrees</replaceable>
+        </term>
+        <listitem>
+          <para>write an EXIF tag showing the direction the camera was pointing
+          when the image was taken. The degrees argument gives the offset
+          between the direction of travel (the value that would be written if
+          <option>--heading</option> were given) and the camera direction. For
+          example, if the camera is mounted pointing out the right side window
+          of a car then this would be specified as <option>--direction</option>
+          <replaceable>90</replaceable>. If <option>--heading</option> is
+          also given, then the two tags will always be this number of degrees
+          apart. If accuracy is important, use the
+          <option>--max-heading</option> and <option>--max-dist</option>
+          options to limit writing these tags to times when there is a good fix
+          on the position and not during a sharp turn.  Since this option
+          applies along the entire track, it's only generally useful when the
+          camera is fixed in the vehicle during the trip.
+          </para>
         </listitem>
       </varlistentry>
 
@@ -512,7 +595,7 @@
         </term>
         <listitem>
           <para>Only print the <command>gpscorrelate</command> version number
-	  and copyright information.</para>
+                and copyright information.</para>
         </listitem>
       </varlistentry>
     </variablelist>
@@ -589,6 +672,13 @@
     <para>
     <userinput>gpscorrelate -l 48.398620,9.991417,522 -z 2 ulm.jpg</userinput>
     </para>
+
+    <para>
+    Correlate images taken from a dashcam, adding direction tags:</para>
+    <para>
+    <userinput>gpscorrelate --heading --max-dist 5 --max-heading 90 --direction 0 -g Test.gpx *.jpg</userinput>
+    </para>
+
   </refsect1>
   <refsect1>
     <title>EXIT STATUS</title>
