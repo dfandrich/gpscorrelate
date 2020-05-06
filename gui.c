@@ -77,12 +77,18 @@ GtkWidget *NoMtimeCheck;
 GtkWidget *BetweenSegmentsCheck;
 GtkWidget *DegMinSecsCheck;
 GtkWidget *AutoTimeZoneCheck;
+GtkWidget *HeadingCheck;
+GtkWidget *DirectionCheck;
 GtkWidget *OptionsTable;
 GtkWidget *MaxGapTimeLabel;
+GtkWidget *MaxHeadingLabel;
+GtkWidget *CameraDirectionLabel;
 GtkWidget *TimeZoneLabel;
 GtkWidget *PhotoOffsetLabel;
 GtkWidget *GPSDatumLabel;
 GtkWidget *GapTimeEntry;
+GtkWidget *MaxHeadingEntry;
+GtkWidget *CameraDirectionEntry;
 GtkWidget *TimeZoneEntry;
 GtkWidget *PhotoOffsetEntry;
 GtkWidget *GPSDatumEntry;
@@ -155,7 +161,11 @@ static const char* const ConfigDefaults[] = {
 	"writeddmmss", "true",
 	"replace", "false",
 	"autotimezone", "true",
-	"maxgap", "0",
+	"maxgap", "90",
+	"heading", "true",
+	"maxheading", "100",
+	"direction", "false",
+	"directionoffset", "0",
 	"timezone", "+0:00",
 	"photooffset", "0",
 	"gpsdatum", "WGS-84",
@@ -247,10 +257,17 @@ void SaveSettings(void)
 	free(SettingsFilename);
 }
 
-static void timezone_toggle_visibility(GtkWidget *widget,
-                                       GtkWidget *entry )
+static void entry_toggle_visibility(GtkWidget *widget,
+                                       GtkWidget *entry)
 {
   gboolean active = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
+  gtk_widget_set_sensitive(entry, !active);
+}
+
+static void entry_toggle_visibility_inv(GtkWidget *widget,
+                                       GtkWidget *entry)
+{
+  gboolean active = !gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
   gtk_widget_set_sensitive(entry, !active);
 }
 
@@ -475,41 +492,95 @@ GtkWidget* CreateMatchWindow (void)
 #endif
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (AutoTimeZoneCheck), g_key_file_get_boolean(GUISettings, "default", "autotimezone", &error));
 
-  OptionsTable = gtk_table_new (4, 2, FALSE);
+  HeadingCheck = gtk_check_button_new_with_mnemonic (_("Write heading"));
+  gtk_widget_show (HeadingCheck);
+  gtk_box_pack_start (GTK_BOX (OptionsVBox), HeadingCheck, FALSE, FALSE, 0);
+#if GTK_CHECK_VERSION(2, 12, 0)
+  gtk_widget_set_tooltip_text (HeadingCheck,
+    _("Write an EXIF tag specifying the direction of movement as the photo "
+      "was taken.  This is only possible if the GPX file contains these data "
+      "and if the heading change does not exceed the maximum (specified below)."));
+#else
+  gtk_tooltips_set_tip (tooltips, HeadingCheck,
+    _("Write an EXIF tag specifying the direction of movement as the photo "
+      "was taken.  This is only possible if the GPX file contains these data "
+      "and if the heading change does not exceed the maximum (specified below)."), NULL););
+#endif
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (HeadingCheck), g_key_file_get_boolean(GUISettings, "default", "heading", &error));
+
+  DirectionCheck = gtk_check_button_new_with_mnemonic (_("Write camera direction"));
+  gtk_widget_show (DirectionCheck);
+  gtk_box_pack_start (GTK_BOX (OptionsVBox), DirectionCheck, FALSE, FALSE, 0);
+#if GTK_CHECK_VERSION(2, 12, 0)
+  gtk_widget_set_tooltip_text (DirectionCheck,
+    _("Write an EXIF tag specifying the camera direction as the photo "
+      "was taken.  This is only possible if the GPX file contains these data "
+      "and if the heading change does not exceed the maximum (specified below)."));
+#else
+  gtk_tooltips_set_tip (tooltips, DirectionCheck,
+    _("Write an EXIF tag specifying the camera direction as the photo "
+      "was taken.  This is only possible if the GPX file contains these data "
+      "and if the heading change does not exceed the maximum (specified below)."), NULL););
+#endif
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (DirectionCheck), g_key_file_get_boolean(GUISettings, "default", "direction", &error));
+
+  OptionsTable = gtk_table_new (6, 2, FALSE);
   gtk_widget_show (OptionsTable);
   gtk_box_pack_start (GTK_BOX (OptionsVBox), OptionsTable, TRUE, TRUE, 0);
+  int row = 0;
 
   MaxGapTimeLabel = gtk_label_new (_("Max gap time:"));
   gtk_widget_show (MaxGapTimeLabel);
-  gtk_table_attach (GTK_TABLE (OptionsTable), MaxGapTimeLabel, 0, 1, 0, 1,
+  gtk_table_attach (GTK_TABLE (OptionsTable), MaxGapTimeLabel, 0, 1, row, row+1,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
   gtk_misc_set_alignment (GTK_MISC (MaxGapTimeLabel), 0, 0.5);
+  ++row;
+
+  MaxHeadingLabel = gtk_label_new (_("Max heading change:"));
+  gtk_widget_show (MaxHeadingLabel);
+  gtk_table_attach (GTK_TABLE (OptionsTable), MaxHeadingLabel, 0, 1, row, row+1,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_misc_set_alignment (GTK_MISC (MaxHeadingLabel), 0, 0.5);
+  ++row;
+
+  CameraDirectionLabel = gtk_label_new (_("Camera direction:"));
+  gtk_widget_show (CameraDirectionLabel);
+  gtk_table_attach (GTK_TABLE (OptionsTable), CameraDirectionLabel, 0, 1, row, row+1,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_misc_set_alignment (GTK_MISC (CameraDirectionLabel), 0, 0.5);
+  ++row;
 
   TimeZoneLabel = gtk_label_new (_("Time Zone:"));
   gtk_widget_show (TimeZoneLabel);
-  gtk_table_attach (GTK_TABLE (OptionsTable), TimeZoneLabel, 0, 1, 1, 2,
+  gtk_table_attach (GTK_TABLE (OptionsTable), TimeZoneLabel, 0, 1, row, row+1,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
   gtk_misc_set_alignment (GTK_MISC (TimeZoneLabel), 0, 0.5);
+  ++row;
   
   PhotoOffsetLabel = gtk_label_new (_("Photo Offset:"));
   gtk_widget_show (PhotoOffsetLabel);
-  gtk_table_attach (GTK_TABLE (OptionsTable), PhotoOffsetLabel, 0, 1, 2, 3,
+  gtk_table_attach (GTK_TABLE (OptionsTable), PhotoOffsetLabel, 0, 1, row, row+1,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
   gtk_misc_set_alignment (GTK_MISC (PhotoOffsetLabel), 0, 0.5);
+  ++row;
 
   GPSDatumLabel = gtk_label_new (_("GPS Datum:"));
   gtk_widget_show (GPSDatumLabel);
-  gtk_table_attach (GTK_TABLE (OptionsTable), GPSDatumLabel, 0, 1, 4, 5,
+  gtk_table_attach (GTK_TABLE (OptionsTable), GPSDatumLabel, 0, 1, row, row+1,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
   gtk_misc_set_alignment (GTK_MISC (GPSDatumLabel), 0, 0.5);
+  ++row;
 
+  row = 0;
   GapTimeEntry = gtk_entry_new ();
   gtk_widget_show (GapTimeEntry);
-  gtk_table_attach (GTK_TABLE (OptionsTable), GapTimeEntry, 1, 2, 0, 1,
+  gtk_table_attach (GTK_TABLE (OptionsTable), GapTimeEntry, 1, 2, row, row+1,
                     (GtkAttachOptions) (0),
                     (GtkAttachOptions) (0), 0, 0);
 #if GTK_CHECK_VERSION(2, 12, 0)
@@ -527,10 +598,59 @@ GtkWidget* CreateMatchWindow (void)
 #endif
   gtk_entry_set_text (GTK_ENTRY (GapTimeEntry), g_key_file_get_value(GUISettings, "default", "maxgap", NULL));
   gtk_entry_set_width_chars (GTK_ENTRY (GapTimeEntry), 7);
+  ++row;
+
+  MaxHeadingEntry = gtk_entry_new ();
+  gtk_widget_show (MaxHeadingEntry);
+  gtk_table_attach (GTK_TABLE (OptionsTable), MaxHeadingEntry, 1, 2, row, row+1,
+                    (GtkAttachOptions) (0),
+                    (GtkAttachOptions) (0), 0, 0);
+#if GTK_CHECK_VERSION(2, 12, 0)
+  gtk_widget_set_tooltip_text (MaxHeadingEntry,
+        _("Maximum number of degrees of rotation allowed between points "
+          "while still writing a heading tag. -1 means no maximum."));
+#else
+  gtk_tooltips_set_tip (tooltips, MaxHeadingEntry,
+        _("Maximum number of degrees of rotation allowed between points "
+          "while still writing a heading tag. -1 means no maximum."), NULL);
+#endif
+  gtk_entry_set_text (GTK_ENTRY (MaxHeadingEntry), g_key_file_get_value(GUISettings, "default", "maxheading", NULL));
+  gtk_entry_set_width_chars (GTK_ENTRY (MaxHeadingEntry), 7);
+
+  /* Toggle visibility of max heading entry when heading is toggled */
+  entry_toggle_visibility_inv(HeadingCheck, MaxHeadingEntry);
+  g_signal_connect(HeadingCheck, "toggled",
+                   G_CALLBACK (entry_toggle_visibility_inv), GTK_ENTRY (MaxHeadingEntry));
+  ++row;
+
+  CameraDirectionEntry = gtk_entry_new ();
+  gtk_widget_show (CameraDirectionEntry);
+  gtk_table_attach (GTK_TABLE (OptionsTable), CameraDirectionEntry, 1, 2, row, row+1,
+                    (GtkAttachOptions) (0),
+                    (GtkAttachOptions) (0), 0, 0);
+#if GTK_CHECK_VERSION(2, 12, 0)
+  gtk_widget_set_tooltip_text (CameraDirectionEntry,
+        _("Number of degrees from the direction of movement towards which the "
+		  "camera faces. If the camera is facing out the right-hand window of "
+		  "a car, this would be 90."));
+#else
+  gtk_tooltips_set_tip (tooltips, CameraDirectionEntry,
+        _("Number of degrees from the direction of movement towards which the "
+		  "camera faces. If the camera is facing out the right-hand window of "
+		  "a car, this would be 90."), NULL);
+#endif
+  gtk_entry_set_text (GTK_ENTRY (CameraDirectionEntry), g_key_file_get_value(GUISettings, "default", "directionoffset", NULL));
+  gtk_entry_set_width_chars (GTK_ENTRY (CameraDirectionEntry), 7);
+
+  /* Toggle visibility of direction entry when direction is toggled */
+  entry_toggle_visibility_inv(DirectionCheck, CameraDirectionEntry);
+  g_signal_connect(DirectionCheck, "toggled",
+                   G_CALLBACK (entry_toggle_visibility_inv), GTK_ENTRY (CameraDirectionEntry));
+  ++row;
 
   TimeZoneEntry = gtk_entry_new ();
   gtk_widget_show (TimeZoneEntry);
-  gtk_table_attach (GTK_TABLE (OptionsTable), TimeZoneEntry, 1, 2, 1, 2,
+  gtk_table_attach (GTK_TABLE (OptionsTable), TimeZoneEntry, 1, 2, row, row+1,
                     (GtkAttachOptions) (0),
                     (GtkAttachOptions) (0), 0, 0);
 #if GTK_CHECK_VERSION(2, 12, 0)
@@ -550,13 +670,14 @@ GtkWidget* CreateMatchWindow (void)
   gtk_entry_set_width_chars (GTK_ENTRY (TimeZoneEntry), 7);
 
   /* Toggle visibility of time zone entry when auto time zone is toggled */
-  timezone_toggle_visibility(AutoTimeZoneCheck, TimeZoneEntry);
+  entry_toggle_visibility(AutoTimeZoneCheck, TimeZoneEntry);
   g_signal_connect(AutoTimeZoneCheck, "toggled",
-                   G_CALLBACK (timezone_toggle_visibility), GTK_ENTRY (TimeZoneEntry));
+                   G_CALLBACK (entry_toggle_visibility), GTK_ENTRY (TimeZoneEntry));
+  ++row;
 
   PhotoOffsetEntry = gtk_entry_new ();
   gtk_widget_show (PhotoOffsetEntry);
-  gtk_table_attach (GTK_TABLE (OptionsTable), PhotoOffsetEntry, 1, 2, 2, 3,
+  gtk_table_attach (GTK_TABLE (OptionsTable), PhotoOffsetEntry, 1, 2, row, row+1,
                     (GtkAttachOptions) (0),
                     (GtkAttachOptions) (0), 0, 0);
 #if GTK_CHECK_VERSION(2, 12, 0)
@@ -572,10 +693,11 @@ GtkWidget* CreateMatchWindow (void)
 #endif
   gtk_entry_set_text (GTK_ENTRY (PhotoOffsetEntry), g_key_file_get_value(GUISettings, "default", "photooffset", NULL));
   gtk_entry_set_width_chars (GTK_ENTRY (PhotoOffsetEntry), 7);
+  ++row;
 
   GPSDatumEntry = gtk_entry_new ();
   gtk_widget_show (GPSDatumEntry);
-  gtk_table_attach (GTK_TABLE (OptionsTable), GPSDatumEntry, 1, 2, 4, 5,
+  gtk_table_attach (GTK_TABLE (OptionsTable), GPSDatumEntry, 1, 2, row, row+1,
                     (GtkAttachOptions) (0),
                     (GtkAttachOptions) (0), 0, 0);
 #if GTK_CHECK_VERSION(2, 12, 0)
@@ -589,6 +711,7 @@ GtkWidget* CreateMatchWindow (void)
 #endif
   gtk_entry_set_text (GTK_ENTRY (GPSDatumEntry), g_key_file_get_value(GUISettings, "default", "gpsdatum", NULL));
   gtk_entry_set_width_chars (GTK_ENTRY (GPSDatumEntry), 7);
+  ++row;
 
   OptionsFrameLable = gtk_label_new (_("<b>3. Set options</b>"));
   gtk_widget_show (OptionsFrameLable);
@@ -788,6 +911,8 @@ gboolean DestroyWindow(GtkWidget *Widget,
 	g_key_file_set_boolean(GUISettings, "default", "writeddmmss", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(DegMinSecsCheck)));
 	g_key_file_set_boolean(GUISettings, "default", "autotimezone", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(AutoTimeZoneCheck)));
 	g_key_file_set_string(GUISettings, "default", "maxgap", gtk_entry_get_text(GTK_ENTRY(GapTimeEntry)));
+	g_key_file_set_string(GUISettings, "default", "maxheading", gtk_entry_get_text(GTK_ENTRY(MaxHeadingEntry)));
+	g_key_file_set_string(GUISettings, "default", "directionoffset", gtk_entry_get_text(GTK_ENTRY(CameraDirectionEntry)));
 	g_key_file_set_string(GUISettings, "default", "timezone", gtk_entry_get_text(GTK_ENTRY(TimeZoneEntry)));
 	g_key_file_set_string(GUISettings, "default", "photooffset", gtk_entry_get_text(GTK_ENTRY(PhotoOffsetEntry)));
 	g_key_file_set_string(GUISettings, "default", "gpsdatum", gtk_entry_get_text(GTK_ENTRY(GPSDatumEntry)));
@@ -1474,6 +1599,17 @@ void CorrelateButtonPress( GtkWidget *Widget, gpointer Data )
 
 	/* Photo Offset time */
 	Options.PhotoOffset = atoi(gtk_entry_get_text(GTK_ENTRY(PhotoOffsetEntry)));
+
+	/* Write heading */
+	Options.WriteHeading = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(HeadingCheck));
+
+	/* Write heading */
+	Options.HeadingOffset = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(DirectionCheck)) ?
+	                        atoi(gtk_entry_get_text(GTK_ENTRY(CameraDirectionEntry))) :
+							-1;
+
+	/* Writing max heading */
+	Options.MaxHeadingDelta = atoi(gtk_entry_get_text(GTK_ENTRY(MaxHeadingEntry)));
 
 	/* Store the GPS track */
 	Options.Track = GPSData;
