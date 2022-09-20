@@ -4,7 +4,7 @@
 
   <!ENTITY dhfirstname "<firstname>Stefano</firstname>">
   <!ENTITY dhsurname   "<surname>Zacchiroli</surname>">
-  <!ENTITY dhdate      "<date>01 May 2020</date>">
+  <!ENTITY dhdate      "<date>19 Sep 2022</date>">
   <!ENTITY dhsection   "<manvolnum>1</manvolnum>">
   <!ENTITY dhemail     "<email>zack@debian.org</email>">
   <!ENTITY dhusername  "Stefano Zacchiroli">
@@ -27,7 +27,7 @@
       &dhsurname;, Till Maas
     </author>
     <copyright>
-      <year>2006-2020</year>
+      <year>2006-2022</year>
       <holder>&dhusername; &dhemail;, Till Maas, Dan Fandrich</holder>
     </copyright>
     <version>
@@ -507,6 +507,21 @@
           points being used.  This prevents writing a value that is likely to be
           inaccurate because the image was taken during a sharp turn. This
           is off by default.
+          </para>
+          <para>This option won't prevent writing an incorrect heading or
+          direction in the case where GPS points are sparser than the time it
+          takes the recording vehicle to make a nearly 360&deg;
+          turn. For example, if the vehicle takes 8 seconds to turn
+          completely around but GPS tags are written every 10 seconds,
+          then the two points written at either end of the
+          turn could have headings that are very close (within
+          <option>--max-heading</option>) yet a picture taken in the
+          middle of the turn, 4 seconds after the first tag,
+          would have an interpolated heading that is around 180&deg;
+          off the correct value. Prevent this kind of bad value from
+          being written by setting a <option>--max-dist</option> that
+          is much less than the time it takes to turn around, such as
+          4 in this example.
           </para>
         </listitem>
       </varlistentry>
