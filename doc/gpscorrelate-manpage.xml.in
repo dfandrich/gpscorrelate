@@ -267,9 +267,9 @@
             <userinput>-123d45m67s</userinput>. Providing an elevation is
             optional. Each component can be separated by commas, spaces or tabs.
           </para>
-          <para>Note that this option has a known bug in that it does not parse
-            numbers correctly in locales that use other than "." as a decimal
-            separator.
+          <para>Note that this option has a known limitation in that it does not
+            honour the locale's decimal place character in locales that use
+            other than ".".
           </para>
         </listitem>
     </varlistentry>
@@ -442,11 +442,18 @@
           correlation.  This defaults to 0, which means to disable this
           check. Only one of the two points need be within this range
           for correlation to take place.</para>
-          <para> If the accuracy of the location is paramount and you
-          would rather not correlate a position for a photo at all if
-          the nearest GPS coordinates were recorded too long ago in the
+          <para> If a clear view of sufficient GPS satellites is lost while
+          recording a track, then there may be location gaps in the GPX
+          file. If the accuracy of the recorded location is paramount and you
+          would rather not correlate a position at all for a photo if
+          the available GPS coordinates were recorded too long ago in the
           past or too far into the future (relative to when the photo
           was taken), then set this to a nonzero value.</para>
+          <para> This option will also prevent recording heading and
+          direction under the same circumstances (see
+          <userinput>--max-heading</userinput> for a discussion of when this
+          may be needed).
+          </para>
         </listitem>
       </varlistentry>
 
