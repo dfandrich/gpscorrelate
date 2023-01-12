@@ -102,7 +102,7 @@ GPS - Photo:             -80
 
 <p>Now there are a few options to consider when deciding how to allow the program to determine exactly the location at which the photo was taken. The program works down to the second. If you have one second GPS fixes available, then the photos will be matched exactly with a point having exactly the same timestamp. As this is the accuracy of the camera, and the accuracy of the GPS - you can not get much more accurate than this with the given equipment.</p>
 
-<p>When there is less than one second data rate available, there are a few options available to make the results more accurate. By default, if the program finds photos between points, it will linearly interpolate between the points to determine the correct location of the photo.</p>
+<p>When there is less than one second data rate available, there are a few options available to make the results more accurate. By default, if the program finds photos between points, it will linearly interpolate between the points to determine the correct location of the photo. (Sorry airplane fans, not great circle.)</p>
 
 <p>You may not wish to allow the interpolation, for whatever reason. If you disable interpolation, then the program will instead "round" to the nearest point. That means that the photo will be set to have the location that is the recorded closest fix in time (rounding down if you manage to exactly center it).</p>
 
