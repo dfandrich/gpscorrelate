@@ -4,7 +4,7 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link rel="icon" href="gpscorrelate-gui.svg">
 <title>GPS Correlate</title>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'nonce-QPyZJx8eYaVnIw'; script-src 'nonce-5sRIQ2e0mvI7Ig'; img-src 'self' img.shields.io github.com ci.appveyor.com api.cirrus-ci.com coveralls.io s3.amazonaws.com;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'nonce-QPyZJx8eYaVnIw'; script-src 'none'; img-src 'self' img.shields.io github.com ci.appveyor.com api.cirrus-ci.com coveralls.io s3.amazonaws.com;">
 <link rel="author" href="mailto:dan&#64;coneharvesters.com">
 <style type="text/css" nonce="QPyZJx8eYaVnIw">
 <!--
@@ -17,62 +17,20 @@
 h1 {
   text-align: center;
 }
-/* Style the button that is used to open and close the collapsible content */
-.collapsible {
-  background-color: #eee;
-  cursor: pointer;
-  width: 100%;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: 150%;
+/* Make it look like h2 */
+summary {
+  background-color: #ddd;
+  font-size: 140%;
   font-weight: bold;
   font-family: "serif";
 }
-.collapsible:after {
-  content: "+";
-  font-weight: bold;
-  float: right;
-  margin-left: 5px;
+details {
+  background-color: #eee;
 }
-.collapsible.active:after {
-  content: "\2013"; /* UNICODE en dash */
-}
-/* Add a background color to the button if it is clicked on (.active
-   class is added in JS), and when the mouse hovers over it */
-.active, .collapsible:hover {
-  background-color: #ccc;
-}
-/* Style the collapsible content */
-.content {
-  padding: 0 0.5em;
-  display: block; /* starts as visible and collapsed after loading in JS */
-  overflow: hidden;
-  background-color: #f0f0f0;
-}
+
 -->
 </style>
 
-<script type="text/javascript" nonce="5sRIQ2e0mvI7Ig">
-function setup_collapsible() {
-  var coll = document.getElementsByClassName("collapsible");
-  for (var i = 0; i < coll.length; i++) {
-    /* Collapse text in JS so we know it can be uncollapsed later */
-    coll[i].nextElementSibling.style.display = "none";
-    /* Add click handler */
-    coll[i].addEventListener("click", function() {
-      this.classList.toggle("active");
-      var content = this.nextElementSibling;
-      if (content.style.display === "block") {
-        content.style.display = "none";
-      } else {
-        content.style.display = "block";
-      }
-    });
-  }
-}
-window.onload = setup_collapsible
-</script>
 </head>
 
 <body>
@@ -153,8 +111,7 @@ Download the <a href="https://github.com/dfandrich/gpscorrelate/releases/latest"
 If you've found a problem with gpscorrelate, please
 <a href="https://github.com/dfandrich/gpscorrelate/issues">open an issue</a>.</p>
 
-<button type="button" class="collapsible">Important Note for users before 1.5.2</button>
-<div class="content">
+<details><summary>Important Note for users before 1.5.2</summary>
 
 <p>Prior to version 1.5.2, there was a bug in gpscorrelate that caused gpscorrelate to incorrectly parse dates. The result is that the internal date format was one month out (ie, December was considered as the following January, and January was considered as February).</p>
 
@@ -165,7 +122,7 @@ If you've found a problem with gpscorrelate, please
 <p>Version 1.5.2 introduces a new command line option, --fix-datestamps. Running gpscorrelate with this option and then a series of JPEG files that were tagged will detect and correct the problem. This will modify the GPSDateStamp and GPSTimeStamp tag to be correct, but only if this is required. You can run gpscorrelate with the -n (no write) option just to see which files are affected without making any changes. When correcting files, --no-mtime (don't change the mtime of the file) is implied.</p>
 
 <p>When using --fix-datestamps, you will also need to use --timeadd to specify the difference between the photo time and UTC.</p>
-</div>
+</details>
 
 <h2>More information</h2>
 

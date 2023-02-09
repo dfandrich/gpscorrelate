@@ -1,15 +1,40 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head>
-<title>GPS Correlate</title>
 <link rel="alternate" hreflang="en" href="../index.html">
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <link rel="icon" href="../gpscorrelate-gui.svg">
+<title>GPS Correlate</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'nonce-QPyZJx8eYaVnIw'; script-src 'none'; img-src 'self' img.shields.io github.com ci.appveyor.com api.cirrus-ci.com coveralls.io s3.amazonaws.com;">
+<style type="text/css" nonce="QPyZJx8eYaVnIw">
+<!--
+/* Flow text around the logo */
+.logo {
+  float: left;
+  padding-right: 2em;
+  padding-bottom: 1em;
+}
+h1 {
+  text-align: center;
+}
+/* Make it look like h2 */
+summary {
+  background-color: #ddd;
+  font-size: 140%;
+  font-weight: bold;
+  font-family: "serif";
+}
+details {
+  background-color: #eee;
+}
+
+-->
+</style>
 </head>
 
 <body LANG="fr-FR" DIR="LTR">
 
-<img src="../gpscorrelate-gui.svg" alt="GPS Correlate logo" width="128" height="128" style="float: left; padding-right: 2em; padding-bottom: 1em;">
-<h1 align="center">Documentation de GPS Correlate</h1>
+<img src="../gpscorrelate-gui.svg" alt="GPS Correlate logo" width="128" height="128" class="logo">
+<h1>Documentation de GPS Correlate</h1>
 
 <p align="center">Écrit par Daniel Foote.<br>Traduit par Vincent Gay (vgay à vintherine point org)<br><a href="../index.html">Voir le document d’origine en anglais</a></p>
 
@@ -36,11 +61,12 @@ plateformes comme *BSD et Windows.
 
 <p>
 <a href="https://github.com/dfandrich/gpscorrelate/releases/latest"><img src="https://img.shields.io/github/v/release/dfandrich/gpscorrelate?sort=semver" alt="Publication de Github"></a>
+<a href="https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html"><img src="https://img.shields.io/badge/License-GPL%20v2-blue.svg" alt="Licence: GPL v2"></a>
 <a href="https://github.com/dfandrich/gpscorrelate/actions?query=workflow%3A%22CI%22"><img src="https://github.com/dfandrich/gpscorrelate/workflows/CI/badge.svg?branch=master" alt="Github Actions: état de l'intégration continue"></a>
 <a href="https://ci.appveyor.com/project/dfandrich/gpscorrelate"><img src="https://ci.appveyor.com/api/projects/status/4wi4bxc47c29ce0r/branch/master?svg=true" alt="AppVeyor: état de l'intégration continue"></a>
 <a href="https://cirrus-ci.com/github/dfandrich/gpscorrelate"><img src="https://api.cirrus-ci.com/github/dfandrich/gpscorrelate.svg?branch=master" alt="Cirrus: état de l'intégration continue"></a>
+<a href="https://github.com/dfandrich/gpscorrelate/actions/workflows/codeql.yml"><img src="https://github.com/dfandrich/gpscorrelate/actions/workflows/codeql.yml/badge.svg" alt="CodeQL: état de l'intégration continue"></a>
 <a href="https://coveralls.io/github/dfandrich/gpscorrelate"><img src="https://coveralls.io/repos/github/dfandrich/gpscorrelate/badge.svg?branch=master" alt="La couverture de code"></a>
-<a href="https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html"><img src="https://img.shields.io/badge/License-GPL%20v2-blue.svg" alt="License: GPL v2"></a>
 </p>
 
 <p>
@@ -48,7 +74,7 @@ Le code source est disponible sur
 <a href="https://github.com/dfandrich/gpscorrelate">Github</a>.
 Veuillez télécharger <a href="https://github.com/dfandrich/gpscorrelate/releases/latest">la dernière version</a>.</p>
 
-<h2>Note importante pour les utilisateurs de versions antérieures à 1.5.2</h2>
+<details><summary>Note importante pour les utilisateurs de versions antérieures à 1.5.2</summary>
 
 <p>Avant version 1.5.2, gpscorrelate souffrait d’un bug qui provoquait une erreur dans la préhension des dates. Le résultat était un décalage des mois (janvier à la place de février…décembre à la place de janvier).</p>
 
@@ -59,6 +85,7 @@ Veuillez télécharger <a href="https://github.com/dfandrich/gpscorrelate/releas
 <p>La version 1.5.2 a introduit une nouvelle option dans la ligne de commande, --fix-datestamps. Utiliser gpscorrelate avec cette option pour une série de fichiers JPEG files incorrectement tagués permet de détecter et de corriger le problème. L’horodatage ne sera modifié que si cela est nécessaire. Vous pouvez utiliser gpscorrelate avec l’option -n (ou --no-write, pas d’écriture) juste pour voir quels sont les fichiers affectés, mais sans faire de correction. Si la correction est effective l’option --no-mtime (ne pas changer la date de modification du fichier) est implicite.</p>
 
 <p>L’option --fix-datestamps nécessite également --timeadd pour indiquer la différence entre l’heure locale de la photo et l’heure UTC.</p>
+</details>
 
 <h2>Plus d’informations</h2>
 
