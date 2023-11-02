@@ -44,6 +44,7 @@
 #include "exiv2/image.hpp"
 #include "exiv2/exif.hpp"
 #include "exiv2/error.hpp"
+#include "exiv2/version.hpp"
 
 #include "gpsstructure.h"
 #include "exif-gps.h"
@@ -57,6 +58,15 @@
 
 #define MAX(a,b) (((a)>(b))?(a):(b))
 #define MIN(a,b) (((a)<(b))?(a):(b))
+
+// Adapt to mutually-incompatible exiv2 versions
+#if EXIV2_TEST_VERSION(0, 28, 0)
+#define UNIQUEPTR UniquePtr
+#define TOINTEGER toInt64
+#else
+#define UNIQUEPTR AutoPtr
+#define TOINTEGER toLong
+#endif
 
 /* Debug
 int main(int argc, char* argv[])
@@ -97,7 +107,7 @@ int main(int argc, char* argv[])
 char* ReadExifDate(const char* File, int* IncludesGPS)
 {
 	// Open and read the file.
-	Exiv2::Image::AutoPtr Image;
+	Exiv2::Image::UNIQUEPTR Image;
 
 	try {
 		Image = Exiv2::ImageFactory::open(File);
@@ -154,7 +164,7 @@ char* ReadExifData(const char* File, double* Lat, double* Long, double* Elev, in
 	// much more data than the last, specifically
 	// for display purposes. For the GUI version.
 	// Open and read the file.
-	Exiv2::Image::AutoPtr Image;
+	Exiv2::Image::UNIQUEPTR Image;
 
 	try {
 		Image = Exiv2::ImageFactory::open(File);
@@ -273,7 +283,7 @@ char* ReadExifData(const char* File, double* Lat, double* Long, double* Elev, in
 
 		// Is the altitude below sea level? If so, negate the value.
 		GPSData = ExifRead["Exif.GPSInfo.GPSAltitudeRef"];
-		if (GPSData.count() >= 1 && GPSData.toLong() == 1)
+		if (GPSData.count() >= 1 && (int) GPSData.TOINTEGER() == 1)
 		{
 				// Negate the elevation.
 				*Elev = -*Elev;
@@ -292,7 +302,7 @@ char* ReadGPSTimestamp(const char* File, char* DateStamp, char* TimeStamp, int* 
 	// much more data than the last, specifically
 	// for display purposes. For the GUI version.
 	// Open and read the file.
-	Exiv2::Image::AutoPtr Image;
+	Exiv2::Image::UNIQUEPTR Image;
 
 	try {
 		Image = Exiv2::ImageFactory::open(File);
@@ -463,7 +473,7 @@ int WriteGPSData(const char* File, const struct GPSPoint* Point,
 	struct utimbuf utb;
 	if (NoChangeMtime)
 		stat(File, &statbuf);
-	Exiv2::Image::AutoPtr Image;
+	Exiv2::Image::UNIQUEPTR Image;
 
 	try {
 		Image = Exiv2::ImageFactory::open(File);
@@ -493,7 +503,7 @@ int WriteGPSData(const char* File, const struct GPSPoint* Point,
 	// Do all the easy constant ones first.
 	// GPSVersionID tag: standard says it should be four bytes: 02 02 00 00
 	//  (and, must be present).
-	Exiv2::Value::AutoPtr Value = Exiv2::Value::create(Exiv2::unsignedByte);
+	Exiv2::Value::UNIQUEPTR Value = Exiv2::Value::create(Exiv2::unsignedByte);
 	Value->read("2 2 0 0");
 	replace(ExifToWrite, Exiv2::ExifKey("Exif.GPSInfo.GPSVersionID"), Value.get());
 	// Datum: the datum of the measured data. The default is WGS-84.
@@ -643,7 +653,7 @@ int WriteFixedDatestamp(const char* File, time_t Time)
 	struct utimbuf utb;
 	stat(File, &statbuf);
 
-	Exiv2::Image::AutoPtr Image;
+	Exiv2::Image::UNIQUEPTR Image;
 
 	try {
 		Image = Exiv2::ImageFactory::open(File);
@@ -672,7 +682,7 @@ int WriteFixedDatestamp(const char* File, time_t Time)
 	ExifToWrite.erase(ExifToWrite.findKey(Exiv2::ExifKey("Exif.GPSInfo.GPSDateStamp")));
 	ExifToWrite["Exif.GPSInfo.GPSDateStamp"] = ScratchBuf;
 
-	Exiv2::Value::AutoPtr Value = Exiv2::Value::create(Exiv2::unsignedRational);
+	Exiv2::Value::UNIQUEPTR Value = Exiv2::Value::create(Exiv2::unsignedRational);
 	snprintf(ScratchBuf, sizeof(ScratchBuf), "%d/1 %d/1 %d/1",
 			TimeStamp.tm_hour, TimeStamp.tm_min,
 			TimeStamp.tm_sec);
@@ -705,7 +715,7 @@ int RemoveGPSExif(const char* File, int NoChangeMtime, int NoWriteExif)
 		stat(File, &statbuf);
 
 	// Open the file and start reading.
-	Exiv2::Image::AutoPtr Image;
+	Exiv2::Image::UNIQUEPTR Image;
 	
 	try {
 		Image = Exiv2::ImageFactory::open(File);
