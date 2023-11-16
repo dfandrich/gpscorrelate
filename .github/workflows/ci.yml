@@ -75,7 +75,7 @@ jobs:
           install_target: install install-po install-desktop-file
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: 'install deps'
       run: sudo apt-get update -y; sudo apt-get install -y --no-install-suggests --no-install-recommends ${{ matrix.build.install }}
     - name: 'build'
@@ -199,7 +199,7 @@ jobs:
           install_target: install install-po install-desktop-file
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: 'install deps'
       run: sudo apt-get update -y; sudo apt-get install -y --no-install-suggests --no-install-recommends ${{ matrix.build.install }}
     - name: 'build'
@@ -232,7 +232,7 @@ jobs:
           target: gpscorrelate
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: 'install deps'
       run: sudo apt-get update -y; sudo apt-get install -y --no-install-suggests --no-install-recommends ${{ matrix.build.install }}
     - name: 'build'
@@ -290,7 +290,7 @@ jobs:
           install_target: install install-po install-desktop-file
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: install deps
       run: brew install ${{ matrix.build.install }}
     - name: build
@@ -351,7 +351,7 @@ jobs:
           install_target: install install-po install-desktop-file
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: install deps
       run: brew install ${{ matrix.build.install }}
     - name: build
@@ -370,9 +370,9 @@ jobs:
     - name: install test
       run: make prefix= DESTDIR="${PWD}" ${{ matrix.build.install_target }}
 
-  build-fedora37:
+  build-fedora39:
     runs-on: ubuntu-latest
-    container: fedora:37
+    container: fedora:39
     strategy:
       fail-fast: false
       matrix:
@@ -386,7 +386,7 @@ jobs:
           install_target: install install-po install-desktop-file
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: install deps
       run: |
         dnf install -y --setopt=install_weak_deps=False ${{ matrix.build.install }}
@@ -423,7 +423,7 @@ jobs:
           install_target: install install-po install-desktop-file
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: install deps
       run: |
         dnf install -y --setopt=install_weak_deps=False ${{ matrix.build.install }}
