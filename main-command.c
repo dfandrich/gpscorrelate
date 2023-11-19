@@ -466,23 +466,6 @@ int main(int argc, char** argv)
 					fprintf(stderr, _("Error parsing location.\n"));
 					exit(EXIT_FAILURE);
 				}
-				if (!MakeTrackFromLatLong(LatLong, &Track[NumTracks]))
-				{
-					fprintf(stderr, _("Out of memory.\n"));
-					exit(EXIT_FAILURE);
-				}
-				free(LatLong);
-				LatLong = NULL;
-
-				/* Make room for a new end-of-array entry */
-				++NumTracks;
-				Track = (struct GPSTrack*) realloc(Track, sizeof(*Track)*(NumTracks+1));
-				if (!Track)
-				{
-					fprintf(stderr, _("Out of memory.\n"));
-					exit(EXIT_FAILURE);
-				}
-				memset(&Track[NumTracks], 0, sizeof(*Track));
 				break;
 
 			case 'z':
@@ -633,7 +616,28 @@ int main(int argc, char** argv)
 				break;
 		} /* End switch(c) */
 	} /* End While(1) */
-	
+
+    /* Create a fake track if a position was manually given */
+    if (LatLong) {
+        if (!MakeTrackFromLatLong(LatLong, HeadingOffset, &Track[NumTracks]))
+        {
+            fprintf(stderr, _("Out of memory.\n"));
+            exit(EXIT_FAILURE);
+        }
+        free(LatLong);
+        LatLong = NULL;
+
+        /* Make room for a new end-of-array entry */
+        ++NumTracks;
+        Track = (struct GPSTrack*) realloc(Track, sizeof(*Track)*(NumTracks+1));
+        if (!Track)
+        {
+            fprintf(stderr, _("Out of memory.\n"));
+            exit(EXIT_FAILURE);
+        }
+        memset(&Track[NumTracks], 0, sizeof(*Track));
+    }
+
 	/* Check to see if the user passed some files to work with. Not much
 	 * good if they didn't. */
 	if (optind < argc)

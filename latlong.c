@@ -252,7 +252,8 @@ int ParseLatLong(const char *latlongstr, struct GPSPoint* point)
 }
 
 /* Make a track from a single point */
-int MakeTrackFromLatLong(const struct GPSPoint* latlong, struct GPSTrack* track)
+int MakeTrackFromLatLong(const struct GPSPoint* latlong, int direction,
+                         struct GPSTrack* track)
 {
 	struct GPSPoint* p1 = NewGPSPoint();
 	struct GPSPoint* p2 = NewGPSPoint();
@@ -262,10 +263,18 @@ int MakeTrackFromLatLong(const struct GPSPoint* latlong, struct GPSTrack* track)
 		return 0;
 	}
 	memcpy(p1, latlong, sizeof(*p1));
+	if (direction >= 0) {
+		p1->Heading = direction;
+		p1->MoveHeading = 0;
+	}
 	p1->Time = track->MinTime = 0;
 	p1->Next = p2;
 
 	memcpy(p2, latlong, sizeof(*p2));
+	if (direction >= 0) {
+		p2->Heading = direction;
+		p2->MoveHeading = 0;
+	}
 	p2->Time = track->MaxTime = INT_MAX;
 	p2->Next = NULL;
 	p2->EndOfSegment = 1;

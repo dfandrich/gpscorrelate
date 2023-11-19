@@ -499,6 +499,10 @@
           inaccurate at slow speeds. Use your knowledge of the recording application
           to determine how much faith you can place in the resulting tags.
         </para>
+        <para>If this is used with <option>--latlong</option> instead of with
+          <option>--gps</option>, then a fixed heading of 0 is written (this is
+          subject to change in the future).
+        </para>
         </listitem>
       </varlistentry>
 
@@ -553,6 +557,9 @@
           on the position and not during a sharp turn.  Since this option
           applies along the entire track, it's only generally useful when the
           camera is fixed in the vehicle during the trip.
+          </para>
+          <para>This may be used with <option>--latlong</option> in which case
+          the argument is used as the camera direction without alteration.
           </para>
         </listitem>
       </varlistentry>

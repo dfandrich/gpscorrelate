@@ -1,0 +1,6 @@
+TITLE='Geotag a file from a specified location with direction'
+PRECOMMAND='cat "$STAGINGDIR/point1-1.jpg" >"$LOGDIR/test.jpg"'
+# Run in C locale to correctly parse these decimal numbers
+COMMAND='env LC_ALL=C $PROGRAM -z+1 -l 12.34567,-123.456,78.9 --direction 321 "$LOGDIR/test.jpg" > "$OUTFILE" 2>&1 && exiv2 -pv pr "$LOGDIR/test.jpg" >> "$OUTFILE" 2>&1'
+POSTCOMMAND='rm -f "$LOGDIR/test.jpg"'
+RESULTCODE=0
