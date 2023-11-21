@@ -4,7 +4,7 @@
 freebsd_task:
   name: FreeBSD
   freebsd_instance:
-    memory: 1500M
+    memory: 1000M
     cpu: 1
     matrix:
       image_family: freebsd-14-0
@@ -87,7 +87,7 @@ linux_arm_task:
 linux_musl_task:
   name: Linux MUSL
   container:
-    memory: 400M
+    memory: 300M
     cpu: 1
     matrix:
       image: alpine:3.19
