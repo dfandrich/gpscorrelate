@@ -38,6 +38,8 @@ struct GPSPoint {
 	int ElevDecimals;
 	double MoveHeading;
 	double Heading;
+	char HeadingRef;	// Direction reference: byte "T" meaning true direction
+						// or "M" meaning magnetic direction.
 	time_t Time;
 	int EndOfSegment;
 	struct GPSPoint* Next;

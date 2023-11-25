@@ -119,13 +119,13 @@ static void ExtractTrackPoints(xmlNodePtr Start)
 				}
 				else if (strcmp((const char *)CCurrent->name, "extensions") == 0 && !Heading)
 				{
-					// Look for various extensions holding the heading
+					/* Look for various extensions holding the heading */
 					for (xmlNodePtr Extensions = CCurrent->children; Extensions; Extensions = Extensions->next)
 					{
 						if ((Extensions->type == XML_ELEMENT_NODE) &&
 							(strcmp((const char *)Extensions->name, "compass") == 0))
 						{
-							// compass extension, written by OSMTracker
+							/* compass extension, written by OSMTracker */
 							if (Extensions->children)
 							{
 								Heading = (const char *)Extensions->children->content;
@@ -136,7 +136,7 @@ static void ExtractTrackPoints(xmlNodePtr Start)
 							(strcmp((const char *)Extensions->name, "TrackPointExtension") == 0) &&
 							MatchXmlnsPrefix(Extensions, "http://www.garmin.com/xmlschemas/TrackPointExtension/"))
 						{
-							// Garmin course extension
+							/* Garmin course extension */
 							for (xmlNodePtr TPExt = Extensions->children; TPExt; TPExt = TPExt->next)
 							{
 								if ((TPExt->type == XML_ELEMENT_NODE) &&
@@ -144,6 +144,8 @@ static void ExtractTrackPoints(xmlNodePtr Start)
 								{
 									if (TPExt->children)
 									{
+										/* This is defined as relative to true north, so the default
+										 * HeadingRef is correct */
 										Heading = (const char *)TPExt->children->content;
 									}
 								}
@@ -156,7 +158,8 @@ static void ExtractTrackPoints(xmlNodePtr Start)
 					/* course is part of the GPX 1.0 specification but not 1.1.
 					 * Technically, we want the heading, not the course, but if
 					 * that's all we have to work with, we'll have to use it.
-					 * In land vehicles, it's the same, anyway. */
+					 * In land vehicles, it's the same, anyway. It is relative to
+					 * true north, so the default HeadingRef is correct. */
 					if (CCurrent->children)
 						Heading = (const char *)CCurrent->children->content;
 				}

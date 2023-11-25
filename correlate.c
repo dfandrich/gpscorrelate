@@ -340,6 +340,7 @@ void Round(const struct GPSPoint* First, struct GPSPoint* Result,
 	Result->LongDecimals = CopyFrom->LongDecimals;
 	Result->Elev = CopyFrom->Elev;
 	Result->ElevDecimals = CopyFrom->ElevDecimals;
+	Result->HeadingRef = CopyFrom->HeadingRef;
 	Result->MoveHeading = -1;
 	Result->Heading = -1;
 
@@ -387,6 +388,7 @@ void Interpolate(const struct GPSPoint* First, struct GPSPoint* Result,
 	Result->ElevDecimals = MIN(First->ElevDecimals, First->Next->ElevDecimals);
 
 	/* Heading and Direction */
+	Result->HeadingRef = First->HeadingRef;
 	Result->MoveHeading = -1;
 	Result->Heading = -1;
 	if (First->MoveHeading >= 0 && First->Next->MoveHeading >= 0)
@@ -401,7 +403,7 @@ void Interpolate(const struct GPSPoint* First, struct GPSPoint* Result,
 		double DeltaHeading = fabs(DeltaHeading1) < fabs(DeltaHeading2) ?
 			DeltaHeading1 : DeltaHeading2;
 
-		// Drop this point unles the change in direction is small enough
+		// Drop this point unless the change in direction is small enough
 		if (MaxHeadingDelta < 0 || fabs(DeltaHeading) <= MaxHeadingDelta)
 		{
 			Result->MoveHeading = CanonicalHeading(
@@ -428,6 +430,7 @@ void Exact(const struct GPSPoint* First, struct GPSPoint* Result,
 	Result->LongDecimals = First->LongDecimals;
 	Result->Elev = First->Elev;
 	Result->ElevDecimals = First->ElevDecimals;
+	Result->HeadingRef = First->HeadingRef;
 	Result->MoveHeading = First->MoveHeading;
 	if (HeadingOffset >= 0 && First->MoveHeading >= 0)
 	{

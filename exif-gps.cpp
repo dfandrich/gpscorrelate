@@ -606,10 +606,8 @@ int WriteGPSData(const char* File, const struct GPSPoint* Point,
 
 	// Heading.
 	if (Point->Heading >= 0) {
-		// Direction reference: byte "T" meaning true direction
-		// or "M" meaning magnetic direction.
 		Value = Exiv2::Value::create(Exiv2::asciiString);
-		Value->read("T");  // TODO: is T right?
+		Value->read({Point->HeadingRef});
 		replace(ExifToWrite, Exiv2::ExifKey("Exif.GPSInfo.GPSImgDirectionRef"), Value.get());
 		// And the actual heading.
 		Value = Exiv2::Value::create(Exiv2::unsignedRational);
@@ -620,10 +618,8 @@ int WriteGPSData(const char* File, const struct GPSPoint* Point,
 
 	// Track.
 	if (Point->MoveHeading >= 0) {
-		// Direction reference: byte "T" meaning true direction
-		// or "M" meaning magnetic direction.
 		Value = Exiv2::Value::create(Exiv2::asciiString);
-		Value->read("T");  // TODO: is T right?
+		Value->read({Point->HeadingRef});
 		replace(ExifToWrite, Exiv2::ExifKey("Exif.GPSInfo.GPSTrackRef"), Value.get());
 		// And the actual heading.
 		Value = Exiv2::Value::create(Exiv2::unsignedRational);
