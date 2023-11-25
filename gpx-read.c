@@ -66,6 +66,7 @@ static void ExtractTrackPoints(xmlNodePtr Start)
 	const char* Elev;
 	const char* Time;
 	const char* Heading;
+	char HeadingRef = 'T';
 
 	for (Current = Start; Current; Current = Current->next)
 	{
@@ -129,6 +130,7 @@ static void ExtractTrackPoints(xmlNodePtr Start)
 							if (Extensions->children)
 							{
 								Heading = (const char *)Extensions->children->content;
+								HeadingRef = 'M';  /* This comes from the compass */
 								break;
 							}
 
@@ -204,6 +206,7 @@ static void ExtractTrackPoints(xmlNodePtr Start)
 			}
 			if (Heading) {
 				LastPoint->MoveHeading = atof(Heading);
+				LastPoint->HeadingRef = HeadingRef;
 			}
 			LastPoint->Time = ConvertToUnixTime(Time, GPX_DATE_FORMAT, 0, 0);
 			

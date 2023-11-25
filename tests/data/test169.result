@@ -31,9 +31,9 @@ Failed:      0 (0 Not matched, 0 Write failure, 0 Too Far,
 0x0005 GPSInfo      GPSAltitudeRef              Byte        1  1
 0x0006 GPSInfo      GPSAltitude                 Rational    1  420671/1000
 0x0007 GPSInfo      GPSTimeStamp                Rational    3  12/1 35/1 20/1
-0x000e GPSInfo      GPSTrackRef                 Ascii       2  T
+0x000e GPSInfo      GPSTrackRef                 Ascii       2  M
 0x000f GPSInfo      GPSTrack                    Rational    1  315/1
-0x0010 GPSInfo      GPSImgDirectionRef          Ascii       2  T
+0x0010 GPSInfo      GPSImgDirectionRef          Ascii       2  M
 0x0011 GPSInfo      GPSImgDirection             Rational    1  355/1
 0x0012 GPSInfo      GPSMapDatum                 Ascii       7  WGS-84
 0x001d GPSInfo      GPSDateStamp                Ascii      11  2012:11:22
