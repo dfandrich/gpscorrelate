@@ -7,6 +7,7 @@ CXX = g++
 EXEEXT =
 PKG_CONFIG=pkg-config
 CFLAGS   = -Wall -O2
+CXXFLAGS = $(CFLAGS)
 LDFLAGS  = -Wall -O2 -lm
 GTK      = 3
 CHECK_OPTIONS=
@@ -51,7 +52,7 @@ gpscorrelate-gui$(EXEEXT): $(GOBJS)
 	$(CC) $(CFLAGS) $(CFLAGSINC) $(DEFS) -c -o $@ $<
 
 .cpp.o:
-	$(CXX) $(CFLAGS) $(CFLAGSINC) $(DEFS) -c -o $@ $<
+	$(CXX) $(CXXFLAGS) $(CFLAGSINC) $(DEFS) -c -o $@ $<
 
 # Hack to recompile everything if a header changes
 *.o: *.h
