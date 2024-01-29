@@ -52,6 +52,8 @@
 
 <p>Prior to version 1.1, this program ignored track segments and just hauled out points and considered them to be a single track. So if a photo was taken in between the time where there was no GPS data, you would not get a correct answer (depending on the situation). In current versions, the program will not match a photo between track segments. You can, however, choose to revert this behaviour. If the track was segmented during a period of steady, linear movement (like driving through a straight tunnel), then the interpolated position between segments will still end up being pretty accurate. Also, some apps will stop logging the position if you stay still for a while. The end of one segment will then be the same location as the beginning of the next.  In those cases it makes sense to interpolate between segments. All interpolation is done with a simple linear calculation and not using a great circle route, which will introduce a noticeable inaccuracy if the points are several kilometres apart on an airplane route.</p>
 
+<p>Some GPX files include tags indicating the direction of movement. These can be used to write tags into the image indicating the course of travel, as well as tags indicating the direction the camera itself was facing. This is done by assuming that the camera is always facing a fixed orientation from the direction of movement, such as it the camera were mounted facing out the passenger window of a car, or mounted facing forward on the handlebars of a bicycle.</p>
+
 <h3>What you need to know:</h3>
 
 <ul>
@@ -86,6 +88,8 @@ GPS - Photo:             -80
 </pre>
 
 <p>The value determined in the above examples becomes the "Photo offset" time, in seconds, which is added to the photo's timestamp before the correlation is performed.</p>
+
+<p>Many GPS trackers allow setting the recording interval, which is often one second but can be considerably longer. The location will normally be interpolated between these two points which generally works well if the movement is linear without a large change of speed and if the recording interval is short, but breaks down if any of those isn't true.  You can set a maximum time interval or maximum rotation which, if exceeded for an image, will stop the tags from being written. This reduces the chance of storing bad data for a picture. For example, a car turning quickly relative to the recording interval (even if the interval is one second) will invalidate an interpolated heading, and a bicycle riding down a windy trail being recorded at 15 second intervals can move far off an interpolated position in that time. Setting some limits will cause the relevant tags to not be recorded in images taken during these times.</p>
 
 <h3>What you need to know:</h3>
 
