@@ -260,6 +260,7 @@ jobs:
           gtk: 2
           install: desktop-file-utils docbook-xsl exiv2 gtk+
           cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
+          cxxflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1 -std=c++11
           ldflags: -O3 -lintl
           cxx: g++
           target: all
@@ -268,6 +269,7 @@ jobs:
           gtk: 3
           install: desktop-file-utils docbook-xsl exiv2 gtk+3
           cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
+          cxxflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1 -std=c++11
           ldflags: -O3 -lintl
           cxx: g++
           target: all
@@ -276,6 +278,7 @@ jobs:
           gtk: 2
           install: desktop-file-utils docbook-xsl exiv2 gtk+
           cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
+          cxxflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1 -std=c++11
           ldflags: -O3 -lintl
           cxx: clang++
           target: all
@@ -284,6 +287,7 @@ jobs:
           gtk: 3
           install: desktop-file-utils docbook-xsl exiv2 gtk+3
           cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
+          cxxflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1 -std=c++11
           ldflags: -O3 -lintl
           cxx: clang++
           target: all
@@ -294,7 +298,7 @@ jobs:
     - name: install deps
       run: brew install ${{ matrix.build.install }}
     - name: build
-      run: make CFLAGS="${{ matrix.build.cflags }}" LDFLAGS="${{ matrix.build.ldflags }}" CC="${{ matrix.build.cc }}" CXX="${{ matrix.build.cxx }}" GTK="${{ matrix.build.gtk }}" ${{ matrix.build.make_opts }} XML_CATALOG_FILES="$(brew --prefix)/etc/xml/catalog" XSLTFLAGS=--nonet ${{ matrix.build.target }}
+      run: make CFLAGS="${{ matrix.build.cflags }}" CXXFLAGS="${{ matrix.build.cxxflags }}" LDFLAGS="${{ matrix.build.ldflags }}" CC="${{ matrix.build.cc }}" CXX="${{ matrix.build.cxx }}" GTK="${{ matrix.build.gtk }}" ${{ matrix.build.make_opts }} XML_CATALOG_FILES="$(brew --prefix)/etc/xml/catalog" XSLTFLAGS=--nonet ${{ matrix.build.target }}
     - name: smoke test
       run: ./gpscorrelate -V
     - name: test
@@ -321,6 +325,7 @@ jobs:
           gtk: 2
           install: desktop-file-utils docbook-xsl exiv2 gtk+
           cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
+          cxxflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1 -std=c++11
           ldflags: -O3 -lintl
           cxx: g++
           target: all
@@ -329,6 +334,7 @@ jobs:
           gtk: 3
           install: desktop-file-utils docbook-xsl exiv2 gtk+3
           cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
+          cxxflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1 -std=c++11
           ldflags: -O3 -lintl
           cxx: g++
           target: all
@@ -337,6 +343,7 @@ jobs:
           gtk: 2
           install: desktop-file-utils docbook-xsl exiv2 gtk+
           cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
+          cxxflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1 -std=c++11
           ldflags: -O3 -lintl
           cxx: clang++
           target: all
@@ -345,6 +352,7 @@ jobs:
           gtk: 3
           install: desktop-file-utils docbook-xsl exiv2 gtk+3
           cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
+          cxxflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1 -std=c++11
           ldflags: -O3 -lintl
           cxx: clang++
           target: all
@@ -355,7 +363,7 @@ jobs:
     - name: install deps
       run: brew install ${{ matrix.build.install }}
     - name: build
-      run: make CFLAGS="${{ matrix.build.cflags }}" LDFLAGS="${{ matrix.build.ldflags }}" CC="${{ matrix.build.cc }}" CXX="${{ matrix.build.cxx }}" GTK="${{ matrix.build.gtk }}" ${{ matrix.build.make_opts }} XML_CATALOG_FILES="$(brew --prefix)/etc/xml/catalog" XSLTFLAGS=--nonet ${{ matrix.build.target }}
+      run: make CFLAGS="${{ matrix.build.cflags }}" CXXFLAGS="${{ matrix.build.cxxflags }}" LDFLAGS="${{ matrix.build.ldflags }}" CC="${{ matrix.build.cc }}" CXX="${{ matrix.build.cxx }}" GTK="${{ matrix.build.gtk }}" ${{ matrix.build.make_opts }} XML_CATALOG_FILES="$(brew --prefix)/etc/xml/catalog" XSLTFLAGS=--nonet ${{ matrix.build.target }}
     - name: smoke test
       run: ./gpscorrelate -V
     - name: test
