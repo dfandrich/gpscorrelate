@@ -97,6 +97,7 @@ doc/gpscorrelate.html: doc/gpscorrelate-manpage.xml
 # This is intended to be used only by the maintainer
 io.github.dfandrich.gpscorrelate.metainfo.xml: io.github.dfandrich.gpscorrelate.metainfo.xml.in
 	intltool-merge -x po $< $@
+	echo '' >> $@  # the previous command drops the trailing \n
 	# Template substitutions plus hack to remove period to avoid having nearly duplicate translations
 	sed -E -e "s,@PACKAGE_VERSION@,$(PACKAGE_VERSION),g" -e "s,@DATE@,`date +%F`,g" -e 's,\.(</summary>),\1,' $@ > $@.tmp
 	mv -f $@.tmp $@
