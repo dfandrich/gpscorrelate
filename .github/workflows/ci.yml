@@ -244,7 +244,7 @@ jobs:
     - name: coverage analysis
       run: mkdir coverage && lcov -c -d . -o coverage/lcov.info
     - name: push to Coveralls
-      uses: coverallsapp/github-action@master
+      uses: coverallsapp/github-action@v2
       with:
         github-token: ${{ secrets.github_token }}
 
