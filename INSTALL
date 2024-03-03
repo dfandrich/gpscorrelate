@@ -2,15 +2,15 @@ Installation of GPS Correlate
 =============================
 To build, you will need these prerequisites:
 
-* The Exiv2 library (C++ EXIF tag handling): http://www.exiv2.org/
+* The Exiv2 library (C++ EXIF tag handling): https://www.exiv2.org/
 * libxml2 (XML parsing): http://www.xmlsoft.org/
 * pkgconfig: https://pkg-config.freedesktop.org/
-* make, such as GNU makes: http://www.gnu.org/software/make/make.html
-* GTK+ (only if compiling the GUI)s: http://www.gtk.org
+* make, such as GNU makes: https://www.gnu.org/software/make/make.html
+* GTK+ (only if compiling the GUI)s: https://www.gtk.org
 * xsltproc (only for building the man page): http://xmlsoft.org/XSLT/
   with manpages/docbook.xsl properly installed from
-  http://docbook.sourceforge.net/projects/xsl/ or Internet access (xsltproc
-  will download it automatically if it is not installed)
+  https://docbook.sourceforge.net/ or an OS package (often named something like
+  docbook-xsl or docbook-style-xsl)
 * intltool (only for rebuilding the AppStream metadata file)
 
 You can build the command line version and the GUI together simply with:
@@ -21,7 +21,7 @@ Run the regression test suite with:
   make check
 
 The default build process will try to link against GTK3.
-To force linking against GTK2 run:
+To force building against GTK2 run:
 
   make GTK=2
 
