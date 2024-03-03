@@ -8,7 +8,7 @@ freebsd_task:
     cpu: 1
     matrix:
       image_family: freebsd-14-0
-      image_family: freebsd-13-2
+      image_family: freebsd-13-3
 
   env:
     # Set to 10 instead of 1 to avoid problems when new commits are submitted
