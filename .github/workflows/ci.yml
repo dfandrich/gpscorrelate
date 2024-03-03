@@ -73,6 +73,14 @@ jobs:
           cxx: g++
           target: all
           install_target: install install-po install-desktop-file
+        - name: 'valgrind tests'
+          cc: gcc
+          install: docbook-xsl exiv2 libexiv2-dev libgtk-3-dev xsltproc gettext valgrind
+          cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
+          cxx: g++
+          target: gpscorrelate
+          install_target: install
+          valgrind: yes
 
     steps:
     - uses: actions/checkout@v4
@@ -92,6 +100,9 @@ jobs:
           echo 'Expecting ${{ matrix.build.failing_tests }} test failures'
           make check CHECK_OPTIONS=-v | tee /dev/stderr | grep -q '${{ matrix.build.failing_tests }} test(s) have FAILED'
         fi
+    - if: matrix.build.valgrind == 'yes'
+      name: 'valgrind test'
+      run: make check CHECK_OPTIONS='-v -m'
     - name: 'install test'
       run: make prefix= DESTDIR="${PWD}" ${{ matrix.build.install_target }}
 
@@ -516,3 +527,37 @@ jobs:
         fi
     - name: install test
       run: make prefix= DESTDIR="${PWD}" ${{ matrix.build.install_target }}
+
+  build-debian-bookworm:
+    runs-on: ubuntu-latest
+    container: debian:bookworm-slim
+    strategy:
+      fail-fast: false
+      matrix:
+        build:
+        - name: '32-bit i686'
+          cc: i686-linux-gnu-gcc-12
+          cxx: i686-linux-gnu-g++-12
+          install: make gcc-12-i686-linux-gnu g++-12-i686-linux-gnu exiv2:i386 libexiv2-dev:i386 libgtk-3-dev:i386 gettext:i386 libxml2-dev:i386
+          cflags: -m32 -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
+          target: gpscorrelate gpscorrelate-gui
+          arch: i386
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: 'install deps'
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        dpkg --add-architecture ${{ matrix.build.arch }} && apt-get update -y && apt-get install -y --no-install-suggests --no-install-recommends ${{ matrix.build.install }}
+        # Create a user for running tests, as some fail under root
+        adduser --disabled-password --comment '' build
+        chown build . doc tests
+    - name: 'build'
+      env:
+        PKG_CONFIG_PATH: /usr/lib/${{ matrix.build.arch }}-linux-gnu/pkgconfig
+      run: su build -c 'make CFLAGS="${{ matrix.build.cflags }}" LDFLAGS="${{ matrix.build.ldflags }}" CC="${{ matrix.build.cc }}" CXX="${{ matrix.build.cxx }}" ${{ matrix.build.make_opts }} ${{ matrix.build.target }}'
+    - name: 'smoke test'
+      run: ./gpscorrelate -V
+    - name: 'tests'
+      run: su build -c 'make check CHECK_OPTIONS=-v'
