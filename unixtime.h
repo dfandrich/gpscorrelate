@@ -1,6 +1,5 @@
 /* unixtime.h
- * Written by Daniel Foote.
- * Started Feb 2005.
+ * Originally written by Daniel Foote.
  *
  * This file contains prototypes and other things for
  * the Unix time functions.

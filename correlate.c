@@ -1,13 +1,12 @@
 /* correlate.c
- * Written by Daniel Foote.
- * Started Feb 2005.
+ * Originally written by Daniel Foote.
  *
  * The functions in this file match the timestamps on
  * the photos to the GPS data, and then, if a match
  * is found, writes the GPS data into the EXIF data
  * in the photo. For future reference... */
 
-/* Copyright 2005-2018 Daniel Foote, Dan Fandrich.
+/* Copyright 2005-2023 Daniel Foote, Dan Fandrich.
  *
  * This file is part of gpscorrelate.
  *

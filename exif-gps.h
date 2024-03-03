@@ -1,6 +1,5 @@
 /* exif-gps.h
- * Written by Daniel Foote.
- * Started Feb 2005.
+ * Originally written by Daniel Foote.
  *
  * This file contains the prototypes for the functions
  * in exif-gps.cpp.
@@ -8,7 +7,7 @@
  * mangling, as C++ has a habit of doing.
  */
 
-/* Copyright 2005-2016 Daniel Foote, Dan Fandrich.
+/* Copyright 2005-2019 Daniel Foote, Dan Fandrich.
  *
  * This file is part of gpscorrelate.
  *

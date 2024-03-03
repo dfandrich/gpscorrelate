@@ -1,6 +1,5 @@
 /* gui.h
- * Written by Daniel Foote.
- * Started Feb 2005.
+ * Originally written by Daniel Foote.
  *
  * This file contains the function prototypes for the
  * stuff in gui.c */

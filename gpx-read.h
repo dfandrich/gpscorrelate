@@ -1,12 +1,11 @@
 /* gpx-read.h
- * Written by Daniel Foote.
- * Started Feb 2005.
+ * Originally written by Daniel Foote.
  *
  * This file contains prototypes for the functions
  * in gpx-read.c.
  */
 
-/* Copyright 2005-2012 Daniel Foote, Dan Fandrich.
+/* Copyright 2005-2016 Daniel Foote, Dan Fandrich.
  *
  * This file is part of gpscorrelate.
  *

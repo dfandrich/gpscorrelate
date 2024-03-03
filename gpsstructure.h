@@ -1,13 +1,12 @@
 /* gpsstructure.h
- * Written by Daniel Foote.
- * Started Feb 2005.
+ * Originally ritten by Daniel Foote.
  *
  * This file contains the structure that stores
  * GPS data points. Placed here so that several things
  * could share it.
  */
 
-/* Copyright 2005-2012 Daniel Foote, Dan Fandrich.
+/* Copyright 2005-2023 Daniel Foote, Dan Fandrich.
  *
  * This file is part of gpscorrelate.
  *

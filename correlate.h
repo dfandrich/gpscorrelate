@@ -1,12 +1,11 @@
 /* correlate.h
- * Written by Daniel Foote.
- * Started Feb 2005.
+ * Originally written by Daniel Foote.
  *
  * This file contains the options structure and prototypes for
  * functions in correlate.c.
  */
 
-/* Copyright 2005-2018 Daniel Foote, Dan Fandrich.
+/* Copyright 2005-2020 Daniel Foote, Dan Fandrich.
  *
  * This file is part of gpscorrelate.
  *

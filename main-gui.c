@@ -1,6 +1,5 @@
 /* main-gui.c
- * Written by Daniel Foote.
- * Started Feb 2005.
+ * Originally written by Daniel Foote.
  *
  * GTK GUI program to correlate photos with GPS data.
  * Uses common parts of a command line version of the same.

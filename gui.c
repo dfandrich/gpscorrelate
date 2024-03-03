@@ -1,6 +1,5 @@
 /* gui.c
- * Written by Daniel Foote.
- * Started Feb 2005.
+ * Originally written by Daniel Foote.
  *
  * The base of this file was generated with Glade, and then
  * hand edited by me for some strange reason.
@@ -12,7 +11,7 @@
  * part of the gui program is main-gui.c, but that ended up
  * being little more than a "stub" to get the GUI up and running. */
 
-/* Copyright 2005-2019 Daniel Foote, Dan Fandrich.
+/* Copyright 2005-2020 Daniel Foote, Dan Fandrich.
  *
  * This file is part of gpscorrelate.
  *
@@ -1819,7 +1818,7 @@ void AboutButtonPress( GtkWidget *Widget, gpointer Data )
 						"authors", authors,
 						"comments", _("GPS Correlate attaches EXIF GPS location tags to images."),
 						// The following hex bytes are the copyright symbol in UTF-8
-						"copyright", _("Copyright \xC2\xA9 2005-2020 Daniel Foote, Dan Fandrich"),
+						"copyright", _("Copyright \xC2\xA9 2005-2024 Daniel Foote, Dan Fandrich"),
 						"license", "GPL 2+",
 #if GTK_CHECK_VERSION(3, 0, 0)
 						"license-type", GTK_LICENSE_GPL_2_0,

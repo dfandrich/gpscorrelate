@@ -1,12 +1,11 @@
 /* gpx-read.c
- * Written by Daniel Foote.
- * Started Feb 2005.
+ * Originally written by Daniel Foote.
  *
  * This file contains routines to read the XML GPX files,
  * containing GPS data.
  */
 
-/* Copyright 2005-2016 Daniel Foote, Dan Fandrich.
+/* Copyright 2005-2024 Daniel Foote, Dan Fandrich.
  *
  * This file is part of gpscorrelate.
  *

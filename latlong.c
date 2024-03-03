@@ -1,11 +1,10 @@
 /* latlong.c
- * Written by Daniel Fandrich.
- * Started Mar 2016.
+ * Originally written by Daniel Fandrich.
  *
  * This file contains routines to parse latitude/longitude.
  */
 
-/* Copyright 2016 Daniel Fandrich.
+/* Copyright 2016-2023 Daniel Fandrich.
  *
  * This file is part of gpscorrelate.
  *

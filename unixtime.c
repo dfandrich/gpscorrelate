@@ -1,6 +1,5 @@
 /* unixtime.c
- * Written by Daniel Foote.
- * Started Feb 2005.
+ * Originally written by Daniel Foote.
  *
  * This file contains a function that converts a string
  * to a unix time, given a format string.

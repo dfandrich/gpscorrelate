@@ -1,6 +1,5 @@
 /* exif-gps.cpp
- * Written by Daniel Foote.
- * Started Feb 2005.
+ * Originally written by Daniel Foote.
  *
  * This file contains routines for reading dates
  * from exif data, and writing GPS data into the
@@ -10,7 +9,7 @@
  * From http://home.arcor.de/ahuggel/exiv2/
  */
 
-/* Copyright 2005-2019 Daniel Foote, Dan Fandrich.
+/* Copyright 2005-2023 Daniel Foote, Dan Fandrich.
  *
  * This file is part of gpscorrelate.
  *
