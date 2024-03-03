@@ -164,9 +164,8 @@ msgstr ""
 "Предполагать, что часовой пояс камеры совпадает с местным часовым поясом."
 
 #: gui.c:494
-#, fuzzy
 msgid "Write heading"
-msgstr "Ошибка записи"
+msgstr ""
 
 #: gui.c:499 gui.c:504
 msgid ""
@@ -467,9 +466,8 @@ msgid "GPS Correlate attaches EXIF GPS location tags to images."
 msgstr "GPS Correlate прикрепляет к изображениям теги местоположения GPS EXIF."
 
 #: gui.c:1821
-#, fuzzy
 msgid "Copyright © 2005-2024 Daniel Foote, Dan Fandrich"
-msgstr "Авторские права © 2005-2020 Daniel Foote, Dan Fandrich"
+msgstr "Авторские права © 2005-2024 Daniel Foote, Dan Fandrich"
 
 #: main-command.c:83
 #, c-format
@@ -477,9 +475,8 @@ msgid "%s, ver. %s. %s\n"
 msgstr "%s, ver. %s. %s\n"
 
 #: main-command.c:85
-#, fuzzy
 msgid "Copyright (C) 2005-2024 Daniel Foote, Dan Fandrich"
-msgstr "Авторские права © 2005-2020 Daniel Foote, Dan Fandrich"
+msgstr "Авторские права © 2005-2024 Daniel Foote, Dan Fandrich"
 
 #: main-command.c:91
 #, c-format
@@ -794,4 +791,4 @@ msgstr ""
 
 #: io.github.dfandrich.gpscorrelate.metainfo.xml.in:39
 msgid "Daniel Fandrich"
-msgstr ""
+msgstr "Daniel Fandrich"

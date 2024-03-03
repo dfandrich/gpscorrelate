@@ -167,9 +167,8 @@ msgstr ""
 "horaire local."
 
 #: gui.c:494
-#, fuzzy
 msgid "Write heading"
-msgstr "Echec de l'écriture"
+msgstr ""
 
 #: gui.c:499 gui.c:504
 msgid ""
@@ -472,9 +471,8 @@ msgid "GPS Correlate attaches EXIF GPS location tags to images."
 msgstr "GPS Correlate attache des tags de position GPS EXIF aux images."
 
 #: gui.c:1821
-#, fuzzy
 msgid "Copyright © 2005-2024 Daniel Foote, Dan Fandrich"
-msgstr "Copyright © 2005-2020 Daniel Foote, Dan Fandrich"
+msgstr "Copyright © 2005-2024 Daniel Foote, Dan Fandrich"
 
 #: main-command.c:83
 #, c-format
@@ -482,9 +480,8 @@ msgid "%s, ver. %s. %s\n"
 msgstr "%s, ver. %s. %s\n"
 
 #: main-command.c:85
-#, fuzzy
 msgid "Copyright (C) 2005-2024 Daniel Foote, Dan Fandrich"
-msgstr "Copyright © 2005-2020 Daniel Foote, Dan Fandrich"
+msgstr "Copyright © 2005-2024 Daniel Foote, Dan Fandrich"
 
 #: main-command.c:91
 #, c-format
@@ -550,12 +547,9 @@ msgid "    --heading            Store the direction of movement in the image"
 msgstr ""
 
 #: main-command.c:102
-#, fuzzy
 msgid ""
 "-B, --max-heading DEG    Max degrees between points that will be matched"
 msgstr ""
-"-m, --max-dist SECS      Écart de temps maximum entre un point GPS et une\n"
-"                         photo pour établir une corrélation."
 
 #: main-command.c:103
 msgid ""
@@ -848,4 +842,4 @@ msgstr ""
 
 #: io.github.dfandrich.gpscorrelate.metainfo.xml.in:39
 msgid "Daniel Fandrich"
-msgstr ""
+msgstr "Daniel Fandrich"
