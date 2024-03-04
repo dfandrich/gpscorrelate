@@ -2,6 +2,7 @@ TITLE='Geotag a file from a specified latitude/longitude (dms form with ISO 8859
 PRECOMMAND='cat "$STAGINGDIR/point1-1.jpg" >"$LOGDIR/test.jpg"'
 # The degree symbol is in ISO 8859/1 but since it's hard-coded in the program,
 # it's unnecessary to actually be running in an ISO 8859/1 locale to work.
-COMMAND='$PROGRAM -z+1 -l -34d56m08.9s,-90°0'"\\'"'59.11111\" "$LOGDIR/test.jpg" > "$OUTFILE" 2>&1 && exiv2 -pv pr "$LOGDIR/test.jpg" >> "$OUTFILE" 2>&1'
+# Run in C locale to avoid errors when comparing numbers in output
+COMMAND='env LC_NUMERIC=C $PROGRAM -z+1 -l -34d56m08.9s,-90°0'"\\'"'59.11111\" "$LOGDIR/test.jpg" > "$OUTFILE" 2>&1 && exiv2 -pv pr "$LOGDIR/test.jpg" >> "$OUTFILE" 2>&1'
 POSTCOMMAND='rm -f "$LOGDIR/test.jpg"'
 RESULTCODE=0

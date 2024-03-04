@@ -1,6 +1,6 @@
 TITLE='Specify out-of-range latitude'
 PRECOMMAND='cat "$STAGINGDIR/point1-1.jpg" >"$LOGDIR/test.jpg"'
 # Run in C locale to correctly parse these decimal numbers
-COMMAND='env LC_ALL=C $PROGRAM -l 92.34567,123.456,78.9 "$LOGDIR/test.jpg" > "$OUTFILE" 2>&1'
+COMMAND='env LC_NUMERIC=C $PROGRAM -l 92.34567,123.456,78.9 "$LOGDIR/test.jpg" > "$OUTFILE" 2>&1'
 POSTCOMMAND='rm -f "$LOGDIR/test.jpg"'
 RESULTCODE=1

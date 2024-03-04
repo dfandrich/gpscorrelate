@@ -4,6 +4,7 @@ PRECOMMAND='cat "$STAGINGDIR/point1-1.jpg" >"$LOGDIR/test.jpg"'
 # present when the UTF-8 degrees symbol is being used, as it is here.
 # As can be seen, it's tricky to pass a single quote character into the test
 # suite.
-COMMAND='env LC_CTYPE=UTF-8 $PROGRAM -z+1 -l "-34d 56m 8.9s, -90° 0m 59.11111s 123.4" "$LOGDIR/test.jpg" > "$OUTFILE" 2>&1 && exiv2 -pv pr "$LOGDIR/test.jpg" >> "$OUTFILE" 2>&1'
+# Run in C locale to avoid errors when comparing numbers in output
+COMMAND='env LC_CTYPE=UTF-8 LC_NUMERIC=C $PROGRAM -z+1 -l "-34d 56m 8.9s, -90° 0m 59.11111s 123.4" "$LOGDIR/test.jpg" > "$OUTFILE" 2>&1 && exiv2 -pv pr "$LOGDIR/test.jpg" >> "$OUTFILE" 2>&1'
 POSTCOMMAND='rm -f "$LOGDIR/test.jpg"'
 RESULTCODE=0

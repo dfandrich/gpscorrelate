@@ -2,7 +2,7 @@ TITLE='Show GPS data on file in southern hemisphere'
 # Synthesize an appropriate file on which the run the real test
 PRECOMMAND='cat "$STAGINGDIR/point5-1.jpg" >"$LOGDIR/test.jpg" && $PROGRAM -z -14:00 -g "$STAGINGDIR/track7.gpx" "$LOGDIR/test.jpg" 2>"$OUTFILE" > /dev/null'
 # Run in C locale to avoid errors when comparing numbers in output
-COMMAND='env LC_ALL=C $PROGRAM -s "$LOGDIR/test.jpg" >> "$OUTFILE" 2>&1'
+COMMAND='env LC_NUMERIC=C $PROGRAM -s "$LOGDIR/test.jpg" >> "$OUTFILE" 2>&1'
 POSTCOMMAND='rm -f "$LOGDIR/test.jpg"'
 RESULTCODE=0
 SEDCOMMAND='s@^.*/@@' # strip path

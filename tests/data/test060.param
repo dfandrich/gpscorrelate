@@ -12,7 +12,7 @@ TITLE='Test that --no-mtime is implied by --fix-datestamps'
 # result, so they should not disrupt operation of the test suite.
 PRECOMMAND='cat "$STAGINGDIR/baddate.jpg" >"$LOGDIR/test.jpg" && touch -t 201001020304.05 "$LOGDIR/test.jpg" && touch "$LOGDIR/ztest.jpg"'
 # Run in C locale to avoid errors when comparing days of week in output
-COMMAND='env LC_ALL=C $PROGRAM --fix-datestamps -z -7 "$LOGDIR/test.jpg" > "$OUTFILE" 2>&1 && ls -t "$LOGDIR/ztest.jpg" "$LOGDIR/test.jpg" >> "$OUTFILE" 2>&1'
+COMMAND='env LC_TIME=C $PROGRAM --fix-datestamps -z -7 "$LOGDIR/test.jpg" > "$OUTFILE" 2>&1 && ls -t "$LOGDIR/ztest.jpg" "$LOGDIR/test.jpg" >> "$OUTFILE" 2>&1'
 POSTCOMMAND='rm -f "$LOGDIR/test.jpg" "$LOGDIR/ztest.jpg"'
 RESULTCODE=0
 SEDCOMMAND='s@([a-zA-Z]:)?/[^ ].*/@@' # strip paths

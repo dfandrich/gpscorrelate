@@ -81,6 +81,17 @@ jobs:
           target: gpscorrelate
           install_target: install
           valgrind: yes
+        - name: 'locale tests'
+          cc: gcc
+          gtk: 3
+          install: desktop-file-utils docbook-xsl exiv2 libexiv2-dev libgtk-3-dev xsltproc gettext locales-all
+          cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
+          cxx: g++
+          target: all
+          install_target: install install-po install-desktop-file
+          # Turkish is one of the better locales to test in that it has unusual
+          # upper/lowercase folding and comma as decimal separator.
+          locale: tr_TR
 
     steps:
     - uses: actions/checkout@v4
@@ -103,6 +114,23 @@ jobs:
     - if: matrix.build.valgrind == 'yes'
       name: 'valgrind test'
       run: make check CHECK_OPTIONS='-v -m'
+    - if: matrix.build.locale
+      name: 'locale test'
+      env:
+        LC_ADDRESS: ${{ matrix.build.locale }}
+        LC_COLLATE: ${{ matrix.build.locale }}
+        LC_CTYPE: ${{ matrix.build.locale }}
+        LC_IDENTIFICATION: ${{ matrix.build.locale }}
+        LC_MEASUREMENT: ${{ matrix.build.locale }}
+        LC_MESSAGES: ${{ matrix.build.locale }}
+        LC_MONETARY: ${{ matrix.build.locale }}
+        LC_NAME: ${{ matrix.build.locale }}
+        LC_NUMERIC: ${{ matrix.build.locale }}
+        LC_PAPER: ${{ matrix.build.locale }}
+        LC_SOURCED: ${{ matrix.build.locale }}
+        LC_TELEPHONE: ${{ matrix.build.locale }}
+        LC_TIME: ${{ matrix.build.locale }}
+      run: make check CHECK_OPTIONS='-v'
     - name: 'install test'
       run: make prefix= DESTDIR="${PWD}" ${{ matrix.build.install_target }}
 

@@ -1,7 +1,7 @@
 TITLE='Correlate a file with --timeadd west of UTC and aligned on the half hour'
 PRECOMMAND='cat "$STAGINGDIR/point3-1.jpg" >"$LOGDIR/test.jpg"'
 # Run in C locale to avoid errors when comparing numbers in output
-COMMAND='env LC_ALL=C $PROGRAM --timeadd -3:30 -v -g "$STAGINGDIR/track6.gpx" "$LOGDIR/test.jpg" > "$OUTFILE" 2>&1 && exiv2 -pv pr "$LOGDIR/test.jpg" >> "$OUTFILE" 2>&1'
+COMMAND='env LC_NUMERIC=C $PROGRAM --timeadd -3:30 -v -g "$STAGINGDIR/track6.gpx" "$LOGDIR/test.jpg" > "$OUTFILE" 2>&1 && exiv2 -pv pr "$LOGDIR/test.jpg" >> "$OUTFILE" 2>&1'
 POSTCOMMAND='rm -f "$LOGDIR/test.jpg"'
 RESULTCODE=0
 SEDCOMMAND='s@^([a-zA-Z]:)?/.*/|.*Copyright.*$@@' # strip path and copyright line

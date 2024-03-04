@@ -1,5 +1,5 @@
 TITLE='Show GPS data with existing and nonexistent files'
 # Run in C locale to avoid errors when comparing numbers in output
-COMMAND='env LC_ALL=C $PROGRAM -s "$STAGINGDIR/withgps.jpg" does-not-exist "$STAGINGDIR/withgps.jpg" > "$OUTFILE" 2>&1'
+COMMAND='env LC_NUMERIC=C $PROGRAM -s "$STAGINGDIR/withgps.jpg" does-not-exist "$STAGINGDIR/withgps.jpg" > "$OUTFILE" 2>&1'
 RESULTCODE=1
 SEDCOMMAND='s@([a-zA-Z]:)?/.*/@@' # strip path

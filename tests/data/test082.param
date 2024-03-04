@@ -1,7 +1,7 @@
 TITLE='Fix bad date with --fix-datestamps with corrupt lat/long'
 PRECOMMAND='cat "$STAGINGDIR/baddate2.jpg" >"$LOGDIR/test.jpg"'
 # Run in C locale to avoid errors when comparing days of week in output
-COMMAND='env LC_ALL=C $PROGRAM --fix-datestamps -z -7 "$LOGDIR/test.jpg" > "$OUTFILE" 2>&1 && exiv2 -pv pr "$LOGDIR/test.jpg" >> "$OUTFILE" 2>&1'
+COMMAND='env LC_TIME=C $PROGRAM --fix-datestamps -z -7 "$LOGDIR/test.jpg" > "$OUTFILE" 2>&1 && exiv2 -pv pr "$LOGDIR/test.jpg" >> "$OUTFILE" 2>&1'
 POSTCOMMAND='rm -f "$LOGDIR/test.jpg"'
 RESULTCODE=0
 SEDCOMMAND='1s@^.*/@@' # strip path

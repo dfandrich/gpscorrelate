@@ -1,5 +1,5 @@
 TITLE='Show GPS data on file with no elevation with --machine'
 # Run in C locale to avoid errors when comparing numbers in output
-COMMAND='env LC_ALL=C $PROGRAM -o "$STAGINGDIR/noelev.jpg" > "$OUTFILE" 2>&1'
+COMMAND='env LC_NUMERIC=C $PROGRAM -o "$STAGINGDIR/noelev.jpg" > "$OUTFILE" 2>&1'
 RESULTCODE=0
 SEDCOMMAND='s@([a-zA-Z]:)?/.*/@@' # strip path
