@@ -34,27 +34,64 @@ details {
 <body LANG="fr-FR" DIR="LTR">
 
 <img src="../gpscorrelate-gui.svg" alt="GPS Correlate logo" width="128" height="128" class="logo">
-<h1>Documentation de GPS Correlate</h1>
+<h1>GPS Correlate</h1>
 
-<p align="center">Écrit par Daniel Foote.<br>Traduit par Vincent Gay (vgay à vintherine point org)<br><a href="../index.html">Voir le document d’origine en anglais</a></p>
+<h2>Qu'est-ce GPS Correlate?</h2>
 
-<h2>Sommaire</h2>
+Les appareils photo numériques sont cool. Les GPS également. Et les étiquettes
+EXIF, elles le sont aussi.
+<p>
+Que se passe-t-il lorsque vous fusionnez les trois ? Vous obtenez un ensemble
+de photos prises avec un appareil photo numérique qui sont “marquées” avec
+l'endroit où elles ont été prises.
+<p>
+GPS Correlate utilise une trace GPS stockée par un certain nombre d'appareils
+GPS et d'applications téléphoniques et établit une corrélation entre
+l'horodatage d'une photo numérique et l'emplacement de la trace au même moment.
+L'emplacement de l'image est ensuite indiqué directement dans le fichier à
+l'aide des marques GPS EXIF appropriées. L'image résultante contient non
+seulement l'heure à laquelle la photo a été prise, mais aussi son emplacement
+exact. L'emplacement est utilisé par divers autres applications et services
+(tels que Google Photos) pour afficher une carte de l'endroit où la photo a été
+prise.
+<p>
+Un cas d'utilisation typique consisterait à lancer une application de suivi GPS
+sur le téléphone que vous avez dans votre poche pendant que vous prenez des
+photos. Après la prise de vue, téléchargez la trace au format GPX sur votre
+ordinateur avec les photos, puis utilisez gpscorrelate pour combiner les deux.
+<p>
+La plupart des appareils photo reflex numériques et sans miroir haut de gamme
+(ainsi que les smartphones) intègrent aujourd'hui des récepteurs GPS qui
+marquent automatiquement les photos, ce qui n'est souvent pas le cas des
+modèles d'entrée de gamme. Il existe également des cas où les signaux GPS ne
+sont pas disponibles, comme à l'intérieur de certains avions récents. Dans ce
+cas, la trajectoire de l'avion peut souvent être téléchargée à partir de sites
+web tels que FlightAware, convertie au format GPX à l'aide de gpsbabel, puis
+mise en corrélation avec les photos prises à bord de l'avion avec votre
+appareil photo.
+
+<h2>Documentation</h2>
 
 <ul>
-<li><a href="concepts.html">Les concepts de correlation GPS Photo</a></li>
-<li><a href="command.html">Utilisation du client en ligne de commande</a></li>
-<li><a href="gui.html">Utilisation du client  en version graphique</a></li>
+<li><a href="concepts.html">Concepts de corrélation de photos GPS</a></li>
+<li><a href="command.html">Page de manuel du client en ligne de commande</a></li>
+<li><a href="gui.html">Utilisation de la version GUI</a></li>
+<li><a href="../README.md">Fichier Readme (en anglais)</a></li>
 </ul>
 
-<h2>Installation</h2>
+<h2>Installation de gpscorrelate</h2>
 
 <p>
-gpscorrelate est disponible dans de nombreuses distributions Linux et sous forme de
+gpscorrelate est disponible dans un certain nombre de distributions Linux et
+d'autres systèmes d'exploitation Open Source ; utilisez votre gestionnaire de
+paquets habituel pour l'installer. Il est également disponible sous la forme
+d'un
 <a href="https://flatpak.org/">Flatpak</a>
-sur
+de
 <a href="https://flathub.org/apps/details/io.github.dfandrich.gpscorrelate">Flathub</a>.
-Vous pouvez le compiler vous-même à partir des sources pour d'autres
-plateformes comme *BSD et Windows.
+qui peut être installé sur presque toutes les
+distributions Linux. Vous pouvez le compiler vous-même à partir des sources
+pour d'autres plateformes comme *BSD et Windows.
 </p>
 
 <h2>Code source</h2>
@@ -70,11 +107,17 @@ plateformes comme *BSD et Windows.
 </p>
 
 <p>
-Le code source est disponible sur
+Le code source est disponible sur le projet
 <a href="https://github.com/dfandrich/gpscorrelate">Github</a>.
-Veuillez télécharger <a href="https://github.com/dfandrich/gpscorrelate/releases/latest">la dernière version</a>.</p>
+Télécharger <a href="https://github.com/dfandrich/gpscorrelate/releases/latest">la dernière version</a>.</p>
 
-<details><summary>Note importante pour les utilisateurs de versions antérieures à 1.5.2</summary>
+<h2>Rapports de bugs</h2>
+
+<p>
+Si vous avez trouvé un problème avec gpscorrelate, veuillez
+<a href="https://github.com/dfandrich/gpscorrelate/issues"> écrire un “issue”</a>.</p>
+
+<details><summary>Note importante pour les utilisateurs antérieurs à la version 1.5.2</summary>
 
 <p>Avant version 1.5.2, gpscorrelate souffrait d’un bug qui provoquait une erreur dans la préhension des dates. Le résultat était un décalage des mois (janvier à la place de février…décembre à la place de janvier).</p>
 
@@ -89,10 +132,14 @@ Veuillez télécharger <a href="https://github.com/dfandrich/gpscorrelate/releas
 
 <h2>Plus d’informations</h2>
 
-<p>Pour plus d’informations, nouvelles versions, commentaires ou questions, vous pouvez visiter
+<p>Pour plus d'informations, des versions plus récentes ou des rapports de bugs,
+veuillez visiter
 <a href="https://github.com/dfandrich/gpscorrelate">github.com/dfandrich/gpscorrelate</a>.
-Pour voir le document d’origine, vous pouvez visiter
-<a href="https://dfandrich.github.io/gpscorrelate">dfandrich.github.io/gpscorrelate</a>.</p>
+Pour voir la dernière
+version de cette documentation en ligne, visitez
+<a href="https://dfandrich.github.io/gpscorrelate/fr/">dfandrich.github.io/gpscorrelate/fr/</a>.</p>
+<p>
+<a href="../index.html">Voir le document d’origine en anglais</a>.</p>
 
 </body>
 </html>
