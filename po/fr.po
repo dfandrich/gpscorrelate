@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gpscorrelate 2.0\n"
 "Report-Msgid-Bugs-To: dan@coneharvesters.com\n"
 "POT-Creation-Date: 2024-03-02 17:40-0800\n"
-"PO-Revision-Date: 2013-01-15 13:58+0100\n"
-"Last-Translator: Vincent Gay <vgay@vintherine.org>\n"
+"PO-Revision-Date: 2024-04-03 11:24+0100\n"
+"Last-Translator: jybz, papoteur\n"
 "Language-Team: français\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -51,7 +51,7 @@ msgstr "Ajouter…"
 
 #: gui.c:322 gui.c:324
 msgid "Add photos to be correlated."
-msgstr "Ajouter des photo à correler."
+msgstr "Ajouter des photos à correler."
 
 #: gui.c:329
 msgid "Remove"
@@ -80,7 +80,7 @@ msgid ""
 "GPX format, use a converter like GPSBabel to convert it to GPX first."
 msgstr ""
 "Choisissez un fichier GPX à partir duquel seront lues les données GPS. Si "
-"les données GPS ne sont pas au format GPX utilisez un convertisseur tel que "
+"les données GPS ne sont pas au format GPX, utilisez un convertisseur tel que "
 "GPSBabel."
 
 #: gui.c:381
@@ -152,8 +152,8 @@ msgid ""
 "default. The old behaviour was to write it as DD MM.MM, which will occur if "
 "you uncheck this box."
 msgstr ""
-"Écrire latitude et longitude en DD MM SS.SS ; c'est le comportement par "
-"défaut. Depuis, le précédent étant DD MM.MM, ce que vous pouvez rétablir en "
+"Écrire latitude et longitude en DD MM SS.SS ; c'est le nouveau comportement "
+"par défaut. C'était précédemment DD MM.MM, ce que vous pouvez rétablir en "
 "décochant cette case."
 
 #: gui.c:482
@@ -168,7 +168,7 @@ msgstr ""
 
 #: gui.c:494
 msgid "Write heading"
-msgstr ""
+msgstr "Écriture de l'entête"
 
 #: gui.c:499 gui.c:504
 msgid ""
@@ -176,10 +176,14 @@ msgid ""
 "taken.  This is only possible if the GPX file contains these data and if the "
 "heading change does not exceed the maximum (specified below)."
 msgstr ""
+"Écrite un tag EXIF pour spécifier la direction du movement tel que la caméra "
+"était. C'est possible seulement si le fichier GPX contient cette donnée et "
+"si le changement d'entête n'excède  pas la taille maximum (définit ci-"
+"desous)."
 
 #: gui.c:510
 msgid "Write camera direction"
-msgstr ""
+msgstr "Inscrire la direction de la caméra"
 
 #: gui.c:515 gui.c:520
 msgid ""
@@ -187,6 +191,10 @@ msgid ""
 "This is only possible if the GPX file contains these data and if the heading "
 "change does not exceed the maximum (specified below)."
 msgstr ""
+"Écrire un tag EXIF pour spécifier la direction de la caréma tel que la photo "
+"a été prise. C'est possible seulement si le fichier GPX contient cette "
+"donnée et si le changement d'entête n'exède pas la taille maxium (définit ci-"
+"dessous)."
 
 #: gui.c:531
 msgid "Max gap time:"
@@ -194,11 +202,11 @@ msgstr "Écart de temps maximum :"
 
 #: gui.c:539
 msgid "Max heading change:"
-msgstr ""
+msgstr "Changement de l'entête maximum :"
 
 #: gui.c:547
 msgid "Camera direction:"
-msgstr ""
+msgstr "Direction de l'appareil photo :"
 
 #: gui.c:555
 msgid "Time Zone:"
@@ -210,7 +218,7 @@ msgstr "Décalage des photos :"
 
 #: gui.c:571
 msgid "GPS Datum:"
-msgstr "Datum du GPS :"
+msgstr "Système géodésique :"
 
 #: gui.c:587 gui.c:593
 msgid ""
@@ -227,6 +235,8 @@ msgid ""
 "Maximum number of degrees of rotation allowed between points while still "
 "writing a heading tag. -1 means no maximum."
 msgstr ""
+"Nombre maximum de degrés de rotation permis parmi les points lors de "
+"l'écriture d'une étiquette d'entête. -1 signifie sans limite. "
 
 #: gui.c:632 gui.c:637
 msgid ""
@@ -234,6 +244,9 @@ msgid ""
 "faces. If the camera is facing out the right-hand window of a car, this "
 "would be 90."
 msgstr ""
+"Angle en degrés par rapport à la direction du mouvement à l'avant de "
+"l'appareil photo. Si l'appareil photo faisait face à la vitre droite d'un "
+"véhicule, ce serait 90."
 
 #: gui.c:657 gui.c:663
 msgid ""
@@ -545,16 +558,18 @@ msgstr ""
 #: main-command.c:101
 msgid "    --heading            Store the direction of movement in the image"
 msgstr ""
+"    --heading            Enregistre la direction du mouvement dans l'image"
 
 #: main-command.c:102
 msgid ""
 "-B, --max-heading DEG    Max degrees between points that will be matched"
-msgstr ""
+msgstr "-B, --max-heading DEG    Degrés maximum entre deux points assortis"
 
 #: main-command.c:103
 msgid ""
 "-b, --direction DEG      Angular offset of camera from forward direction"
 msgstr ""
+"-b, --direction DEG      Offset angulaire de la caméra par rapport à la dir."
 
 #: main-command.c:104
 msgid "-s, --show               Just show the GPS data from the given files"
@@ -694,12 +709,12 @@ msgstr "Erreur lors de l'analyse de l'emplacement.\n"
 #: main-command.c:539
 #, c-format
 msgid "The --direction value must be between -359..359\n"
-msgstr ""
+msgstr "La valeur --direction doit être dans la plage -359..359\n"
 
 #: main-command.c:556
 #, c-format
 msgid "The --max-heading value must be between 0..179\n"
-msgstr ""
+msgstr "La valeur --max-heading doit être dans la plage 0..179\n"
 
 #: main-command.c:569
 #, c-format
@@ -839,6 +854,14 @@ msgid ""
 "and services (such as Google Photos) to display a map of where the photo was "
 "taken."
 msgstr ""
+"GPS Correlate traite une trace stockée par un appareil GPS quelconque ou une "
+"application de smartphone et établit une corrélation entre l'horodatage "
+"d'une photo numérique et la position sur la trace à ce moment. Cette "
+"position est alors inscrite dans le fichier de l'image en utilisant les "
+"étiquettes EXIF appropriées. L'image contient alors non seulement "
+"l'horodatage de la photo, mais également sa position exacte. La position est "
+"alors utilisée par différentes applications et services (tels que Google "
+"Photos) pour afficher une carte de l'endroit où la photo a été prise."
 
 #: io.github.dfandrich.gpscorrelate.metainfo.xml.in:39
 msgid "Daniel Fandrich"
