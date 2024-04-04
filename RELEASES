@@ -1,5 +1,36 @@
 Release History:
 
+v2.1: 3 April 2024
+    - Fix some tests to work in more locales
+    - Update French index.html file
+	- List more build requirements in INSTALL
+	- Add more CI builds
+	- Improve portability by including more required header files
+	- Support --direction and --heading (sort of) with --latlong
+	- Add support for heading and direction times to the GUI
+	- Update the German & French translation
+	- Add support for writing image direction tags
+	- Improve usability of the make file
+	- Adapt to API type changes in exiv2 0.28.0
+	- Improve the man page and documentation
+	- De-emphasize the note about versions before 1.5.2
+	- Fix reading the autotimezone config value in the GUI
+	- Initialize variable to avoid crash
+	- Switch to gtk_file_chooser_native_new for file dialogs in GTK 3
+	- Add an AppStream metadata file
+	- Print a few error messages to stderr instead of stdout
+	- Fully initialize points entered with --latlong
+	- Fix elevation parsing
+	- Add a warning when files are given out of order with --show-gpx
+	- Add more regression tests
+	- Add the --show-gpx option to create GPX output for images
+	- Build all targets by default, including documentation
+	- Add an icon to the HTML index page
+	- Added French and German translations to the .desktop file
+	- Removed gpscorrelate2.glade
+	- Add badges in the docs for the latest version & license
+	- Check for OOM condition after heap allocs
+
 v2.0: 28 October 2019
 	- gpscorrelate moved to Github and Dan Fandrich took over maintenance.
 	  The new home page is https://dfandrich.github.io/gpscorrelate
