@@ -4,7 +4,7 @@
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-2.0+</project_license>
   <_name>GPS Correlate</_name>
-  <_summary>GPS Correlate attaches EXIF GPS location tags to images.</_summary>
+  <_summary>Attaches GPS location to images</_summary>
   <description>
     <_p>
       GPS Correlate takes a GPS track stored by any of a number of GPS
@@ -20,7 +20,7 @@
   </description>
   <screenshots>
     <screenshot type="default">
-      <image xml:lang="en">https://dfandrich.github.io/gpscorrelate/corr.png</image>
+      <image>https://dfandrich.github.io/gpscorrelate/corr.png</image>
       <image xml:lang="fr">https://dfandrich.github.io/gpscorrelate/fr/corr.png</image>
     </screenshot>
   </screenshots>
