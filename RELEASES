@@ -1,8 +1,10 @@
 Release History:
 
+v2.x: X
+
 v2.1: 3 April 2024
-    - Fix some tests to work in more locales
-    - Update French index.html file
+	- Fix some tests to work in more locales
+	- Update French index.html file
 	- List more build requirements in INSTALL
 	- Add more CI builds
 	- Improve portability by including more required header files
