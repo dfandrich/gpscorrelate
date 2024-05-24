@@ -519,9 +519,9 @@ jobs:
     - name: install test
       run: make prefix= DESTDIR="${PWD}" ${{ matrix.build.install_target }}
 
-  build-fedora38:
+  build-fedora40:
     runs-on: ubuntu-latest
-    container: fedora:38
+    container: fedora:40
     strategy:
       fail-fast: false
       matrix:
