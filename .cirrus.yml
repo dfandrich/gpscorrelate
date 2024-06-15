@@ -7,7 +7,7 @@ freebsd_task:
     memory: 1000M
     cpu: 1
     matrix:
-      image_family: freebsd-14-0
+      image_family: freebsd-14-1
       image_family: freebsd-13-3
 
   env:
@@ -18,7 +18,7 @@ freebsd_task:
     LDFLAGS: $CFLAGS -lintl
     CC: cc
     CXX: c++
-    MAKE_FLAGS: -j 2
+    MAKEFLAGS: -j 3
     matrix:
       - GTK: 2
       - GTK: 3
@@ -90,10 +90,10 @@ linux_musl_task:
     memory: 300M
     cpu: 1
     matrix:
+      image: alpine:3.20
       image: alpine:3.19
       image: alpine:3.18
       image: alpine:3.17
-      image: alpine:3.16
 
   env:
     # Set to 10 instead of 1 to avoid problems when new commits are submitted
