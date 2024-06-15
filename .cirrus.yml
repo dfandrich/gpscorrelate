@@ -18,7 +18,7 @@ freebsd_task:
     LDFLAGS: $CFLAGS -lintl
     CC: cc
     CXX: c++
-    MAKE_FLAGS: -j 3
+    MAKEFLAGS: -j 3
     matrix:
       - GTK: 2
       - GTK: 3
