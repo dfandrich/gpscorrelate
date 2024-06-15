@@ -467,7 +467,7 @@ jobs:
           make check CHECK_OPTIONS=-v | tee /dev/stderr | grep -q '${{ matrix.build.failing_tests }} test(s) have FAILED'
         fi
     - name: install test
-      run: make prefix= DESTDIR="${PWD}" ${{ matrix.build.install_target }}
+      run: make prefix= DESTDIR="${PWD}" -j 1 ${{ matrix.build.install_target }}
 
   build-osx12:
     runs-on: macos-12
@@ -532,7 +532,7 @@ jobs:
           make check CHECK_OPTIONS=-v | tee /dev/stderr | grep -q '${{ matrix.build.failing_tests }} test(s) have FAILED'
         fi
     - name: install test
-      run: make prefix= DESTDIR="${PWD}" ${{ matrix.build.install_target }}
+      run: make prefix= DESTDIR="${PWD}" -j 1 ${{ matrix.build.install_target }}
 
   build-osx11:
     runs-on: macos-11
@@ -597,7 +597,7 @@ jobs:
           make check CHECK_OPTIONS=-v | tee /dev/stderr | grep -q '${{ matrix.build.failing_tests }} test(s) have FAILED'
         fi
     - name: install test
-      run: make prefix= DESTDIR="${PWD}" ${{ matrix.build.install_target }}
+      run: make prefix= DESTDIR="${PWD}" -j 1 ${{ matrix.build.install_target }}
 
   build-fedora39:
     runs-on: ubuntu-latest
