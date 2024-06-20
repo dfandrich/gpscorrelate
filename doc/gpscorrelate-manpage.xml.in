@@ -716,9 +716,9 @@
     </para>
 
     <para>
-    Add a GPS location tag to a photo taken to the east at Ulmer Münster:</para>
+    Add a GPS location tag to a photo taken to the southeast at Ulmer Münster:</para>
     <para>
-    <userinput>gpscorrelate -l 48.398620,9.991417,522 --direction 90 -z 2 ulm.jpg</userinput>
+    <userinput>gpscorrelate -l 48.398620,9.991417,522 --direction 135 -z 2 ulm.jpg</userinput>
     </para>
 
   </refsect1>
