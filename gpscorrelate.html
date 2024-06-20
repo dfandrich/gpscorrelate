@@ -10,8 +10,7 @@
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084"
 alink="#0000FF">
-<div class="refentry"><a name="idm140338994982624" id=
-"idm140338994982624"></a>
+<div class="refentry"><a name="id1337" id="id1337"></a>
 <div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
@@ -29,15 +28,18 @@ filling EXIF fields</p>
 "replaceable"><code>datum</code></em> ] [ -n | --no-write ] [ -R |
 --replace ] [ -m | --max-dist <em class=
 "replaceable"><code>time</code></em> ] [ -t | --ignore-tracksegs ]
-[ -M | --no-mtime ] [ --degmins ] [ -g <em class=
+[ --heading ] [ -B | --max-heading <em class=
+"replaceable"><code>degrees</code></em> ] [ -b | --direction
+<em class="replaceable"><code>degrees</code></em> ] [ -M |
+--no-mtime ] [ --degmins ] [ -g <em class=
 "replaceable"><code>file.gpx</code></em> | [ -l | --latlong ]
 <em class="replaceable"><code>latitude,longitude[ ,elevation
 ]</code></em> ] <em class="replaceable"><code>image.jpg</code></em>
 ...</p>
 </div>
 <div class="cmdsynopsis">
-<p><code class="command">gpscorrelate</code> -s | --show | -o |
---machine <em class=
+<p><code class="command">gpscorrelate</code> -s | --show | -x |
+--show-gpx | -o | --machine <em class=
 "replaceable"><code>image.jpg</code></em>...</p>
 </div>
 <div class="cmdsynopsis">
@@ -57,8 +59,7 @@ filling EXIF fields</p>
 --help</p>
 </div>
 </div>
-<div class="refsect1"><a name="idm140338993903472" id=
-"idm140338993903472"></a>
+<div class="refsect1"><a name="id1338" id="id1338"></a>
 <h2>DESCRIPTION</h2>
 <p>This manual page documents the <span class=
 "command"><strong>gpscorrelate</strong></span> command. There is
@@ -74,11 +75,14 @@ to as <span class="emphasis"><em>correlation</em></span>.</p>
 taken (with a 1-second granularity) the GPS data are stored
 unmodified in EXIF fields. If they are not, linear interpolation of
 GPS data available at moments before and after the image was taken
-can be used. A measure of the approximate accuracy of the GPS
-location reading is preserved when written into the image.</p>
+can be used. Linear interpolation gives good results when points
+are close together, but if they are several kilometres apart on an
+airplane route, it will introduce some error versus the great
+circle route an airplane flies. A measure of the approximate
+accuracy of the GPS location reading is preserved when written into
+the image.</p>
 </div>
-<div class="refsect1"><a name="idm140338993899616" id=
-"idm140338993899616"></a>
+<div class="refsect1"><a name="id1339" id="id1339"></a>
 <h2>OPTIONS</h2>
 <p>These programs follow the usual <acronym class=
 "acronym">GNU</acronym> command line syntax, with long options
@@ -113,15 +117,28 @@ or in degrees/minutes/seconds form, such as <strong class=
 <strong class="userinput"><code>-123d45m67s</code></strong>.
 Providing an elevation is optional. Each component can be separated
 by commas, spaces or tabs.</p>
-<p>Note that this option has a known bug in that it does not parse
-numbers correctly in locales that use other than "." as a decimal
-separator.</p>
+<p>Note that this option has a known limitation in that it does not
+honour the locale's decimal place character in locales that use
+other than ".".</p>
 </dd>
 <dt><span class="term"><code class="option">-s</code>, <code class=
 "option">--show</code></span></dt>
 <dd>
 <p>Only show the GPS data already in the given image's EXIF tags
 instead of correlating them.</p>
+</dd>
+<dt><span class="term"><code class="option">-x</code>, <code class=
+"option">--show-gpx</code></span></dt>
+<dd>
+<p>Only show the GPS data in the given images in GPX format. Note
+that the points are written in the order in which the images are
+found on the command-line, so be sure to give them in the order in
+which they were photographed. The <code class=
+"option">-z</code>/<code class="option">--timeadd</code> and
+<code class="option">-O</code>/<code class=
+"option">--photooffset</code> options are honoured just as in
+correlation to determine the correct time zone of the images.
+Images that can't be read or aren't GPS tagged are ignored.</p>
 </dd>
 <dt><span class="term"><code class="option">-o</code>, <code class=
 "option">--machine</code></span></dt>
@@ -218,11 +235,17 @@ skipped.</p>
 point can refer and still be used for correlation. This defaults to
 0, which means to disable this check. Only one of the two points
 need be within this range for correlation to take place.</p>
-<p>If the accuracy of the location is paramount and you would
-rather not correlate a position for a photo at all if the nearest
+<p>If a clear view of sufficient GPS satellites is lost while
+recording a track, then there may be location gaps in the GPX file.
+If the accuracy of the recorded location is paramount and you would
+rather not correlate a position at all for a photo if the available
 GPS coordinates were recorded too long ago in the past or too far
 into the future (relative to when the photo was taken), then set
 this to a nonzero value.</p>
+<p>This option will also prevent recording heading and direction
+under the same circumstances (see <strong class=
+"userinput"><code>--max-heading</code></strong> for a discussion of
+when this may be needed).</p>
 </dd>
 <dt><span class="term"><code class="option">-t</code>, <code class=
 "option">--ignore-tracksegs</code></span></dt>
@@ -236,6 +259,82 @@ both flags are set. Without this flag, photos taken within the time
 gap between two <strong class=
 "userinput"><code>&lt;trkseg&gt;</code></strong> tracks in the GPX
 file are not correlated.</p>
+</dd>
+<dt><span class="term"><code class=
+"option">--heading</code></span></dt>
+<dd>
+<p>Write an EXIF tag showing the direction of movement at the time
+of image capture. This is only possible if the direction is written
+in an appropriate tag within a <code class=
+"constant">&lt;trkpt&gt;</code> entry in the GPX file. Supported
+tags are <code class="constant">course</code> (from GPX 1.0),
+<code class="constant">extensions/TrackPointExtension/course</code>
+(a <span class="trademark">Garmin</span>&REG; <code class=
+"constant">TrackPointExtension</code>), and <code class=
+"constant">extensions/compass</code> (written by <span class=
+"productname">OSMTracker</span>&bull;).</p>
+<p><span class="command"><strong>gpscorrelate</strong></span>
+treats each of these tags as holding the true direction of
+movement, but they aren't very well defined and might not hold
+exactly what's expected. For example, a phone might store the
+direction it's facing rather than the direction of movement, or the
+direction might be the magnetic heading instead of true heading.
+Or, a device might estimate the heading from GPS movement which
+will be inaccurate at slow speeds. Use your knowledge of the
+recording application to determine how much faith you can place in
+the resulting tags.</p>
+<p>If this is used with <code class="option">--latlong</code>
+instead of with <code class="option">--gps</code>, then a fixed
+heading of 0 is written (this is subject to change in the
+future).</p>
+</dd>
+<dt><span class="term"><code class="option">-B</code>, <code class=
+"option">--max-heading</code> <em class=
+"replaceable"><code>degrees</code></em></span></dt>
+<dd>
+<p>Don't write the tags for <code class="option">--heading</code>
+and <code class="option">--direction</code> for images where the
+heading has changed by more than the specified number of degrees
+between the GPX points being used. This prevents writing a value
+that is likely to be inaccurate because the image was taken during
+a sharp turn. This is off by default.</p>
+<p>This option won't prevent writing an incorrect heading or
+direction in the case where GPS points are sparser than the time it
+takes the recording vehicle to make a nearly 360&deg; turn. For
+example, if the vehicle takes 8 seconds to turn completely around
+but GPS tags are written every 10 seconds, then the two points
+written at either end of the turn could have headings that are very
+close (within <code class="option">--max-heading</code>) yet a
+picture taken in the middle of the turn, 4 seconds after the first
+tag, would have an interpolated heading that is around 180&deg; off
+the correct value. Prevent this kind of bad value from being
+written by setting a <code class="option">--max-dist</code> that is
+much less than the time it takes to turn around, such as 4 in this
+example.</p>
+</dd>
+<dt><span class="term"><code class="option">-b</code>, <code class=
+"option">--direction</code> <em class=
+"replaceable"><code>degrees</code></em></span></dt>
+<dd>
+<p>write an EXIF tag showing the direction the camera was pointing
+when the image was taken. The degrees argument gives the offset
+between the direction of travel (the value that would be written if
+<code class="option">--heading</code> were given) and the camera
+direction. For example, if the camera is mounted pointing out the
+right side window of a car then this would be specified as
+<code class="option">--direction</code> <em class=
+"replaceable"><code>90</code></em>. If <code class=
+"option">--heading</code> is also given, then the two tags will
+always be this number of degrees apart. If accuracy is important,
+use the <code class="option">--max-heading</code> and <code class=
+"option">--max-dist</code> options to limit writing these tags to
+times when there is a good fix on the position and not during a
+sharp turn. Since this option applies along the entire track, it's
+only generally useful when the camera is fixed in the vehicle
+during the trip.</p>
+<p>This may be used with <code class="option">--latlong</code> in
+which case the argument is used as the camera direction without
+alteration.</p>
 </dd>
 <dt><span class="term"><code class="option">-M</code>, <code class=
 "option">--no-mtime</code></span></dt>
@@ -283,15 +382,14 @@ copyright information.</p>
 </dl>
 </div>
 </div>
-<div class="refsect1"><a name="idm140338993832912" id=
-"idm140338993832912"></a>
+<div class="refsect1"><a name="id1340" id="id1340"></a>
 <h2>EXAMPLES</h2>
-<p>To correlate all photos in a directory taken in western Europe
-in the summer (i.e., UTC-2):</p>
+<p>Correlate all photos in a directory taken in western Europe in
+the summer (i.e., UTC-2):</p>
 <p><strong class="userinput"><code>gpscorrelate -g Test.gpx -z 2
 *.jpg</code></strong></p>
-<p>To correlate all photos in a directory taken in Italy, switching
-to UTC-2 or UTC-1 depending on the daylight savings time in effect
+<p>Correlate all photos in a directory taken in Italy, switching to
+UTC-2 or UTC-1 depending on the daylight savings time in effect
 when the first picture in the list was taken:</p>
 <p><strong class="userinput"><code>env TZ=Europe/Rome gpscorrelate
 -g Test.gpx *.jpg</code></strong></p>
@@ -303,8 +401,22 @@ changing the file time stamp of the files, while showing details of
 the process:</p>
 <p><strong class="userinput"><code>gpscorrelate -g track1.gpx -g
 track2.gpx -m 120 -t -M -v *.jpg</code></strong></p>
-<p>To correlate a photo taken from a camera with a fast clock
-(i.e., the clock was 77 seconds ahead of GPS time):</p>
+<p>Correlate images taken from a dashcam, adding direction tags
+from the GPX file:</p>
+<p><strong class="userinput"><code>gpscorrelate --heading
+--max-heading 90 --direction 0 -g Test.gpx
+*.jpg</code></strong></p>
+<p>Correlate a set of photos taken with a camera aimed straight out
+of the right-hand passenger side window of a car (90&deg; from
+straight ahead), using a GPX file containing direction tags,
+skipping direction tagging during fast turns and all tags when a
+GPS lock is lost for more than 6 seconds (to avoid writing
+inaccurate tags):</p>
+<p><strong class="userinput"><code>gpscorrelate -g car_trip.gpx
+--heading --max-heading 45 --direction 90 --max-dist 6
+--ignore-tracksegs *.jpg</code></strong></p>
+<p>Correlate a photo taken from a camera with a fast clock (i.e.,
+the clock was 77 seconds ahead of GPS time):</p>
 <p><strong class="userinput"><code>gpscorrelate -g Test.gpx -O -77
 photo.jpg</code></strong></p>
 <p>Show existing GPS tags in a photo:</p>
@@ -313,16 +425,22 @@ photo.jpg</code></strong></p>
 <p>Show existing GPS tags in a photo and output in CSV format:</p>
 <p><strong class="userinput"><code>gpscorrelate --show --machine
 photo.jpg</code></strong></p>
+<p>Create a GPX track from a set of images taken in the UK in
+winter that are already GPS tagged (e.g., as might come from a cell
+phone camera), which can be used to correlate other photos taken on
+another nearby camera:</p>
+<p><strong class="userinput"><code>gpscorrelate --show-gpx -z 0
+IMG*.JPG</code></strong></p>
 <p>Remove GPS tags from photos:</p>
 <p><strong class="userinput"><code>gpscorrelate --remove
 *.jpg</code></strong></p>
-<p>Add a GPS location tag to a photo taken at Ulmer
-M&uuml;nster:</p>
+<p>Add a GPS location tag to a photo taken to the southeast at
+Ulmer M&uuml;nster:</p>
 <p><strong class="userinput"><code>gpscorrelate -l
-48.398620,9.991417,522 -z 2 ulm.jpg</code></strong></p>
+48.398620,9.991417,522 --direction 135 -z 2
+ulm.jpg</code></strong></p>
 </div>
-<div class="refsect1"><a name="idm140338993820400" id=
-"idm140338993820400"></a>
+<div class="refsect1"><a name="id1341" id="id1341"></a>
 <h2>EXIT STATUS</h2>
 <p><span class="command"><strong>gpscorrelate</strong></span>
 returns <span class="errorcode">0</span> in case of success,
@@ -331,8 +449,7 @@ read or write error) and <span class="errorcode">2</span> in case
 of minor error (such as the given GPS track not covering the time
 of an image).</p>
 </div>
-<div class="refsect1"><a name="idm140338993816560" id=
-"idm140338993816560"></a>
+<div class="refsect1"><a name="id1342" id="id1342"></a>
 <h2>SEE ALSO</h2>
 <p><span class="citerefentry"><span class=
 "refentrytitle">gpsd</span>(1)</span>, <span class=
@@ -346,13 +463,12 @@ of an image).</p>
 the filesystem at <code class=
 "filename">/usr/local/share/doc/gpscorrelate</code>.</p>
 </div>
-<div class="refsect1"><a name="idm140338993811120" id=
-"idm140338993811120"></a>
+<div class="refsect1"><a name="id1343" id="id1343"></a>
 <h2>LICENSE</h2>
 <p>This manual page was initially written by Stefano Zacchiroli
 <code class="email">&lt;<a class="email" href=
 "mailto:zack@debian.org">zack@debian.org</a>&gt;</code> for the
-<span class="productname">Debian</span>&trade; system. It was
+<span class="productname">Debian</span>&TRADE; system. It was
 extended by Till Maas <code class="email">&lt;<a class="email"
 href="mailto:opensource@till.name">opensource@till.name</a>&gt;</code>
 and Dan Fandrich <code class="email">&lt;<a class="email" href=
