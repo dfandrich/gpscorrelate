@@ -634,14 +634,14 @@
     <title>EXAMPLES</title>
 
     <para>
-    To correlate all photos in a directory taken in western Europe in the
+    Correlate all photos in a directory taken in western Europe in the
     summer (i.e., UTC-2):</para>
     <para>
     <userinput>gpscorrelate -g Test.gpx -z 2 *.jpg</userinput>
     </para>
 
     <para>
-    To correlate all photos in a directory taken in Italy, switching to UTC-2
+    Correlate all photos in a directory taken in Italy, switching to UTC-2
     or UTC-1 depending on the daylight savings time in effect when the first
     picture in the list was taken:</para>
     <para>
@@ -659,15 +659,26 @@
     </para>
 
     <para>
-    To correlate a set of photos taken with a camera aimed straight out of the
-    right-hand passenger window of a car, using a GPX file containing direction tags:
+    Correlate images taken from a dashcam, adding direction tags from the
+    GPX file:
     </para>
     <para>
-    <userinput>gpscorrelate -g car_trip.gpx --heading --direction 90 --max-direction 20 *.jpg</userinput>
+    <userinput>gpscorrelate --heading --max-heading 90 --direction 0 -g Test.gpx *.jpg</userinput>
     </para>
 
     <para>
-    To correlate a photo taken from a camera with a fast clock (i.e., the clock
+    Correlate a set of photos taken with a camera aimed straight out of the
+    right-hand passenger side window of a car (90&deg; from straight ahead),
+    using a GPX file containing direction tags, skipping direction tagging
+    during fast turns and all tags when a GPS lock is lost for more than 6
+    seconds (to avoid writing inaccurate tags):
+    </para>
+    <para>
+    <userinput>gpscorrelate -g car_trip.gpx --heading --max-heading 45 --direction 90 --max-dist 6 --ignore-tracksegs *.jpg</userinput>
+    </para>
+
+    <para>
+    Correlate a photo taken from a camera with a fast clock (i.e., the clock
     was 77 seconds ahead of GPS time):
     </para>
     <para>
@@ -708,12 +719,6 @@
     Add a GPS location tag to a photo taken to the east at Ulmer Münster:</para>
     <para>
     <userinput>gpscorrelate -l 48.398620,9.991417,522 --direction 90 -z 2 ulm.jpg</userinput>
-    </para>
-
-    <para>
-    Correlate images taken from a dashcam, adding direction tags:</para>
-    <para>
-    <userinput>gpscorrelate --heading --max-dist 5 --max-heading 90 --direction 0 -g Test.gpx *.jpg</userinput>
     </para>
 
   </refsect1>
