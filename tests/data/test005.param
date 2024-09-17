@@ -1,4 +1,8 @@
 TITLE='Correlate with nonexistent GPX file'
 COMMAND='$PROGRAM -g "$STAGINGDIR/does-not-exist" "$STAGINGDIR/point1-1.jpg" 2> "$OUTFILE" > /dev/null'
 RESULTCODE=1
-SEDCOMMAND='s@([ "])([a-zA-Z]:)?/.*/@\1@' # strip paths
+# This sed expression has to transform two vastly different strings. The first
+# is a libxml2 message that has had several forms over the years, so leave just
+# enough of the common parts to determine that the right message was output.
+# The other comes from gpscorrelate and just needs its path stripped.
+SEDCOMMAND='s@(((failed to load)( external entity)?)|(Failed to parse GPX data from)) +(")?([a-zA-Z]:)?/.*/([^:]*)(: No such file or directory)?@\3\5 \6\8@'
