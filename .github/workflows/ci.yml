@@ -534,71 +534,6 @@ jobs:
     - name: install test
       run: make prefix= DESTDIR="${PWD}" -j 1 ${{ matrix.build.install_target }}
 
-  build-osx11:
-    runs-on: macos-11
-    env:
-      MAKEFLAGS: -j 3
-    strategy:
-      fail-fast: false
-      matrix:
-        build:
-        - cc: gcc
-          gtk: 2
-          install: desktop-file-utils docbook-xsl exiv2 gtk+
-          cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
-          cxxflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1 -std=c++11
-          ldflags: -O3 -lintl
-          cxx: g++
-          target: all
-          install_target: install install-po install-desktop-file
-        - cc: gcc
-          gtk: 3
-          install: desktop-file-utils docbook-xsl exiv2 gtk+3
-          cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
-          cxxflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1 -std=c++11
-          ldflags: -O3 -lintl
-          cxx: g++
-          target: all
-          install_target: install install-po install-desktop-file
-        - cc: clang
-          gtk: 2
-          install: desktop-file-utils docbook-xsl exiv2 gtk+
-          cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
-          cxxflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1 -std=c++11
-          ldflags: -O3 -lintl
-          cxx: clang++
-          target: all
-          install_target: install install-po install-desktop-file
-        - cc: clang
-          gtk: 3
-          install: desktop-file-utils docbook-xsl exiv2 gtk+3
-          cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
-          cxxflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1 -std=c++11
-          ldflags: -O3 -lintl
-          cxx: clang++
-          target: all
-          install_target: install install-po install-desktop-file
-
-    steps:
-    - uses: actions/checkout@v4
-    - name: install deps
-      run: brew install ${{ matrix.build.install }}
-    - name: build
-      run: make CFLAGS="${{ matrix.build.cflags }}" CXXFLAGS="${{ matrix.build.cxxflags }}" LDFLAGS="${{ matrix.build.ldflags }}" CC="${{ matrix.build.cc }}" CXX="${{ matrix.build.cxx }}" GTK="${{ matrix.build.gtk }}" ${{ matrix.build.make_opts }} XML_CATALOG_FILES="$(brew --prefix)/etc/xml/catalog" XSLTFLAGS=--nonet ${{ matrix.build.target }}
-    - name: smoke test
-      run: ./gpscorrelate -V
-    - name: test
-      run: |
-        if [[ -z "${{ matrix.build.failing_tests }}" ]] ; then
-          make check CHECK_OPTIONS=-v ASAN_OPTIONS="${{ matrix.build.asan_options }}"
-        else
-          # Debug logging enabled makes some tests fail due to differing output
-          echo 'Expecting ${{ matrix.build.failing_tests }} test failures'
-          make check CHECK_OPTIONS=-v | tee /dev/stderr | grep -q '${{ matrix.build.failing_tests }} test(s) have FAILED'
-        fi
-    - name: install test
-      run: make prefix= DESTDIR="${PWD}" -j 1 ${{ matrix.build.install_target }}
-
   build-fedora39:
     runs-on: ubuntu-latest
     container: fedora:39
@@ -673,9 +608,8 @@ jobs:
     - name: install test
       run: make prefix= DESTDIR="${PWD}" ${{ matrix.build.install_target }}
 
-  build-debian-bookworm:
+  build-debian:
     runs-on: ubuntu-latest
-    container: debian:bookworm-slim
     strategy:
       fail-fast: false
       matrix:
@@ -687,7 +621,18 @@ jobs:
           cflags: -m32 -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
           target: gpscorrelate gpscorrelate-gui
           arch: i386
-
+          # Debian stable
+          container: debian:bookworm-slim
+        - name: 'x86_64 testing'
+          cc: gcc
+          cxx: g++
+          install: make gcc g++ exiv2 libexiv2-dev libgtk-3-dev gettext libxml2-dev
+          cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
+          target: gpscorrelate gpscorrelate-gui
+          arch: amd64
+          # Debian testing
+          container: debian:testing
+    container: ${{ matrix.build.container }}
     steps:
     - uses: actions/checkout@v4
     - name: 'install deps'
