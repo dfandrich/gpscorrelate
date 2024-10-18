@@ -2,10 +2,10 @@
 
 ## Status
 
-[![Github Actions Build Status](https://github.com/dfandrich/gpscorrelate/workflows/CI/badge.svg?branch=master)](https://github.com/dfandrich/gpscorrelate/actions?query=workflow%3A%22CI%22)
+[![Github Actions Build Status](https://github.com/dfandrich/gpscorrelate/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/dfandrich/gpscorrelate/actions?query=workflow%3A%22CI%22)
 [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/4wi4bxc47c29ce0r/branch/master?svg=true)](https://ci.appveyor.com/project/dfandrich/gpscorrelate)
 [![Cirrus Build Status](https://api.cirrus-ci.com/github/dfandrich/gpscorrelate.svg?branch=master)](https://cirrus-ci.com/github/dfandrich/gpscorrelate)
-[![CodeQL](https://github.com/dfandrich/gpscorrelate/actions/workflows/codeql.yml/badge.svg)](https://github.com/dfandrich/gpscorrelate/actions/workflows/codeql.yml)
+[![CodeQL](https://github.com/dfandrich/gpscorrelate/actions/workflows/codeql.yml/badge.svg?branch=master)](https://github.com/dfandrich/gpscorrelate/actions/workflows/codeql.yml)
 [![Coverage Status](https://coveralls.io/repos/github/dfandrich/gpscorrelate/badge.svg?branch=master)](https://coveralls.io/github/dfandrich/gpscorrelate)
 
 GPSCorrelate was originally written by Daniel Foote. The maintainer is now
