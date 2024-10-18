@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpscorrelate 2.1\n"
 "Report-Msgid-Bugs-To: dan@coneharvesters.com\n"
-"POT-Creation-Date: 2024-03-02 17:40-0800\n"
-"PO-Revision-Date: 2018-07-21 14:20+0200\n"
+"POT-Creation-Date: 2024-10-17 21:41-0700\n"
+"PO-Revision-Date: 2024-10-17 21:41-0700\n"
 "Last-Translator: Dan Fandrich <dan@coneharvesters.com>\n"
 "Language-Team: deutsch\n"
 "Language: de\n"
@@ -573,12 +573,13 @@ msgstr ""
 
 #: main-command.c:105
 msgid ""
-"-o, --machine            Similar to --show but with machine-readable output"
+"-o, --machine            Like --show but with machine-readable CSV output"
 msgstr ""
-"-o, --machine            Ähnlich zu --show aber mit maschinenlesbare Ausgabe"
+"-o, --machine            Ähnlich zu --show aber mit einer maschinenlesbaren\n"
+"                         CSV-Ausgabe"
 
 #: main-command.c:106
-msgid "-x, --show-gpx           Similar to --show but with GPX output"
+msgid "-x, --show-gpx           Like --show but with GPX output"
 msgstr "-x, --show-gpx           Ähnlich zu --show aber mit GPX Ausgabe"
 
 #: main-command.c:107

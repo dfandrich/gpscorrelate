@@ -102,8 +102,8 @@ static void PrintUsage(const char* ProgramName)
 	puts(  _("-B, --max-heading DEG    Max degrees between points that will be matched"));
 	puts(  _("-b, --direction DEG      Angular offset of camera from forward direction"));
 	puts(  _("-s, --show               Just show the GPS data from the given files"));
-	puts(  _("-o, --machine            Similar to --show but with machine-readable output"));
-	puts(  _("-x, --show-gpx           Similar to --show but with GPX output"));
+	puts(  _("-o, --machine            Like --show but with machine-readable CSV output"));
+	puts(  _("-x, --show-gpx           Like --show but with GPX output"));
 	puts(  _("-r, --remove             Strip GPS tags from the given files"));
 	puts(  _("-t, --ignore-tracksegs   Interpolate between track segments, too"));
 	puts(  _("-M, --no-mtime           Don't change mtime of modified files"));
