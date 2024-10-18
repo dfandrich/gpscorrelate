@@ -55,14 +55,14 @@
           --timeadd +/-<replaceable>HH</replaceable>[:<replaceable>MM</replaceable>]
         </arg>
       </group>
-      
+
       <group>
         <arg choice="plain">-O</arg>
         <arg choice="plain">
           --photooffset <replaceable>seconds</replaceable>
         </arg>
       </group>
-      
+
       <group>
         <arg choice="plain">-i</arg>
         <arg choice="plain">--no-interpolation</arg>
@@ -78,7 +78,7 @@
         <arg choice="plain">--datum <replaceable>datum</replaceable>
         </arg>
       </group>
-      
+
       <group>
         <arg choice="plain">-n</arg>
         <arg choice="plain">--no-write</arg>
@@ -120,12 +120,11 @@
         <arg choice="plain">-M</arg>
         <arg choice="plain">--no-mtime</arg>
       </group>
-      
+
       <group>
         <arg choice="plain">--degmins</arg>
       </group>
 
-      
       <group>
         <arg choice="plain">
           -g <replaceable>file.gpx</replaceable>
@@ -349,7 +348,7 @@
             00:00). </para>
         </listitem>
       </varlistentry>
-      
+
       <varlistentry>
         <term>
           <option>-O</option>,
@@ -594,7 +593,7 @@
           photos.</para>
         </listitem>
       </varlistentry>
-      
+
       <varlistentry>
         <term>
           <option>--degmins</option>

@@ -161,10 +161,10 @@ jobs:
         exclude:
           # Exclude configurations intended for a single OS version
           - osver: 22.04
-            build: 
+            build:
               osver: 20.04
           - osver: 24.04
-            build: 
+            build:
               osver: 20.04
 
     steps:

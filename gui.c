@@ -359,7 +359,7 @@ GtkWidget* CreateMatchWindow (void)
   GPSSelectedLabel = gtk_label_new (_("Read from: No file"));  /* FIX ME: Label not appropriately sized/placed for data. */
   gtk_widget_show (GPSSelectedLabel);
   gtk_box_pack_start (GTK_BOX (GPSDataVBox), GPSSelectedLabel, FALSE, FALSE, 0);
-  gtk_label_set_ellipsize(GTK_LABEL(GPSSelectedLabel), PANGO_ELLIPSIZE_END); 
+  gtk_label_set_ellipsize(GTK_LABEL(GPSSelectedLabel), PANGO_ELLIPSIZE_END);
   /*gtk_label_set_width_chars(GTK_LABEL(GPSSelectedLabel), 20);
   gtk_label_set_line_wrap(GTK_LABEL(GPSSelectedLabel), TRUE);*/
 
@@ -559,7 +559,7 @@ GtkWidget* CreateMatchWindow (void)
                     (GtkAttachOptions) (0), 0, 0);
   gtk_misc_set_alignment (GTK_MISC (TimeZoneLabel), 0, 0.5);
   ++row;
-  
+
   PhotoOffsetLabel = gtk_label_new (_("Photo Offset:"));
   gtk_widget_show (PhotoOffsetLabel);
   gtk_table_attach (GTK_TABLE (OptionsTable), PhotoOffsetLabel, 0, 1, row, row+1,
@@ -746,7 +746,7 @@ GtkWidget* CreateMatchWindow (void)
   gtk_widget_show (CorrelateLabel);
   gtk_frame_set_label_widget (GTK_FRAME (CorrelateFrame), CorrelateLabel);
   gtk_label_set_use_markup (GTK_LABEL (CorrelateLabel), TRUE);
-  
+
   /* Other options area. */
   OtherOptionsFrame = gtk_frame_new (NULL);
   gtk_widget_show (OtherOptionsFrame);
@@ -831,7 +831,7 @@ GtkWidget* CreateMatchWindow (void)
   gtk_container_add (GTK_CONTAINER (PhotoListScroll), PhotoList);
 
   gtk_tree_selection_set_mode(gtk_tree_view_get_selection(GTK_TREE_VIEW(PhotoList)), GTK_SELECTION_MULTIPLE);
-  
+
   /* Prepare the columns. We need columns. Columns are good. */
   PhotoListRenderer = gtk_cell_renderer_text_new ();
 
@@ -848,21 +848,21 @@ GtkWidget* CreateMatchWindow (void)
 							NULL);
   gtk_tree_view_column_set_resizable (LatColumn, TRUE);
   gtk_tree_view_append_column (GTK_TREE_VIEW (PhotoList), LatColumn);
-  
+
   /* Longitude Column. */
   LongColumn = gtk_tree_view_column_new_with_attributes (_("Longitude"), PhotoListRenderer,
 							"text", LIST_LONG,
 							NULL);
   gtk_tree_view_column_set_resizable (LongColumn, TRUE);
   gtk_tree_view_append_column (GTK_TREE_VIEW (PhotoList), LongColumn);
-  
+
   /* Elevation Column. */
   ElevColumn = gtk_tree_view_column_new_with_attributes (_("Elevation"), PhotoListRenderer,
 							"text", LIST_ELEV,
 							NULL);
   gtk_tree_view_column_set_resizable (ElevColumn, TRUE);
   gtk_tree_view_append_column (GTK_TREE_VIEW (PhotoList), ElevColumn);
-  
+
   /* Time column. */
   TimeColumn = gtk_tree_view_column_new_with_attributes (_("Time"), PhotoListRenderer,
 							"text", LIST_TIME,
@@ -940,7 +940,7 @@ gboolean DestroyWindow(GtkWidget *Widget,
 			Free = Free2;
 		}
 	}
-	
+
 	/* Free the memory for the GPS data, if applicable. */
 	while (NumTracks > 0)
 	{
@@ -959,7 +959,7 @@ gboolean DestroyWindow(GtkWidget *Widget,
 	/* And return FALSE so that GTK knows we have not
 	 * vetoed the close. */
 	return FALSE;
-}                                                
+}
 
 void AddPhotosButtonPress( GtkWidget *Widget, gpointer Data )
 {
@@ -1011,7 +1011,7 @@ void AddPhotosButtonPress( GtkWidget *Widget, gpointer Data )
 	if (gtk_dialog_run (GTK_DIALOG (AddPhotosDialog)) == GTK_RESPONSE_ACCEPT)
 #endif
 	{
-		/* Haul out the selected files. 
+		/* Haul out the selected files.
 		 * We pass them along to another function that will
 		 * add them to the internal list and onto the screen. */
 		/* GTK returns a GSList - a singly-linked list of filenames. */
@@ -1052,7 +1052,7 @@ void AddPhotoToList(const char* Filename)
 	 * current list. */
 	/* Note that this function does more than update the GUI:
 	 * it also adds it to the internal list, ready to go. */
-	
+
 	/* Get ready to read the relevant data. */
 	GtkTreeIter AddStuff;
 
@@ -1066,7 +1066,7 @@ void AddPhotoToList(const char* Filename)
 	/* Note: we don't check if Time is NULL here. It is done for
 	 * us in SetListItem, and we check again before we attempt
 	 * to allocate memory to store "Time" in. */
-		
+
 	/* Add the data to the list. */
 	gtk_list_store_append(PhotoListStore, &AddStuff);
 	SetListItem(&AddStuff, Filename, Time, Lat, Long, Elev, NULL, IncludesGPS);
@@ -1104,7 +1104,7 @@ void AddPhotoToList(const char* Filename)
 	}
 	/* Save the TreeIter as the last step. */
 	LastPhoto->ListPointer = AddStuff;
-	
+
 	/* Save the pointer into the data, as well. */
 	gtk_list_store_set(PhotoListStore, &AddStuff,
 		LIST_POINTER, LastPhoto,
@@ -1230,11 +1230,11 @@ void RemovePhotosButtonPress( GtkWidget *Widget, gpointer Data )
 					PhotoWalk = PhotoWalk->Next;
 				}
 			} /* End for Walk the photo list. */
-			
+
 		}
 	} /* End for Walk the GList. */
 
-	/* Now remove the rows from the screen. 
+	/* Now remove the rows from the screen.
 	 * By this point, they are no longer in our internal list. */
 	int i;
 	for (i = 0; i < SelectedCount; i++)
@@ -1265,7 +1265,7 @@ void SetListItem(GtkTreeIter* Iter, const char* Filename, const char* Time, doub
 	char LongScratch[100] = "";
 	char ElevScratch[100] = "";
 	const char* State = NULL;
-	
+
 	/* Format all the data. */
 	if (!Time)
 	{
@@ -1320,7 +1320,7 @@ void SetListItem(GtkTreeIter* Iter, const char* Filename, const char* Time, doub
 		LIST_TIME, Time,
 		LIST_STATE, State,
 		-1);
-	
+
 }
 
 void SetState(GtkTreeIter* Iter, const char* State)
@@ -1344,7 +1344,7 @@ void SelectGPSButtonPress( GtkWidget *Widget, gpointer Data )
 	GtkWidget *GPSDataDialog;
 #endif
 	GtkWidget *ErrorDialog;
-	
+
 	/* Get the dialog ready... */
 #if GTK_CHECK_VERSION(3, 20, 0)
 	GPSDataDialog = gtk_file_chooser_native_new (_("Select GPS Data..."),
@@ -1493,7 +1493,7 @@ void SelectGPSButtonPress( GtkWidget *Widget, gpointer Data )
 				FreeTrack(&GPSData[NumTracks]);
 			}
 		}
-		
+
 		/* Clean up... */
 		free(Scratch);
 		free(FirstOrBadFileName);
@@ -1502,7 +1502,7 @@ void SelectGPSButtonPress( GtkWidget *Widget, gpointer Data )
 	/* Make a note of the directory we stopped at. */
 	g_free(GPXOpenDir);
 	GPXOpenDir = gtk_file_chooser_get_current_folder(GTK_FILE_CHOOSER(GPSDataDialog));
-	
+
 	/* Now we're finished with the dialog... free it. */
 #if GTK_CHECK_VERSION(3, 20, 0)
 	g_object_unref (GPSDataDialog);
@@ -1570,13 +1570,13 @@ void CorrelateButtonPress( GtkWidget *Widget, gpointer Data )
 
 	/* DD MM.MM or DD MM SS.SS? */
 	Options.DegMinSecs = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(DegMinSecsCheck));
-	
+
 	/* Feather time. */
 	Options.FeatherTime = atof(gtk_entry_get_text(GTK_ENTRY(GapTimeEntry)));
 
 	/* GPS Datum. */
 	Options.Datum = strdup(gtk_entry_get_text(GTK_ENTRY(GPSDatumEntry)));
-		
+
 	/* TimeZone. We may need to extract the timezone from a string. */
 	Options.AutoTimeZone = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(AutoTimeZoneCheck));
 	Options.TimeZoneHours = 0;
@@ -1630,10 +1630,10 @@ void CorrelateButtonPress( GtkWidget *Widget, gpointer Data )
 				ShowPath, NULL, FALSE, 0, 0);
 		gtk_tree_path_free(ShowPath);
 		GtkGUIUpdate();
-		
+
 		/* Do the correlation. */
 		Result = CorrelatePhoto(Walk->Filename, &Options);
-		
+
 		/* Figure out if it worked. */
 		if (Result)
 		{
@@ -1749,7 +1749,7 @@ void StripGPSButtonPress( GtkWidget *Widget, gpointer Data )
 				ShowPath, NULL, FALSE, 0, 0);
 		gtk_tree_path_free(ShowPath);
 		GtkGUIUpdate();
-		
+
 		/* Strip the tags. */
 		if (RemoveGPSExif(PhotoData->Filename, NoChangeMtime, NoWriteExif))
 		{

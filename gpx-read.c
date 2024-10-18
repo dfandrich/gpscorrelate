@@ -82,9 +82,9 @@ static void ExtractTrackPoints(xmlNodePtr Start)
 			Elev = NULL;
 			Time = NULL;
 			Heading = NULL;
-			
+
 			/* To get the Lat and Long, we have to
-			 * extract the properties... another 
+			 * extract the properties... another
 			 * linked list to walk. */
 			for (Properties = Current->properties;
 					Properties;
@@ -209,15 +209,14 @@ static void ExtractTrackPoints(xmlNodePtr Start)
 				LastPoint->HeadingRef = HeadingRef;
 			}
 			LastPoint->Time = ConvertToUnixTime(Time, GPX_DATE_FORMAT, 0, 0);
-			
+
 			/* Debug...
 			printf("TrackPoint. Lat %s (%f), Long %s (%f). Elev %s (%f), Time %d.\n",
 					Lat, atof(Lat), Long, atof(Long), Elev, atof(Elev),
 					ConvertToUnixTime(Time, GPX_DATE_FORMAT, 0, 0));
 			printf("Decimals %d %d %d\n", LastPoint->LatDecimals, LastPoint->LongDecimals, LastPoint->ElevDecimals);
 			*/
-			
-					
+
 		}
 	} /* End For. */
 
@@ -237,16 +236,16 @@ static void FindTrackSeg(xmlNodePtr Start)
 			/* Found it... the children should
 			 * all be trkpt's. */
 			ExtractTrackPoints(Current->children);
-			
+
 			/* Mark the last point as being the end
 			 * of a track segment. */
 			if (LastPoint) LastPoint->EndOfSegment = 1;
-			
+
 		}
-		
+
 		/* And again, with children of this node. */
 		FindTrackSeg(Current->children);
-		
+
 	} /* End For */
 
 }
@@ -269,7 +268,7 @@ static void GetTrackRange(struct GPSTrack* Track)
 		if (Fill->Time < Track->MinTime)
 			Track->MinTime = Fill->Time;
 		/* Check the Max time */
-		if (Fill->Time > Track->MaxTime) 
+		if (Fill->Time > Track->MaxTime)
 			Track->MaxTime = Fill->Time;
 	}
 }
@@ -281,7 +280,7 @@ int ReadGPX(const char* File, struct GPSTrack* Track)
 	LIBXML_TEST_VERSION
 
 	xmlDocPtr GPXData;
-	
+
 	/* Read the GPX data from file. */
 	GPXData = xmlParseFile(File);
 	if (GPXData == NULL)
@@ -321,7 +320,7 @@ int ReadGPX(const char* File, struct GPSTrack* Track)
 	 * I've chosen to do it with two functions, one of which
 	 * is recursive, rather than a clever inside-this-function
 	 * walk the tree thing.
-	 * 
+	 *
 	 * We start by calling the recursive function to look for
 	 * <trkseg> tags, and then that function calls another
 	 * when it has found one... this sub function then
@@ -340,12 +339,12 @@ int ReadGPX(const char* File, struct GPSTrack* Track)
 	 * ".", but certain locales specify otherwise. Which has caused issues.
 	 * So we set the locale for this function, and then revert it.
 	 */
-	
+
 	FirstPoint = NULL;
 	LastPoint = NULL;
-	
+
 	char* OldLocale = setlocale(LC_NUMERIC, "C");
-	
+
 	FindTrackSeg(GPXRoot);
 
 	setlocale(LC_NUMERIC, OldLocale);

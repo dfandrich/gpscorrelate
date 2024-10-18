@@ -231,17 +231,17 @@ struct GPSPoint* CorrelatePhoto(const char* Filename,
 				 * from these two? */
 				if (((Search->Time + Options->FeatherTime) < PhotoTime) &&
 					((Search->Next->Time - Options->FeatherTime) > PhotoTime))
-				{ 
+				{
 					/* We are inside the feather
 					 * time between two points.
 					 * Abort. */
 					Options->Result = CORR_TOOFAR;
 					free(Actual);
 					return NULL;
-				} 
+				}
 			}
 		} /* endif (Options->FeatherTime) */
-		
+
 		/* Second test: is it between this and the
 		 * next point? */
 		if ((PhotoTime > Search->Time) &&
@@ -302,7 +302,7 @@ struct GPSPoint* CorrelatePhoto(const char* Filename,
 			return Actual;
 		}
 	}
-	
+
 	/* Looks like nothing matched. Free the prepared memory,
 	 * and return nothing. */
 	free(Actual);
@@ -316,7 +316,7 @@ void Round(const struct GPSPoint* First, struct GPSPoint* Result,
 	 * up being one or the other point. */
 	const struct GPSPoint* CopyFrom = NULL;
 
-	/* Determine the difference between the two points. 
+	/* Determine the difference between the two points.
 	 * We're using the scale function used by interpolate.
 	 * This gives us a good view of where we are... */
 	double Scale = (double)First->Next->Time - (double)First->Time;
@@ -356,7 +356,7 @@ void Round(const struct GPSPoint* First, struct GPSPoint* Result,
 	Result->Time = CopyFrom->Time;
 
 	/* Done! */
-	
+
 }
 
 void Interpolate(const struct GPSPoint* First, struct GPSPoint* Result,
@@ -366,7 +366,7 @@ void Interpolate(const struct GPSPoint* First, struct GPSPoint* Result,
 	 * is First, the other First->Next. Results into Result. */
 
 	/* Calculate the "scale": a decimal giving the relative distance
-	 * in time between the two points. Ie, a number between 0 and 1 - 
+	 * in time between the two points. Ie, a number between 0 and 1 -
 	 * 0 is the first point, 1 is the next point, and 0.5 would be
 	 * half way. */
 	double Scale = (double)First->Next->Time - (double)First->Time;

@@ -68,7 +68,7 @@ static time_t portable_timegm(struct tm *tm)
 time_t ConvertToUnixTime(const char* StringTime, const char* Format,
 		int TZOffsetHours, int TZOffsetMinutes)
 {
-	/* Read the time using the specified format. 
+	/* Read the time using the specified format.
 	 * The format and string being read from must
 	 * have the most significant time on the left,
 	 * and the least significant on the right:

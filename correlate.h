@@ -41,11 +41,11 @@ struct CorrelateOptions {
 	char* Datum;	 /* Datum of the data; when writing. */
 	int DoBetweenTrkSeg; /* Match between track segments. */
 	int DegMinSecs;	  /* Write out data as DD MM SS.SS (more accurate than in the past) */
-	
+
 	int Result;
 
 	int PhotoOffset; /* Offset applied to Photo time. This is ADDED to PHOTO TIME
-			    to make it match GPS time. In seconds. 
+			    to make it match GPS time. In seconds.
 			    This is (GPS - Photo) */
 
 	struct GPSTrack *Track; /* Pointer to array of tracks to use. The last
@@ -78,7 +78,7 @@ struct CorrelateOptions {
 #define CORR_GPSDATAEXISTS  8
 
 
-struct GPSPoint* CorrelatePhoto(const char* Filename, 
+struct GPSPoint* CorrelatePhoto(const char* Filename,
 		struct CorrelateOptions* Options);
 void SetAutoTimeZoneOptions(const char *TimeTemp,
 		struct CorrelateOptions* Options);

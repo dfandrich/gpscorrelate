@@ -29,7 +29,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-	
+
 char* ReadExifDate(const char* File, int* IncludesGPS);
 char* ReadExifData(const char* File, double* Lat, double* Long, double* Elevation, int* IncludesGPS);
 char* ReadGPSTimestamp(const char* File, char* DateStamp, char* TimeStamp, int* IncludesGPS);
