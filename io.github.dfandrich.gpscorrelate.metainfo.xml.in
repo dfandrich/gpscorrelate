@@ -24,6 +24,10 @@
       <image xml:lang="fr">https://dfandrich.github.io/gpscorrelate/fr/corr.png</image>
     </screenshot>
   </screenshots>
+  <branding>
+    <color type="primary" scheme_preference="light">#00a6ff</color>
+    <color type="primary" scheme_preference="dark">#004b70</color>
+  </branding>
   <url type="homepage">https://dfandrich.github.io/gpscorrelate</url>
   <url type="help">https://dfandrich.github.io/gpscorrelate/gui.html</url>
   <url type="bugtracker">https://github.com/dfandrich/gpscorrelate/issues</url>
