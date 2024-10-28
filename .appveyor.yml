@@ -1,46 +1,52 @@
 # AppVeyor CI configuration file https://www.appveyor.com
 image: Visual Studio 2022
+
+skip_commits:
+  files:
+    - '.cirrus.yml'
+    - '.github/**/*'
+
 environment:
   CYGWIN_MIRROR: https://cygwin.mirror.constant.com
   matrix:
-  - CONFIG: cygwin64
-  - CONFIG: msys2
+    - CONFIG: cygwin64
+    - CONFIG: msys2
 
 install:
-- cmd: if [%CONFIG%]==[cygwin64] (
-    C:\cygwin64\setup-x86_64.exe -qgnNdO -l C:\cygwin64\var\cache\setup -R c:\cygwin64 -s "%CYGWIN_MIRROR%" -P exiv2 -P libexiv2-devel -P libxml2-devel -P libiconv-devel -P libgtk3-devel
-    )
-- cmd: if [%CONFIG%]==[msys2] (
-    set "PATH=C:\msys64\mingw64\bin;C:\msys64\usr\bin;%PATH%" )
-- cmd: if [%CONFIG%]==[msys2] (
-    bash -lc "pacman -S --noconfirm --noprogressbar --needed mingw-w64-x86_64-{libxml2,libiconv,exiv2,gtk3,pkg-config}" )
+  - cmd: if [%CONFIG%]==[cygwin64] (
+      C:\cygwin64\setup-x86_64.exe -qgnNdO -l C:\cygwin64\var\cache\setup -R c:\cygwin64 -s "%CYGWIN_MIRROR%" -P exiv2 -P libexiv2-devel -P libxml2-devel -P libiconv-devel -P libgtk3-devel
+      )
+  - cmd: if [%CONFIG%]==[msys2] (
+      set "PATH=C:\msys64\mingw64\bin;C:\msys64\usr\bin;%PATH%" )
+  - cmd: if [%CONFIG%]==[msys2] (
+      bash -lc "pacman -S --noconfirm --noprogressbar --needed mingw-w64-x86_64-{libxml2,libiconv,exiv2,gtk3,pkg-config}" )
 
 build_script:
-- cmd: if [%CONFIG%]==[cygwin64] (
-    C:\%CONFIG%\bin\bash -e -l -c "cd $APPVEYOR_BUILD_FOLDER && make gpscorrelate gpscorrelate-gui CFLAGS='-Wall -Wextra -O3 -DENABLE_NLS' LDFLAGS='-lintl'" )
-- cmd: if [%CONFIG%]==[msys2] (
-    make EXEEXT=.exe gpscorrelate.exe gpscorrelate-gui.exe CC=gcc CXX=g++ CFLAGS="-Wall -Wextra -O3 -DENABLE_NLS" LDFLAGS="-lintl" )
+  - cmd: if [%CONFIG%]==[cygwin64] (
+      C:\%CONFIG%\bin\bash -e -l -c "cd $APPVEYOR_BUILD_FOLDER && make gpscorrelate gpscorrelate-gui CFLAGS='-Wall -Wextra -O3 -DENABLE_NLS' LDFLAGS='-lintl'" )
+  - cmd: if [%CONFIG%]==[msys2] (
+      make EXEEXT=.exe gpscorrelate.exe gpscorrelate-gui.exe CC=gcc CXX=g++ CFLAGS="-Wall -Wextra -O3 -DENABLE_NLS" LDFLAGS="-lintl" )
 
 test_script:
-# Cygwin allows overwriting read-only files for some strange reason, which
-# causes 4 tests to fail. Until that's sorted, consider 4 tests failing as
-# success.
-# This is probably because tasks are run with Administrator privileges; see:
-# https://help.appveyor.com/discussions/questions/1888-running-tests-with-reduced-privileges
-- cmd: if [%CONFIG%]==[cygwin64] (
-    C:\%CONFIG%\bin\bash -l -c "cd $APPVEYOR_BUILD_FOLDER && make check CHECK_OPTIONS=-v > test.log; cat test.log; grep -q '4 test(s) have FAILED' test.log" )
-# msys2 seems to have a number of bugs that cause test failures:
-# 1) The tests setting TZ fail, because it doesn't seem to support time
-# zones set by TZ (tests 38, 39, 40, 122).
-# 2) Calling fflush on stdout when the buffer contains a partial line causes
-# a spurious \r\n to be written (tests 50, 67).
-# 3) File names on NTFS may not contain the double quote character (test 97).
-# 4) ISO 8859/1 character given on command-line isn't properly passed through
-# (test 113).
-# Until these are addressed (if it's even possible), consider 8 tests failing
-# as success.
-- cmd: if [%CONFIG%]==[msys2] (
-    bash -lc "cd $APPVEYOR_BUILD_FOLDER && make check CHECK_OPTIONS=-v > test.log; cat test.log; grep -q '8 test(s) have FAILED' test.log" )
+  # Cygwin allows overwriting read-only files for some strange reason, which
+  # causes 4 tests to fail. Until that's sorted, consider 4 tests failing as
+  # success.
+  # This is probably because tasks are run with Administrator privileges; see:
+  # https://help.appveyor.com/discussions/questions/1888-running-tests-with-reduced-privileges
+  - cmd: if [%CONFIG%]==[cygwin64] (
+      C:\%CONFIG%\bin\bash -l -c "cd $APPVEYOR_BUILD_FOLDER && make check CHECK_OPTIONS=-v > test.log; cat test.log; grep -q '4 test(s) have FAILED' test.log" )
+  # msys2 seems to have a number of bugs that cause test failures:
+  # 1) The tests setting TZ fail, because it doesn't seem to support time
+  # zones set by TZ (tests 38, 39, 40, 122).
+  # 2) Calling fflush on stdout when the buffer contains a partial line causes
+  # a spurious \r\n to be written (tests 50, 67).
+  # 3) File names on NTFS may not contain the double quote character (test 97).
+  # 4) ISO 8859/1 character given on command-line isn't properly passed through
+  # (test 113).
+  # Until these are addressed (if it's even possible), consider 8 tests failing
+  # as success.
+  - cmd: if [%CONFIG%]==[msys2] (
+      bash -lc "cd $APPVEYOR_BUILD_FOLDER && make check CHECK_OPTIONS=-v > test.log; cat test.log; grep -q '8 test(s) have FAILED' test.log" )
 
 artifacts:
   - path: gpscorrelate.exe

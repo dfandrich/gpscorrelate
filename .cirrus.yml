@@ -3,6 +3,10 @@
 
 freebsd_task:
   name: FreeBSD
+  skip: "changesIncludeOnly(
+    '.appveyor.yml',
+    '.github/**'
+    )"
   freebsd_instance:
     memory: 1000M
     cpu: 1
@@ -45,6 +49,10 @@ freebsd_task:
 
 linux_arm_task:
   name: ARM Linux
+  skip: "changesIncludeOnly(
+    '.appveyor.yml',
+    '.github/**'
+    )"
   arm_container:
     image: ubuntu:24.04
     memory: 400M
@@ -67,7 +75,7 @@ linux_arm_task:
   pkginstall_script:
     - uname -a
     - apt-get update -y && apt-get install -y --no-install-suggests --no-install-recommends build-essential desktop-file-utils docbook-xsl exiv2 libexiv2-dev libgtk${GTK/3/-}${GTK/2/.0}-dev xsltproc libxml2-dev gettext
-      # Create a user for running tests
+    # Create a user for running tests
     - useradd -p '' build
 
   compile_script:
@@ -87,12 +95,16 @@ linux_arm_task:
 
 linux_musl_task:
   name: Linux MUSL
+  skip: "changesIncludeOnly(
+    '.appveyor.yml',
+    '.github/**'
+    )"
   container:
     memory: 300M
     cpu: 1
     matrix:
-      image: alpine:3.20
-      image: alpine:3.17
+      - image: alpine:3.20
+      - image: alpine:3.17
 
   env:
     # Set to 10 instead of 1 to avoid problems when new commits are submitted
@@ -110,7 +122,7 @@ linux_musl_task:
   pkginstall_script:
     - uname -a
     - apk add --no-cache build-base exiv2-dev libxml2-dev gettext-dev "gtk+${GTK}.0-dev" desktop-file-utils
-      # Create a user for running tests
+    # Create a user for running tests
     - adduser -D build
 
   compile_script:
