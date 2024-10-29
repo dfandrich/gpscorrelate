@@ -316,7 +316,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        osver: [39, 40]
+        osver: [39, 41]
         build:
           - cc: gcc
             gtk: 3
