@@ -22,6 +22,7 @@
     <screenshot type="default">
       <image>https://dfandrich.github.io/gpscorrelate/corr.png</image>
       <image xml:lang="fr">https://dfandrich.github.io/gpscorrelate/fr/corr.png</image>
+	  <_caption>Main window</_caption>
     </screenshot>
   </screenshots>
   <branding>
