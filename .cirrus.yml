@@ -11,7 +11,7 @@ freebsd_task:
     memory: 1000M
     cpu: 1
     matrix:
-      image_family: freebsd-14-1
+      image_family: freebsd-14-2
       image_family: freebsd-13-4
 
   env:
