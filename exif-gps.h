@@ -30,8 +30,7 @@
 extern "C" {
 #endif
 
-char* ReadExifDate(const char* File, int* IncludesGPS);
-char* ReadExifData(const char* File, double* Lat, double* Long, double* Elevation, int* IncludesGPS);
+char* ReadExifData(const char* File, int* IncludesGPS, double* Lat, double* Long, double* Elevation);
 char* ReadGPSTimestamp(const char* File, char* DateStamp, char* TimeStamp, int* IncludesGPS);
 int WriteGPSData(const char* File, const struct GPSPoint* Point,
 		 const char* Datum, int NoChangeMtime, int DegMinSecs);

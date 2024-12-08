@@ -154,7 +154,7 @@ static int ShowFileDetails(const char* File, enum OutputFormat Format,
 	int IncludesGPS = 0;
 	Lat = Long = 0;
 	Elev = NAN; /* Elevation is optional, so this means it's missing */
-	char* Time = ReadExifData(File, &Lat, &Long, &Elev, &IncludesGPS);
+	char* Time = ReadExifData(File, &IncludesGPS, &Lat, &Long, &Elev);
 	int rc = 1;
 	char* OldLocale = NULL;
 	static int Started = 0;

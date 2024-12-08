@@ -1061,7 +1061,7 @@ void AddPhotoToList(const char* Filename)
 	int IncludesGPS = 0;
 
 	/* Read the EXIF data. */
-	char *Time = ReadExifData(Filename, &Lat, &Long, &Elev, &IncludesGPS);
+	char *Time = ReadExifData(Filename, &IncludesGPS, &Lat, &Long, &Elev);
 
 	/* Note: we don't check if Time is NULL here. It is done for
 	 * us in SetListItem, and we check again before we attempt

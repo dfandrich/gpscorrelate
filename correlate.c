@@ -104,7 +104,7 @@ struct GPSPoint* CorrelatePhoto(const char* Filename,
 	/* Read out the timestamp from the EXIF data. */
 	char* TimeTemp;
 	int IncludesGPS = 0;
-	TimeTemp = ReadExifDate(Filename, &IncludesGPS);
+	TimeTemp = ReadExifData(Filename, &IncludesGPS, NULL, NULL, NULL);
 	if (!TimeTemp)
 	{
 		/* Error reading the time from the file. Abort. */
