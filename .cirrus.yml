@@ -103,8 +103,8 @@ linux_musl_task:
     memory: 300M
     cpu: 1
     matrix:
-      - image: alpine:3.20
-      - image: alpine:3.17
+      - image: alpine:3.21
+      - image: alpine:3.18
 
   env:
     # Set to 10 instead of 1 to avoid problems when new commits are submitted
