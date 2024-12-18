@@ -164,6 +164,16 @@ jobs:
             # Turkish is one of the better locales to test in that it has unusual
             # upper/lowercase folding and comma as decimal separator.
             locale: tr_TR
+          - name: 'C99/C++11'
+            cc: gcc
+            gtk: 3
+            install: desktop-file-utils docbook-xsl exiv2 libexiv2-dev libgtk-3-dev xsltproc gettext
+            cflags: -std=c99 -D_POSIX_C_SOURCE=200809L -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
+            cxx: g++
+            cxxflags: -std=c++11 -D_POSIX_C_SOURCE=200809L -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
+            target: all
+            install_target: install install-po install-desktop-file
+            osver: 20.04
         exclude:
           # Exclude configurations intended for a single OS version
           - osver: 22.04
@@ -178,7 +188,7 @@ jobs:
       - name: 'install deps'
         run: sudo apt-get update -y; sudo apt-get install -y --no-install-suggests --no-install-recommends ${{ matrix.build.install }}
       - name: 'build'
-        run: make CFLAGS="${{ matrix.build.cflags }}" LDFLAGS="${{ matrix.build.ldflags }}" CC="${{ matrix.build.cc }}" CXX="${{ matrix.build.cxx }}" GTK="${{ matrix.build.gtk }}" ${{ matrix.build.make_opts }} ${{ matrix.build.target }}
+        run: make CFLAGS="${{ matrix.build.cflags }}" CXXFLAGS="${{ matrix.build.cxxflags || matrix.build.cflags }}" LDFLAGS="${{ matrix.build.ldflags }}" CC="${{ matrix.build.cc }}" CXX="${{ matrix.build.cxx }}" GTK="${{ matrix.build.gtk }}" ${{ matrix.build.make_opts }} ${{ matrix.build.target }}
       - name: 'smoke test'
         # ASAN_OPTIONS is to work around https://bugzilla.redhat.com/show_bug.cgi?id=1950244
         run: env ASAN_OPTIONS="${{ matrix.build.asan_options }}" ./gpscorrelate -V
