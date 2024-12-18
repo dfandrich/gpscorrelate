@@ -6,7 +6,7 @@ To build, you will need these prerequisites:
 * libxml2 (XML parsing): http://www.xmlsoft.org/
 * pkgconfig: https://pkg-config.freedesktop.org/
 * make, such as GNU makes: https://www.gnu.org/software/make/make.html
-* GTK+ (only if compiling the GUI)s: https://www.gtk.org
+* GTK+ 2 or 3 (only if compiling the GUI)s: https://www.gtk.org
 * xsltproc (only for building the man page): http://xmlsoft.org/XSLT/
   with manpages/docbook.xsl properly installed from
   https://docbook.sourceforge.net/ or an OS package (often named something like
@@ -33,12 +33,12 @@ To build only the command-line tool without the GTK dependencies, do:
 In both cases, pkg-config must be available to determine the compilation
 arguments for libxml2 and exiv2.
 
-gpscorrelate uses only standard features available in C99, POSIX and X/Open.
+gpscorrelate uses only standard features available in C99, C++11 and POSIX.
 Some C environments may not provide all the necessary features, and some
 environments may require compiling with the make command-line argument
-CFLAGS='-D_POSIX_C_SOURCE=200112L -D_XOPEN_SOURCE=600' to enable them.
-Alternately, you can compile gpscorrelate entirely with a C++ toolchain by
-compiling with make CC='$(CXX)'
+CFLAGS='-D_POSIX_C_SOURCE=200809L' to enable them.  Alternately, you can
+compile gpscorrelate entirely with a C++ toolchain by compiling with make
+CC='$(CXX)'
 
 gpscorrelate comes translated into a number of languages, but support is not
 enabled by default as the gettext function is not universally available.
