@@ -211,7 +211,7 @@ static int ShowFileDetails(const char* File, enum OutputFormat Format,
 				/* Now convert the time into Unixtime. */
 				time_t PhotoTime = ConvertTimeToUnixTime(Time, EXIF_DATE_FORMAT, Options);
 				static time_t LastGpxTime;
-				if (PhotoTime < LastGpxTime)
+				if (CompareTimes(PhotoTime, LastGpxTime) < 0)
 					fprintf(stderr, _("Warning: image files are not ordered by time.\n"));
 				LastGpxTime = PhotoTime;
 
@@ -328,7 +328,7 @@ static int FixDatestamp(const char* File, int AdjustmentHours, int AdjustmentMin
 
 		time_t GPSTime = ConvertToUnixTime(CombinedTime, EXIF_DATE_FORMAT, 0, 0);
 
-		if (PhotoTime != GPSTime) {
+		if (CompareTimes(PhotoTime, GPSTime)) {
 			/* Timestamp is wrong. Fix it.
 			 * Should be photo time - this also corrects
 			 * GPSTimestamp, which was wrong too. */

@@ -31,4 +31,4 @@
 
 time_t ConvertToUnixTime(const char* StringTime, const char* Format,
 		int TZOffsetHours, int TZOffsetMinutes);
-
+int CompareTimes(time_t a, time_t b);

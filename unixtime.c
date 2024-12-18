@@ -1,11 +1,11 @@
 /* unixtime.c
  * Originally written by Daniel Foote.
  *
- * This file contains a function that converts a string
- * to a unix time, given a format string.
+ * This file contains functions that converts a string
+ * to a unix time, given a format string and compare times.
  */
 
-/* Copyright 2005-2018 Daniel Foote, Dan Fandrich.
+/* Copyright 2005-2024 Daniel Foote, Dan Fandrich.
  *
  * This file is part of gpscorrelate.
  *
@@ -107,3 +107,8 @@ time_t ConvertToUnixTime(const char* StringTime, const char* Format,
 	return thetime;
 }
 
+/* Compare two times and return -1, 0 or 1 if a is <, == or > b, respectively */
+int CompareTimes(time_t a, time_t b)
+{
+	return (a > b) - (a < b);
+}
