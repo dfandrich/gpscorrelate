@@ -65,7 +65,7 @@ static time_t portable_timegm(struct tm *tm)
 }
 #endif
 
-time_t ConvertToUnixTime(const char* StringTime, const char* Format,
+struct timespec ConvertToUnixTime(const char* StringTime, const char* Format,
 		int TZOffsetHours, int TZOffsetMinutes)
 {
 	/* Read the time using the specified format.
@@ -77,7 +77,7 @@ time_t ConvertToUnixTime(const char* StringTime, const char* Format,
 	/* Sanity check... */
 	if (StringTime == NULL || Format == NULL)
 	{
-		return 0;
+		return (struct timespec){0, 0};
 	}
 
 	/* Define and set up our structure. */
@@ -104,11 +104,12 @@ time_t ConvertToUnixTime(const char* StringTime, const char* Format,
 	thetime -= TZOffsetHours * 60 * 60;
 	thetime -= TZOffsetMinutes * 60;
 
-	return thetime;
+	return (struct timespec){thetime, 0};
 }
 
-/* Compare two times and return -1, 0 or 1 if a is <, == or > b, respectively */
-int CompareTimes(time_t a, time_t b)
+/* Compare two times and return -1, 0 or 1 if a is <, == or > b, respectively
+ * The sub-second time in a is ignored when comparing. */
+int CompareTimes(struct timespec a, time_t b)
 {
-	return (a > b) - (a < b);
+	return (a.tv_sec > b) - (a.tv_sec < b);
 }

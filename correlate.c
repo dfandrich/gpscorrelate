@@ -39,9 +39,9 @@
 
 /* Internal functions used to make it work. */
 static void Round(const struct GPSPoint* First, struct GPSPoint* Result,
-	   time_t PhotoTime, int HeadingOffset, int MaxHeadingDelta);
+	   struct timespec PhotoTime, int HeadingOffset, int MaxHeadingDelta);
 static void Interpolate(const struct GPSPoint* First, struct GPSPoint* Result,
-	   time_t PhotoTime, int HeadingOffset, int MaxHeadingDelta);
+	   struct timespec PhotoTime, int HeadingOffset, int MaxHeadingDelta);
 static void Exact(const struct GPSPoint* First, struct GPSPoint* Result,
 	   int HeadingOffset);
 
@@ -64,11 +64,11 @@ void SetAutoTimeZoneOptions(const char *Time,
 
 	/* PhotoTime isn't a true epoch time, but is rather out
 	 * by the local offset from UTC */
-	time_t PhotoTime =
+	struct timespec PhotoTime =
 		ConvertToUnixTime(Time, EXIF_DATE_FORMAT, 0, 0);
 
 	/* Extract the component time values */
-	struct tm *PhotoTm = gmtime(&PhotoTime);
+	struct tm *PhotoTm = gmtime(&PhotoTime.tv_sec);
 
 	/* Then create a true epoch-based local time, including DST */
 	PhotoTm->tm_isdst = -1;
@@ -76,21 +76,21 @@ void SetAutoTimeZoneOptions(const char *Time,
 
 	/* Finally, RealTime is the proper Epoch time of the photo.
 	 * The difference from PhotoTime is the time zone offset. */
-	Options->TimeZoneHours = (PhotoTime - RealTime) / 3600;
-	Options->TimeZoneMins = ((PhotoTime - RealTime) % 3600) / 60;
+	Options->TimeZoneHours = (PhotoTime.tv_sec - RealTime) / 3600;
+	Options->TimeZoneMins = ((PhotoTime.tv_sec - RealTime) % 3600) / 60;
 }
 
 /* Convert a time into Unixtime with the configured time zone conversion. */
-time_t ConvertTimeToUnixTime(const char *Time, const char *TimeFormat,
+struct timespec ConvertTimeToUnixTime(const char *Time, const char *TimeFormat,
 		const struct CorrelateOptions* Options)
 {
-	time_t PhotoTime =
+	struct timespec PhotoTime =
 		ConvertToUnixTime(Time, TimeFormat,
 			Options->TimeZoneHours, Options->TimeZoneMins);
 
 	/* Add the PhotoOffset time. This is to make the Photo time match
 	 * the GPS time - ie, it is (GPS - Photo). */
-	PhotoTime += Options->PhotoOffset;
+	PhotoTime.tv_sec += Options->PhotoOffset;
 	return PhotoTime;
 }
 
@@ -131,7 +131,7 @@ struct GPSPoint* CorrelatePhoto(const char* Filename,
 	//printf("Using offset %02d:%02d\n", Options->TimeZoneHours, Options->TimeZoneMins);
 
 	/* Now convert the time into Unixtime with the configured time zone conversion. */
-	time_t PhotoTime = ConvertTimeToUnixTime(TimeTemp, EXIF_DATE_FORMAT, Options);
+	struct timespec PhotoTime = ConvertTimeToUnixTime(TimeTemp, EXIF_DATE_FORMAT, Options);
 
 	/* Free the memory for the time string - it won't otherwise
 	 * be freed for us. */
@@ -309,7 +309,7 @@ struct GPSPoint* CorrelatePhoto(const char* Filename,
 }
 
 void Round(const struct GPSPoint* First, struct GPSPoint* Result,
-	   time_t PhotoTime, int HeadingOffset, int MaxHeadingDelta)
+	   struct timespec PhotoTime, int HeadingOffset, int MaxHeadingDelta)
 {
 	/* Round the point between the two points - ie, it will end
 	 * up being one or the other point. */
@@ -319,7 +319,7 @@ void Round(const struct GPSPoint* First, struct GPSPoint* Result,
 	 * We're using the scale function used by interpolate.
 	 * This gives us a good view of where we are... */
 	double Scale = (double)First->Next->Time - (double)First->Time;
-	Scale = ((double)PhotoTime - (double)First->Time) / Scale;
+	Scale = ((double)PhotoTime.tv_sec - (double)First->Time) / Scale;
 
 	/* Compare our scale. */
 	if (Scale <= 0.5)
@@ -359,7 +359,7 @@ void Round(const struct GPSPoint* First, struct GPSPoint* Result,
 }
 
 void Interpolate(const struct GPSPoint* First, struct GPSPoint* Result,
-		 time_t PhotoTime, int HeadingOffset, int MaxHeadingDelta)
+		 struct timespec PhotoTime, int HeadingOffset, int MaxHeadingDelta)
 {
 	/* Interpolate between the two points. The first point
 	 * is First, the other First->Next. Results into Result. */
@@ -369,7 +369,7 @@ void Interpolate(const struct GPSPoint* First, struct GPSPoint* Result,
 	 * 0 is the first point, 1 is the next point, and 0.5 would be
 	 * half way. */
 	double Scale = (double)First->Next->Time - (double)First->Time;
-	Scale = ((double)PhotoTime - (double)First->Time) / Scale;
+	Scale = ((double)PhotoTime.tv_sec - (double)First->Time) / Scale;
 
 	/* Now calculate the Latitude. */
 	Result->Lat = First->Lat + ((First->Next->Lat - First->Lat) * Scale);
@@ -414,7 +414,7 @@ void Interpolate(const struct GPSPoint* First, struct GPSPoint* Result,
 	}
 
 	/* The time is not interpolated, but matches photo. */
-	Result->Time = PhotoTime;
+	Result->Time = PhotoTime.tv_sec;
 
 	/* And that should have fixed us... */
 }

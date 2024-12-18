@@ -25,10 +25,11 @@
  */
 
 #include <sys/types.h>
+#include <time.h>
 
 #define EXIF_DATE_FORMAT "%d:%d:%d %d:%d:%d"
 #define GPX_DATE_FORMAT "%d-%d-%dT%d:%d:%dZ"
 
-time_t ConvertToUnixTime(const char* StringTime, const char* Format,
+struct timespec ConvertToUnixTime(const char* StringTime, const char* Format,
 		int TZOffsetHours, int TZOffsetMinutes);
-int CompareTimes(time_t a, time_t b);
+int CompareTimes(struct timespec a, time_t b);
