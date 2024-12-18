@@ -6,7 +6,7 @@
  * is found, writes the GPS data into the EXIF data
  * in the photo. For future reference... */
 
-/* Copyright 2005-2023 Daniel Foote, Dan Fandrich.
+/* Copyright 2005-2024 Daniel Foote, Dan Fandrich.
  *
  * This file is part of gpscorrelate.
  *
@@ -102,9 +102,8 @@ struct GPSPoint* CorrelatePhoto(const char* Filename,
 		struct CorrelateOptions* Options)
 {
 	/* Read out the timestamp from the EXIF data. */
-	char* TimeTemp;
 	int IncludesGPS = 0;
-	TimeTemp = ReadExifData(Filename, &IncludesGPS, NULL, NULL, NULL);
+	char* TimeTemp = ReadExifData(Filename, &IncludesGPS, NULL, NULL, NULL);
 	if (!TimeTemp)
 	{
 		/* Error reading the time from the file. Abort. */
@@ -151,8 +150,8 @@ struct GPSPoint* CorrelatePhoto(const char* Filename,
 		 * same file will still make it inside of this. In
 		 * some cases, it won't matter, but if it does, then
 		 * keep this in mind!! */
-		if ((PhotoTime >= Options->Track[TrackNum].MinTime) &&
-		    (PhotoTime <= Options->Track[TrackNum].MaxTime))
+		if (CompareTimes(PhotoTime, Options->Track[TrackNum].MinTime) >= 0 &&
+		    CompareTimes(PhotoTime, Options->Track[TrackNum].MaxTime) <= 0)
 			break;
 	}
 	Options->Result = CORR_NOMATCH; /* For convenience later */
@@ -174,7 +173,7 @@ struct GPSPoint* CorrelatePhoto(const char* Filename,
 	for (Search = Options->Track[TrackNum].Points; Search; Search = Search->Next)
 	{
 		/* First test: is it exactly this point? */
-		if (PhotoTime == Search->Time)
+		if (CompareTimes(PhotoTime, Search->Time) == 0)
 		{
 			/* This is the point, exactly.
 			 * Copy out the data and return that. */
@@ -189,7 +188,7 @@ struct GPSPoint* CorrelatePhoto(const char* Filename,
 
 		/* Sanity check / track segment fix: is the photo time before
 		 * the current point? If so, we've gone past it. Hrm. */
-		if (Search->Time > PhotoTime)
+		if (CompareTimes(PhotoTime, Search->Time) < 0)
 		{
 			Options->Result = CORR_NOMATCH;
 			break;
@@ -224,13 +223,13 @@ struct GPSPoint* CorrelatePhoto(const char* Filename,
 		if (Options->FeatherTime)
 		{
 			/* Is the point between these two? */
-			if ((PhotoTime > Search->Time) &&
-				(PhotoTime < Search->Next->Time))
+			if (CompareTimes(PhotoTime, Search->Time) > 0 &&
+				CompareTimes(PhotoTime, Search->Next->Time) < 0)
 			{
 				/* It is. Now is it too far
 				 * from these two? */
-				if (((Search->Time + Options->FeatherTime) < PhotoTime) &&
-					((Search->Next->Time - Options->FeatherTime) > PhotoTime))
+				if (CompareTimes(PhotoTime, (Search->Time + Options->FeatherTime)) > 0 &&
+					CompareTimes(PhotoTime, (Search->Next->Time - Options->FeatherTime)) < 0)
 				{
 					/* We are inside the feather
 					 * time between two points.
@@ -244,8 +243,8 @@ struct GPSPoint* CorrelatePhoto(const char* Filename,
 
 		/* Second test: is it between this and the
 		 * next point? */
-		if ((PhotoTime > Search->Time) &&
-				(PhotoTime < Search->Next->Time))
+		if (CompareTimes(PhotoTime, Search->Time) > 0 &&
+			CompareTimes(PhotoTime, Search->Next->Time) < 0)
 		{
 			/* It is between these points.
 			 * Unless told otherwise, we interpolate.
