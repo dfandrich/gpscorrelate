@@ -100,7 +100,7 @@ linux_musl_task:
     '.github/**'
     )"
   container:
-    memory: 300M
+    memory: 320M
     cpu: 1
     matrix:
       - image: alpine:3.21
