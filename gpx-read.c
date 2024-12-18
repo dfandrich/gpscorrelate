@@ -67,6 +67,7 @@ static void ExtractTrackPoints(xmlNodePtr Start)
 	const char* Time;
 	const char* Heading;
 	char HeadingRef = 'T';
+	struct timespec Timespec;
 
 	for (Current = Start; Current; Current = Current->next)
 	{
@@ -208,7 +209,8 @@ static void ExtractTrackPoints(xmlNodePtr Start)
 				LastPoint->MoveHeading = atof(Heading);
 				LastPoint->HeadingRef = HeadingRef;
 			}
-			LastPoint->Time = ConvertToUnixTime(Time, GPX_DATE_FORMAT, 0, 0);
+			Timespec = ConvertToUnixTime(Time, GPX_DATE_FORMAT, 0, 0);
+			LastPoint->Time = Timespec.tv_sec;
 
 			/* Debug...
 			printf("TrackPoint. Lat %s (%f), Long %s (%f). Elev %s (%f), Time %d.\n",

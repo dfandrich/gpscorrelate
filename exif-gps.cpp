@@ -618,7 +618,7 @@ int WriteGPSData(const char* File, const struct GPSPoint* Point,
 	return 1;
 }
 
-int WriteFixedDatestamp(const char* File, time_t Time)
+int WriteFixedDatestamp(const char* File, struct timespec Time)
 {
 	// Write the GPS data to the file...
 
@@ -646,7 +646,7 @@ int WriteFixedDatestamp(const char* File, time_t Time)
 
 	Exiv2::ExifData &ExifToWrite = Image->exifData();
 
-	const struct tm TimeStamp = *gmtime(&Time);
+	const struct tm TimeStamp = *gmtime(&Time.tv_sec);
 	char ScratchBuf[100];
 
 	snprintf(ScratchBuf, sizeof(ScratchBuf), "%04d:%02d:%02d",

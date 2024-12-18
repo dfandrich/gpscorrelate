@@ -24,6 +24,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <time.h>
+
 /* A structure of options to pass to the correlate function.
  * Not really sure if this is needed, but... */
 struct CorrelateOptions {
@@ -82,5 +84,5 @@ struct GPSPoint* CorrelatePhoto(const char* Filename,
 		struct CorrelateOptions* Options);
 void SetAutoTimeZoneOptions(const char *TimeTemp,
 		struct CorrelateOptions* Options);
-time_t ConvertTimeToUnixTime(const char *TimeTemp, const char *TimeFormat,
+struct timespec ConvertTimeToUnixTime(const char *TimeTemp, const char *TimeFormat,
 		const struct CorrelateOptions* Options);

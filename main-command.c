@@ -209,14 +209,14 @@ static int ShowFileDetails(const char* File, enum OutputFormat Format,
 			} else if (Format == GPX_FORMAT)
 			{
 				/* Now convert the time into Unixtime. */
-				time_t PhotoTime = ConvertTimeToUnixTime(Time, EXIF_DATE_FORMAT, Options);
+				struct timespec PhotoTime = ConvertTimeToUnixTime(Time, EXIF_DATE_FORMAT, Options);
 				static time_t LastGpxTime;
 				if (CompareTimes(PhotoTime, LastGpxTime) < 0)
 					fprintf(stderr, _("Warning: image files are not ordered by time.\n"));
-				LastGpxTime = PhotoTime;
+				LastGpxTime = PhotoTime.tv_sec;
 
 				char GpxTime[24];
-				struct tm* Tm = gmtime(&PhotoTime);
+				struct tm* Tm = gmtime(&PhotoTime.tv_sec);
 				strftime(GpxTime, sizeof(GpxTime), "%Y-%m-%dT%H:%M:%SZ", Tm);
 
 				char *SafeFile = strdup(File);
@@ -321,14 +321,14 @@ static int FixDatestamp(const char* File, int AdjustmentHours, int AdjustmentMin
 		rc = 0;
 	} else {
 		/* Check the timestamp. */
-		time_t PhotoTime = ConvertToUnixTime(OriginalDateStamp, EXIF_DATE_FORMAT,
+		struct timespec PhotoTime = ConvertToUnixTime(OriginalDateStamp, EXIF_DATE_FORMAT,
 			AdjustmentHours, AdjustmentMinutes);
 
 		snprintf(CombinedTime, sizeof(CombinedTime), "%s %s", DateStamp, TimeStamp);
 
-		time_t GPSTime = ConvertToUnixTime(CombinedTime, EXIF_DATE_FORMAT, 0, 0);
+		struct timespec GPSTime = ConvertToUnixTime(CombinedTime, EXIF_DATE_FORMAT, 0, 0);
 
-		if (CompareTimes(PhotoTime, GPSTime)) {
+		if (CompareTimes(PhotoTime, GPSTime.tv_sec)) {
 			/* Timestamp is wrong. Fix it.
 			 * Should be photo time - this also corrects
 			 * GPSTimestamp, which was wrong too. */
@@ -340,9 +340,9 @@ static int FixDatestamp(const char* File, int AdjustmentHours, int AdjustmentMin
 			char GPSTimeFormat[100];
 
 			strftime(PhotoTimeFormat, sizeof(PhotoTimeFormat),
-				 "%a %b %d %H:%M:%S %Y UTC", gmtime(&PhotoTime));
+				 "%a %b %d %H:%M:%S %Y UTC", gmtime(&PhotoTime.tv_sec));
 			strftime(GPSTimeFormat, sizeof(GPSTimeFormat),
-				 "%a %b %d %H:%M:%S %Y UTC", gmtime(&GPSTime));
+				 "%a %b %d %H:%M:%S %Y UTC", gmtime(&GPSTime.tv_sec));
 			printf(_("%s: Wrong timestamp:\n   Photo:     %s\n"
 				 "   GPS:       %s\n   Corrected: %s\n"),
 					File, PhotoTimeFormat, GPSTimeFormat, PhotoTimeFormat);
