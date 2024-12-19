@@ -249,7 +249,7 @@ struct GPSPoint* CorrelatePhoto(const char* Filename,
 			/* It is between these points.
 			 * Unless told otherwise, we interpolate.
 			 * If not interpolating, we round to nearest.
-			 * If points are equidistant, we round down. */
+			 * If points are equidistant, we round up. */
 			if (Options->NoInterpolate)
 			{
 				/* No interpolation. Round. */
@@ -323,7 +323,7 @@ void Round(const struct GPSPoint* First, struct GPSPoint* Result,
 			/ Scale;
 
 	/* Compare our scale. */
-	if (Scale <= 0.5)
+	if (Scale < 0.5)
 	{
 		/* Closer to the first point. */
 		CopyFrom = First;
