@@ -1,0 +1,5 @@
+TITLE='Correlate a file with subsecond interpolation'
+PRECOMMAND='cat "$STAGINGDIR/point1-4.jpg" >"$LOGDIR/test.jpg"'
+COMMAND='$PROGRAM -z 0 -g "$STAGINGDIR/track3.gpx" "$LOGDIR/test.jpg" > "$OUTFILE" 2>&1 && exiv2 -pv pr "$LOGDIR/test.jpg" >> "$OUTFILE" 2>&1'
+POSTCOMMAND='rm -f "$LOGDIR/test.jpg"'
+RESULTCODE=0

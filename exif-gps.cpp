@@ -143,6 +143,15 @@ char* ReadExifData(const char* File, int* IncludesGPS, double* Lat, double* Long
 		return NULL;
 	}
 
+	// Look for subseconds
+	Exiv2::Exifdatum& SubsecTag = ExifRead["Exif.Photo.SubSecTimeOriginal"];
+	std::string SubsecValue = SubsecTag.toString();
+	if (SubsecValue.length()) {
+		// Append the subseconds to the time string
+		Value.append(".");
+		Value.append(SubsecValue);
+	}
+
 	// Copy the tag and return that.
 	char* DateTime = strdup(Value.c_str());
 

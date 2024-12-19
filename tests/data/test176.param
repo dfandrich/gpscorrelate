@@ -1,0 +1,7 @@
+# This tests the same thing as test 30 but with the conditions of test 175
+# to ensure that subsecond resolution makes a different to the result.
+TITLE='Correlate a file without subsecond resolution without interpolation'
+PRECOMMAND='cat "$STAGINGDIR/point1-5.jpg" >"$LOGDIR/test.jpg"'
+COMMAND='$PROGRAM --no-interpolation -z 0 -g "$STAGINGDIR/track3.gpx" "$LOGDIR/test.jpg" > "$OUTFILE" 2>&1 && exiv2 -pv pr "$LOGDIR/test.jpg" >> "$OUTFILE" 2>&1'
+POSTCOMMAND='rm -f "$LOGDIR/test.jpg"'
+RESULTCODE=0

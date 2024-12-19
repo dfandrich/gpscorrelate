@@ -319,7 +319,8 @@ void Round(const struct GPSPoint* First, struct GPSPoint* Result,
 	 * We're using the scale function used by interpolate.
 	 * This gives us a good view of where we are... */
 	double Scale = (double)First->Next->Time - (double)First->Time;
-	Scale = ((double)PhotoTime.tv_sec - (double)First->Time) / Scale;
+	Scale = ((double)PhotoTime.tv_sec + (double)PhotoTime.tv_nsec / 1e9 - (double)First->Time)
+			/ Scale;
 
 	/* Compare our scale. */
 	if (Scale <= 0.5)
@@ -369,7 +370,8 @@ void Interpolate(const struct GPSPoint* First, struct GPSPoint* Result,
 	 * 0 is the first point, 1 is the next point, and 0.5 would be
 	 * half way. */
 	double Scale = (double)First->Next->Time - (double)First->Time;
-	Scale = ((double)PhotoTime.tv_sec - (double)First->Time) / Scale;
+	Scale = ((double)PhotoTime.tv_sec  + (double)PhotoTime.tv_nsec / 1e9 - (double)First->Time)
+			/ Scale;
 
 	/* Now calculate the Latitude. */
 	Result->Lat = First->Lat + ((First->Next->Lat - First->Lat) * Scale);

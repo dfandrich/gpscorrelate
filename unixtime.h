@@ -27,7 +27,8 @@
 #include <sys/types.h>
 #include <time.h>
 
-#define EXIF_DATE_FORMAT "%d:%d:%d %d:%d:%d"
+// The EXIF date/time format extended to subsecond resolution
+#define EXIF_DATE_FORMAT "%d:%d:%d %d:%d:%d.%9[0-9]"
 #define GPX_DATE_FORMAT "%d-%d-%dT%d:%d:%dZ"
 
 struct timespec ConvertToUnixTime(const char* StringTime, const char* Format,

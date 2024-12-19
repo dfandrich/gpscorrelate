@@ -31,6 +31,8 @@
 
 #include "unixtime.h"
 
+#define MIN(a,b) (((a)<(b))?(a):(b))
+
 #ifdef _WIN32
 /* Unfortunately, portable_timegm below isn't portable to Windows */
 #define portable_timegm _mkgmtime
@@ -85,11 +87,12 @@ struct timespec ConvertToUnixTime(const char* StringTime, const char* Format,
 	Time.tm_wday = 0;
 	Time.tm_yday = 0;
 	Time.tm_isdst = 0; // there is no DST in UTC
+	char Subsecond[10] = "";
 
 	/* Read out the time from the string using our format. */
 	sscanf(StringTime, Format, &Time.tm_year, &Time.tm_mon,
 			&Time.tm_mday, &Time.tm_hour,
-			&Time.tm_min, &Time.tm_sec);
+			&Time.tm_min, &Time.tm_sec, Subsecond);
 
 	/* Adjust the years for the mktime function to work. */
 	Time.tm_year -= 1900;
@@ -104,12 +107,20 @@ struct timespec ConvertToUnixTime(const char* StringTime, const char* Format,
 	thetime -= TZOffsetHours * 60 * 60;
 	thetime -= TZOffsetMinutes * 60;
 
-	return (struct timespec){thetime, 0};
+	/* Convert subseconds to nanoseconds */
+	char Subsecbuf[] = "000000000";
+	memcpy(Subsecbuf, Subsecond, MIN(sizeof(Subsecbuf)-1, strlen(Subsecond)));
+	long Nanoseconds = atol(Subsecbuf);
+	return (struct timespec){thetime, Nanoseconds};
 }
 
-/* Compare two times and return -1, 0 or 1 if a is <, == or > b, respectively
- * The sub-second time in a is ignored when comparing. */
+/* Compare two times and return -1, 0 or 1 if a is <, == or > b, respectively */
 int CompareTimes(struct timespec a, time_t b)
 {
-	return (a.tv_sec > b) - (a.tv_sec < b);
+	if (a.tv_sec > b)
+		return 1;
+	if (a.tv_sec < b)
+		return -1;
+	// Seconds are equal; any nanoseconds in a means it's greater
+	return !!a.tv_nsec;
 }

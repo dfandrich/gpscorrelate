@@ -24,10 +24,10 @@
     </address>
     <author>
       &dhfirstname;
-      &dhsurname;, Till Maas
+      &dhsurname;, Till Maas, Dan Fandrich
     </author>
     <copyright>
-      <year>2006-2023</year>
+      <year>2006-2024</year>
       <holder>&dhusername; &dhemail;, Till Maas, Dan Fandrich</holder>
     </copyright>
     <version>
@@ -215,12 +215,14 @@
     <para> If GPS data are available at the precise moment the image was taken
       (with a 1-second granularity) the GPS data are stored unmodified in EXIF
       fields. If they are not, linear interpolation of GPS data available at
-      moments before and after the image was taken can be used. Linear
-      interpolation gives good results when points are close together, but if
-      they are several kilometres apart on an airplane route, it will introduce
-      some error versus the great circle route an airplane flies. A measure of
-      the approximate accuracy of the GPS location reading is preserved
-      when written into the image.
+      moments before and after the image was taken can be used. If the image
+      contains sub-second time resolution, it is used to obtain a more accurate
+      estimate of the position between the two points. Linear interpolation
+      gives good results when points are close together, but if they are several
+      kilometres apart (such as on an infrequently-sampled airplane track), it
+      will introduce some error versus the great circle route an airplane
+      normally flies. A measure of the approximate accuracy of the GPS location
+      reading is preserved when written into the image.
     </para>
 
   </refsect1>
