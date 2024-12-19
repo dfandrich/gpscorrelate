@@ -358,11 +358,12 @@
           <replaceable>seconds</replaceable>
         </term>
         <listitem>
-          <para>Time in seconds to add to the photo timestamp to make it match
-          the GPS timestamp.  To determine the number of seconds needed, just
-          create a photograph of your GPS device showing the current time and
-          compare it with the timestamp of your photo file. The EXIF time
-          tags in the image are not modified based on this value.</para>
+          <para>Time in seconds (fractional seconds are allowed) to add to the
+          photo timestamp to make it match the GPS timestamp. To determine
+          the number of seconds needed, just create a photograph of your GPS
+          device showing the current time and compare it with the timestamp of
+          your photo file. The EXIF time tags in the image are not modified
+          based on this value.</para>
         </listitem>
       </varlistentry>
 
@@ -680,10 +681,10 @@
 
     <para>
     Correlate a photo taken from a camera with a fast clock (i.e., the clock
-    was 77 seconds ahead of GPS time):
+    was 77.5 seconds ahead of GPS time):
     </para>
     <para>
-    <userinput>gpscorrelate -g Test.gpx -O -77 photo.jpg</userinput>
+    <userinput>gpscorrelate -g Test.gpx -O -77.5 photo.jpg</userinput>
     </para>
 
     <para>

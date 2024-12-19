@@ -396,7 +396,7 @@ int main(int argc, char** argv)
 	int NoChangeMtime = 0;
 	int FixDatestamps = 0;
 	int DegMinSecs = 1;
-	int PhotoOffset = 0;
+	double PhotoOffset = 0;
 	int WriteHeading = 0;
 	int HeadingOffset = -1;      /* Negative means disabled */
 	int MaxHeadingDelta = -1;    /* Negative means disabled */
@@ -491,7 +491,7 @@ int main(int argc, char** argv)
 			case 'O':
 				if (optarg)
 				{
-					PhotoOffset = atoi(optarg);
+					PhotoOffset = atof(optarg);
 				}
 				break;
 			case 'i':

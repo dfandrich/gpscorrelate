@@ -89,8 +89,21 @@ struct timespec ConvertTimeToUnixTime(const char *Time, const char *TimeFormat,
 			Options->TimeZoneHours, Options->TimeZoneMins);
 
 	/* Add the PhotoOffset time. This is to make the Photo time match
-	 * the GPS time - ie, it is (GPS - Photo). */
-	PhotoTime.tv_sec += Options->PhotoOffset;
+	 * the GPS time - i.e., it is (GPS - Photo). */
+	double IntPart;
+	double FracPart = modf(Options->PhotoOffset, &IntPart);
+	PhotoTime.tv_sec += (long)IntPart;
+	long NewNs = PhotoTime.tv_nsec + (long)round(FracPart * 1e9);
+	/* Handle over/underflow out of the nanoseconds part which must be
+	 * 0 <= nsec <= 999999999 */
+	if (NewNs < 0) {
+		PhotoTime.tv_sec -= 1;
+		NewNs += 1000000000L;
+	} else if (NewNs >= 1000000000L) {
+		PhotoTime.tv_sec += 1;
+		NewNs -= 1000000000L;
+	}
+	PhotoTime.tv_nsec = NewNs;
 	return PhotoTime;
 }
 

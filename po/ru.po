@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpscorrelate 2.2\n"
 "Report-Msgid-Bugs-To: dan@coneharvesters.com\n"
-"POT-Creation-Date: 2024-10-17 21:41-0700\n"
+"POT-Creation-Date: 2024-12-19 16:48-0800\n"
 "PO-Revision-Date: 2019-03-18 10:12+0300\n"
 "Last-Translator: Nikolay Korotkiy <sikmir@gmail.com>\n"
 "Language-Team: russian\n"
@@ -248,11 +248,12 @@ msgstr ""
 #: gui.c:684 gui.c:689
 msgid ""
 "The number of seconds to add to the photo's time to make it match the GPS "
-"data. Calculate this with (GPS - Photo). Can be negative or positive."
+"data. Calculate this with (GPS - Photo). Can be negative or positive and "
+"fractional seconds are allowed."
 msgstr ""
 "Количество секунд, добавляемых к времени фотографии, чтобы оно "
 "соответствовало GPS данным. Рассчитывается с помощью (GPS - Фото). Может "
-"быть отрицательным или положительным."
+"быть отрицательным или положительным, и разрешены дробные секунды."
 
 #: gui.c:704 gui.c:708
 msgid ""
@@ -789,6 +790,6 @@ msgid ""
 "taken."
 msgstr ""
 
-#: io.github.dfandrich.gpscorrelate.metainfo.xml.in:39
+#: io.github.dfandrich.gpscorrelate.metainfo.xml.in:44
 msgid "Daniel Fandrich"
 msgstr "Daniel Fandrich"

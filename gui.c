@@ -683,12 +683,12 @@ GtkWidget* CreateMatchWindow (void)
   gtk_widget_set_tooltip_text (PhotoOffsetEntry,
 	_("The number of seconds to add to the photo's time to make it match "
 	  "the GPS data. Calculate this with (GPS - Photo). "
-	  "Can be negative or positive."));
+	  "Can be negative or positive and fractional seconds are allowed."));
 #else
   gtk_tooltips_set_tip (tooltips, PhotoOffsetEntry,
 	_("The number of seconds to add to the photo's time to make it match "
 	  "the GPS data. Calculate this with (GPS - Photo). "
-	  "Can be negative or positive."), NULL);
+	  "Can be negative or positive and fractional seconds are allowed."), NULL);
 #endif
   gtk_entry_set_text (GTK_ENTRY (PhotoOffsetEntry), g_key_file_get_value(GUISettings, "default", "photooffset", NULL));
   gtk_entry_set_width_chars (GTK_ENTRY (PhotoOffsetEntry), 7);
@@ -1597,7 +1597,7 @@ void CorrelateButtonPress( GtkWidget *Widget, gpointer Data )
 	}
 
 	/* Photo Offset time */
-	Options.PhotoOffset = atoi(gtk_entry_get_text(GTK_ENTRY(PhotoOffsetEntry)));
+	Options.PhotoOffset = atof(gtk_entry_get_text(GTK_ENTRY(PhotoOffsetEntry)));
 
 	/* Write heading */
 	Options.WriteHeading = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(HeadingCheck));

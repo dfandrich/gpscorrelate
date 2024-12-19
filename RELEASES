@@ -3,6 +3,7 @@ Release History:
 v2.x: X
     - Use subsecond times in an image for better interpolation
     - When interpolation is disabled, round up when exactly half way
+    - Allow fractional times in --photooffset
 
 v2.2: 17 October 2024
 	- Fix metainfo nits

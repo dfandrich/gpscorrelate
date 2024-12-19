@@ -46,7 +46,7 @@ struct CorrelateOptions {
 
 	int Result;
 
-	int PhotoOffset; /* Offset applied to Photo time. This is ADDED to PHOTO TIME
+	double PhotoOffset; /* Offset applied to Photo time. This is ADDED to PHOTO TIME
 			    to make it match GPS time. In seconds.
 			    This is (GPS - Photo) */
 

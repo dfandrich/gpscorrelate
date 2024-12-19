@@ -1,0 +1,5 @@
+TITLE='Correlate a file with subsecond photooffset barely outside track range'
+PRECOMMAND='cat "$STAGINGDIR/point1-4.jpg" >"$LOGDIR/test.jpg"'
+COMMAND='$PROGRAM --photooffset -9.95 -z 0 -g "$STAGINGDIR/track2.gpx" "$LOGDIR/test.jpg" > "$OUTFILE" 2>&1 && exiv2 -pv pr "$LOGDIR/test.jpg" >> "$OUTFILE" 2>&1'
+POSTCOMMAND='rm -f "$LOGDIR/test.jpg"'
+RESULTCODE=2

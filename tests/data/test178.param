@@ -1,0 +1,7 @@
+# End result is the same as test 71
+TITLE='Correlate a file with subsecond interpolation and fractional photooffset overflow'
+PRECOMMAND='cat "$STAGINGDIR/point1-4.jpg" >"$LOGDIR/test.jpg"'
+# Run in C locale to correctly parse these decimal numbers
+COMMAND='env LC_NUMERIC=C $PROGRAM --photooffset 9.09 -z -7 -g "$STAGINGDIR/track10.gpx" "$LOGDIR/test.jpg" > "$OUTFILE" 2>&1 && exiv2 -pv pr "$LOGDIR/test.jpg" >> "$OUTFILE" 2>&1'
+POSTCOMMAND='rm -f "$LOGDIR/test.jpg"'
+RESULTCODE=0
