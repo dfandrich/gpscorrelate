@@ -1572,7 +1572,7 @@ void CorrelateButtonPress( GtkWidget *Widget, gpointer Data )
 	Options.DegMinSecs = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(DegMinSecsCheck));
 
 	/* Feather time. */
-	Options.FeatherTime = atof(gtk_entry_get_text(GTK_ENTRY(GapTimeEntry)));
+	Options.FeatherTime = atoi(gtk_entry_get_text(GTK_ENTRY(GapTimeEntry)));
 
 	/* GPS Datum. */
 	Options.Datum = strdup(gtk_entry_get_text(GTK_ENTRY(GPSDatumEntry)));

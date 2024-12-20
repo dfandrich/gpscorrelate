@@ -350,7 +350,6 @@ static void EraseGpsTags(Exiv2::ExifData &ExifInfo)
 {
 	// Search through, find the keys that we want, and wipe them
 	// Code below submitted by Marc Horowitz
-	Exiv2::ExifData::iterator Iter;
 	for (Exiv2::ExifData::iterator Iter = ExifInfo.begin();
 		Iter != ExifInfo.end(); )
 	{
