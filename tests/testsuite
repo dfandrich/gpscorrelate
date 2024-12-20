@@ -48,7 +48,7 @@ fi
 
 
 if [ -n "$1" ] ; then
-	TESTLIST="$@"
+	TESTLIST="$*"
 else
 	TESTLIST="$DATADIR"/*.param
 fi
@@ -63,7 +63,7 @@ for TEST in $TESTLIST ; do
   echo ''
 
   # These variables are unlikely to be needed in the test parameters file
-  TESTNAME=`echo $TEST | sed -e 's@^.*data/@@' -e 's/\..*$//'`
+  TESTNAME=`echo "$TEST" | sed -e 's@^.*data/@@' -e 's/\..*$//'`
   RESULTFILE="$DATADIR/$TESTNAME.result"
 
   # Initialize variables that can be used within the test parameters file
@@ -92,17 +92,17 @@ for TEST in $TESTLIST ; do
   . "$TEST"
 
   if [ -n "$SKIP" ] ; then
-	echo '***' Skipping \"$TITLE\" test
+	echo "*** Skipping \"$TITLE\" test"
 	continue
   fi
-  echo '***' Running \"$TITLE\" test
+  echo "*** Running \"$TITLE\" test"
 
   # Clean up from previous tests
   rm -f "$OUTFILE" "$ERRFILE"
 
   # Run a pre-test command
   if ! eval $PRECOMMAND ; then
-	echo Test $TESTNAME FAILED: pre test command failure
+	echo "Test $TESTNAME FAILED: pre test command failure"
 	FAILEDTESTS=$(($FAILEDTESTS + 1))
 	# Unconditionally run post command to clean up
 	eval $POSTCOMMAND
@@ -127,7 +127,7 @@ for TEST in $TESTLIST ; do
   # Run a post-test command
   if ! eval $POSTCOMMAND ; then
 	POSTCOMMAND=
-	echo Test $TESTNAME FAILED: post test command failure
+	echo "Test $TESTNAME FAILED: post test command failure"
 	FAILEDTESTS=$(($FAILEDTESTS + 1))
 	continue
   fi
@@ -155,13 +155,13 @@ for TEST in $TESTLIST ; do
   # version:
   #  ! diff -I GPSTag -qw
   if ! cmp "$RESULTFILE" "$OUTFILE" >/dev/null ; then
-	echo Test $TESTNAME FAILED: unexpected output
+	echo "Test $TESTNAME FAILED: unexpected output"
 	test -n "$VERBOSECOMMAND" && diff -u "$RESULTFILE" "$OUTFILE"
 	FAILEDTESTS=$(($FAILEDTESTS + 1))
 	continue
   fi
 
-  echo Test $TESTNAME PASSED
+  echo "Test $TESTNAME PASSED"
 done
 
 echo ''
