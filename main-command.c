@@ -479,7 +479,8 @@ int main(int argc, char** argv)
 					{
 						/* Found colon. Split into two. */
 						sscanf(optarg, "%d:%d", &TimeZoneHours, &TimeZoneMins);
-						if (TimeZoneHours < 0)
+						/* Can't look at sign of TimeZoneHours because it might be -0 */
+						if (*optarg == '-')
 						    TimeZoneMins *= -1;
 					} else {
 						/* No colon. Just parse. */
