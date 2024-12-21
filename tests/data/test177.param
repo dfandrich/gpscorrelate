@@ -1,4 +1,4 @@
-# End result is same as test 29
+# End location is the same as test 29
 TITLE='Correlate a file with subsecond interpolation and fractional photooffset'
 PRECOMMAND='cat "$STAGINGDIR/point1-4.jpg" >"$LOGDIR/test.jpg"'
 # Run in C locale to correctly parse these decimal numbers

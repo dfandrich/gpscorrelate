@@ -1,0 +1,6 @@
+# End result is the same as test 29
+TITLE='Correlate a file with time zone <1h from UTC'
+PRECOMMAND='cat "$STAGINGDIR/point1-1.jpg" >"$LOGDIR/test.jpg"'
+COMMAND='$PROGRAM -t -z -00:30 -O -1800 -g "$STAGINGDIR/track2.gpx" "$LOGDIR/test.jpg" > "$OUTFILE" 2>&1 && exiv2 -pv pr "$LOGDIR/test.jpg" >> "$OUTFILE" 2>&1'
+POSTCOMMAND='rm -f "$LOGDIR/test.jpg"'
+RESULTCODE=0
