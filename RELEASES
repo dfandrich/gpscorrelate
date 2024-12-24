@@ -4,6 +4,7 @@ v2.x: X
     - Use subsecond times in an image for better interpolation
     - When interpolation is disabled, round up when exactly half way
     - Allow fractional times in --photooffset
+    - Fix handling of --timeadd values between -1:00 and 0:00
 
 v2.2: 17 October 2024
 	- Fix metainfo nits
