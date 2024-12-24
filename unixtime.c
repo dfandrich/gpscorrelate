@@ -68,7 +68,7 @@ static time_t portable_timegm(struct tm *tm)
 #endif
 
 struct timespec ConvertToUnixTime(const char* StringTime, const char* Format,
-		int TZOffsetHours, int TZOffsetMinutes)
+		long TZOffset)
 {
 	/* Read the time using the specified format.
 	 * The format and string being read from must
@@ -102,10 +102,9 @@ struct timespec ConvertToUnixTime(const char* StringTime, const char* Format,
 	time_t thetime = portable_timegm(&Time);
 
 	/* Add our timezone offset to the time.
-	 * Note also that we SUBTRACT these times. We want the
+	 * Note also that we SUBTRACT this time. We want the
 	 * result to be in UTC. */
-	thetime -= TZOffsetHours * 60 * 60;
-	thetime -= TZOffsetMinutes * 60;
+	thetime -= TZOffset;
 
 	/* Convert subseconds to nanoseconds */
 	char Subsecbuf[] = "000000000";

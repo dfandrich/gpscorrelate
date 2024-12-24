@@ -42,6 +42,9 @@ version of the program.
 * The resolution of GPX positions is down to one second, but sub-second photo
   time is used (when available in the photo) to more accurately estimate the
   camera position between those points.
+* A time zone tag embedded in the photo is used to determine the local time of
+  the image when found, otherwise the time zone is assumed to be same as the
+  local machine.
 * For best results, you should synchronise your camera to the GPS time before
   you start taking photos. Note: digital cameras clocks drift quickly - even
   over a short period of time (say, a week).

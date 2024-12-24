@@ -1,0 +1,5 @@
+TITLE='Correlate a file with invalid OffsetTime tag'
+PRECOMMAND='cat "$STAGINGDIR/point1-8.jpg" >"$LOGDIR/test.jpg"'
+COMMAND='env TZ=UTC $PROGRAM -g "$STAGINGDIR/track2.gpx" "$LOGDIR/test.jpg" > "$OUTFILE" 2>&1 && exiv2 -pv pr "$LOGDIR/test.jpg" >> "$OUTFILE" 2>&1'
+POSTCOMMAND='rm -f "$LOGDIR/test.jpg"'
+RESULTCODE=0

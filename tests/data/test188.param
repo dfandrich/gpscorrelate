@@ -1,0 +1,6 @@
+# End location is the same as test 29
+TITLE='Correlate a file with OffsetTime tag <1h from UTC'
+PRECOMMAND='cat "$STAGINGDIR/point1-7.jpg" >"$LOGDIR/test.jpg"'
+COMMAND='$PROGRAM -t -O -1824 -g "$STAGINGDIR/track2.gpx" "$LOGDIR/test.jpg" > "$OUTFILE" 2>&1 && exiv2 -pv pr "$LOGDIR/test.jpg" >> "$OUTFILE" 2>&1'
+POSTCOMMAND='rm -f "$LOGDIR/test.jpg"'
+RESULTCODE=0

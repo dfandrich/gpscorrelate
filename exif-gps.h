@@ -30,7 +30,13 @@
 extern "C" {
 #endif
 
-char* ReadExifData(const char* File, int* IncludesGPS, double* Lat, double* Long, double* Elevation);
+#include <limits.h>
+
+// No offset time tag was found in photo
+#define NO_OFFSET_TIME INT_MIN
+
+char* ReadExifData(const char* File, int* IncludesGPS, double* Lat, double* Long, double* Elevation,
+		long *OffsetTime);
 char* ReadGPSTimestamp(const char* File, char* DateStamp, char* TimeStamp, int* IncludesGPS);
 int WriteGPSData(const char* File, const struct GPSPoint* Point,
 		 const char* Datum, int NoChangeMtime, int DegMinSecs);

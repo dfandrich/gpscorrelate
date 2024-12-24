@@ -5,6 +5,7 @@ v2.x: X
     - When interpolation is disabled, round up when exactly half way
     - Allow fractional times in --photooffset
     - Fix handling of --timeadd values between -1:00 and 0:00
+    - Read time zone from photos when available or --no-photo-tz to disable
 
 v2.2: 17 October 2024
 	- Fix metainfo nits

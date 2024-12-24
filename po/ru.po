@@ -3,12 +3,12 @@
 # This file is distributed under the same license as the gpscorrelate package.
 # Nikolay Korotkiy <sikmir@gmail.com>, 2019.
 #
-#: gui.c:1784
+#: gui.c:1807
 msgid ""
 msgstr ""
 "Project-Id-Version: gpscorrelate 2.2\n"
 "Report-Msgid-Bugs-To: dan@coneharvesters.com\n"
-"POT-Creation-Date: 2024-12-19 16:48-0800\n"
+"POT-Creation-Date: 2024-12-30 15:58-0800\n"
 "PO-Revision-Date: 2019-03-18 10:12+0300\n"
 "Last-Translator: Nikolay Korotkiy <sikmir@gmail.com>\n"
 "Language-Team: russian\n"
@@ -17,9 +17,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: gpx-read.c:194 gui.c:207 gui.c:884 gui.c:1090 gui.c:1159 gui.c:1436
-#: gui.c:1462 main-command.c:198 main-command.c:224 main-command.c:409
-#: main-command.c:447 main-command.c:460 main-command.c:623 main-command.c:634
+#: gpx-read.c:194 gui.c:209 gui.c:902 gui.c:1109 gui.c:1178 gui.c:1455
+#: gui.c:1481 main-command.c:199 main-command.c:226 main-command.c:412
+#: main-command.c:450 main-command.c:463 main-command.c:631 main-command.c:642
 #, c-format
 msgid "Out of memory.\n"
 msgstr ""
@@ -39,41 +39,41 @@ msgstr "Неверный GPX файл не имеет корня.\n"
 msgid "Invalid GPX file.\n"
 msgstr "Неверный GPX файл.\n"
 
-#: gui.c:288
+#: gui.c:290
 #, c-format
 msgid "GPS Photo Correlate %s"
 msgstr "GPS Photo Correlate %s"
 
-#: gui.c:318
+#: gui.c:320
 msgid "Add..."
 msgstr "Добавить..."
 
-#: gui.c:322 gui.c:324
+#: gui.c:324 gui.c:326
 msgid "Add photos to be correlated."
 msgstr "Добавить фотографии для привязки."
 
-#: gui.c:329
+#: gui.c:331
 msgid "Remove"
 msgstr "Удалить"
 
-#: gui.c:333 gui.c:335
+#: gui.c:335 gui.c:337
 msgid "Remove selected photos from the list."
 msgstr "Удалить выбранные фотографии из списка."
 
-#: gui.c:340
+#: gui.c:342
 msgid "<b>1. Add Photos</b>"
 msgstr "<b>1. Добавить фотографии</b>"
 
-#: gui.c:359 gui.c:1477
+#: gui.c:361 gui.c:1496
 #, c-format
 msgid "Read from: No file"
 msgstr "Читать из: нет файла"
 
-#: gui.c:366
+#: gui.c:368
 msgid "Choose..."
 msgstr "Выбрать..."
 
-#: gui.c:371 gui.c:375
+#: gui.c:373 gui.c:377
 msgid ""
 "Choose GPX file from which to read GPS data. If the GPS data is not in the "
 "GPX format, use a converter like GPSBabel to convert it to GPX first."
@@ -82,15 +82,15 @@ msgstr ""
 "не в GPX формате, воспользуйтесь конвертером, таким как GPSBabel, чтобы "
 "сначала преобразовать их в GPX."
 
-#: gui.c:381
+#: gui.c:383
 msgid "<b>2. GPS Data</b>"
 msgstr "<b>2. GPS данные</b>"
 
-#: gui.c:400
+#: gui.c:402
 msgid "Interpolate"
 msgstr "Интерполировать"
 
-#: gui.c:405 gui.c:409
+#: gui.c:407 gui.c:411
 msgid ""
 "Interpolate between points. If disabled, points will be rounded to the "
 "nearest recorded point."
@@ -98,11 +98,11 @@ msgstr ""
 "Интерполировать между точками. Если выключено, будет использована ближайшая "
 "записанная устройством точка."
 
-#: gui.c:414
+#: gui.c:416
 msgid "Don't write"
 msgstr "Не сохранять"
 
-#: gui.c:419 gui.c:423
+#: gui.c:421 gui.c:425
 msgid ""
 "Don't write EXIF data back to the photos. This is useful for testing the "
 "settings without modifying the photos."
@@ -110,27 +110,27 @@ msgstr ""
 "Не записывать EXIF данные фотографий. Полезно для тестирования настроек без "
 "изменения фотографий."
 
-#: gui.c:428
+#: gui.c:430
 msgid "Replace existing tags"
 msgstr "Заменить существующие теги"
 
-#: gui.c:432 gui.c:434
+#: gui.c:434 gui.c:436
 msgid "Replace any existing GPS tags in the photos."
 msgstr "Заменить уже существующие теги у фотографий."
 
-#: gui.c:438
+#: gui.c:440
 msgid "Don't change mtime"
 msgstr "Не изменять mtime"
 
-#: gui.c:443 gui.c:446
+#: gui.c:445 gui.c:448
 msgid "Don't change file modification time of the photos."
 msgstr "Не обновлять время изменения файлов."
 
-#: gui.c:450
+#: gui.c:452
 msgid "Between Segments"
 msgstr "Между сегментами"
 
-#: gui.c:455 gui.c:460
+#: gui.c:457 gui.c:462
 msgid ""
 "Interpolate between track segments. Generally the data is segmented to show "
 "where location data was available and not available, but you might still "
@@ -140,11 +140,11 @@ msgstr ""
 "то, что данные о местоположении были недоступны, но возможно вы все равно "
 "хотите интерполировать между ними."
 
-#: gui.c:466
+#: gui.c:468
 msgid "Write DD MM SS.SS"
 msgstr "В формате DD MM SS.SS"
 
-#: gui.c:471 gui.c:476
+#: gui.c:473 gui.c:478
 msgid ""
 "Write the latitude and longitude values as DD MM SS.SS; this is the new "
 "default. The old behaviour was to write it as DD MM.MM, which will occur if "
@@ -154,62 +154,70 @@ msgstr ""
 "умолчанию. Предыдущим форматом было DD MM.MM, чтобы его использовать "
 "выключите данную опцию."
 
-#: gui.c:482
+#: gui.c:484
 msgid "Auto time zone"
 msgstr "Автоматически определять часовой пояс"
 
-#: gui.c:487 gui.c:490
+#: gui.c:489 gui.c:492
 msgid "Assume the camera time zone is the same as the local time zone."
 msgstr ""
 "Предполагать, что часовой пояс камеры совпадает с местным часовым поясом."
 
-#: gui.c:494
+#: gui.c:496
+msgid "Use photo time zone"
+msgstr ""
+
+#: gui.c:501 gui.c:504
+msgid "Use a time zone tag if found in the photo."
+msgstr ""
+
+#: gui.c:512
 msgid "Write heading"
 msgstr ""
 
-#: gui.c:499 gui.c:504
+#: gui.c:517 gui.c:522
 msgid ""
 "Write an EXIF tag specifying the direction of movement as the photo was "
 "taken.  This is only possible if the GPX file contains these data and if the "
 "heading change does not exceed the maximum (specified below)."
 msgstr ""
 
-#: gui.c:510
+#: gui.c:528
 msgid "Write camera direction"
 msgstr ""
 
-#: gui.c:515 gui.c:520
+#: gui.c:533 gui.c:538
 msgid ""
 "Write an EXIF tag specifying the camera direction as the photo was taken.  "
 "This is only possible if the GPX file contains these data and if the heading "
 "change does not exceed the maximum (specified below)."
 msgstr ""
 
-#: gui.c:531
+#: gui.c:549
 msgid "Max gap time:"
 msgstr "Макс. промежуток времени:"
 
-#: gui.c:539
+#: gui.c:557
 msgid "Max heading change:"
 msgstr ""
 
-#: gui.c:547
+#: gui.c:565
 msgid "Camera direction:"
 msgstr ""
 
-#: gui.c:555
+#: gui.c:573
 msgid "Time Zone:"
 msgstr "Часовой пояс:"
 
-#: gui.c:563
+#: gui.c:581
 msgid "Photo Offset:"
 msgstr "Смещение фотографии:"
 
-#: gui.c:571
+#: gui.c:589
 msgid "GPS Datum:"
 msgstr "GPS датум:"
 
-#: gui.c:587 gui.c:593
+#: gui.c:605 gui.c:611
 msgid ""
 "Maximum time \"away\" from a point that the photo can be taken yet still "
 "match, in seconds. If a photo's time is outside this value (from both points "
@@ -220,20 +228,20 @@ msgstr ""
 "выходит за пределы этого значения (из обеих точек с обеих сторон), "
 "местоположение будет считаться не совпадающим."
 
-#: gui.c:609 gui.c:613
+#: gui.c:627 gui.c:631
 msgid ""
 "Maximum number of degrees of rotation allowed between points while still "
 "writing a heading tag. -1 means no maximum."
 msgstr ""
 
-#: gui.c:632 gui.c:637
+#: gui.c:650 gui.c:655
 msgid ""
 "Number of degrees from the direction of movement towards which the camera "
 "faces. If the camera is facing out the right-hand window of a car, this "
 "would be 90."
 msgstr ""
 
-#: gui.c:657 gui.c:663
+#: gui.c:675 gui.c:681
 msgid ""
 "The timezone that the camera's time was set to when the photos were taken. "
 "For example, if a camera is set to AWST or +8:00 hours from UTC, enter +8:00 "
@@ -245,7 +253,7 @@ msgstr ""
 "часов от UTC, введите здесь +3:00, чтобы можно было правильно определить "
 "время фотографии. Данные GPS всегда в UTC."
 
-#: gui.c:684 gui.c:689
+#: gui.c:702 gui.c:707
 msgid ""
 "The number of seconds to add to the photo's time to make it match the GPS "
 "data. Calculate this with (GPS - Photo). Can be negative or positive and "
@@ -255,7 +263,7 @@ msgstr ""
 "соответствовало GPS данным. Рассчитывается с помощью (GPS - Фото). Может "
 "быть отрицательным или положительным, и разрешены дробные секунды."
 
-#: gui.c:704 gui.c:708
+#: gui.c:722 gui.c:726
 msgid ""
 "The datum used for the GPS data. This text here is recorded in the EXIF tags "
 "as the source datum. WGS-84 is very commonly used."
@@ -263,15 +271,15 @@ msgstr ""
 "Датум, используемый для GPS данных. Этот текст записывается в EXIF теги как "
 "датум источника. WGS-84 очень широко используется."
 
-#: gui.c:715
+#: gui.c:733
 msgid "<b>3. Set options</b>"
 msgstr "<b>3. Установить параметры</b>"
 
-#: gui.c:730
+#: gui.c:748
 msgid "Correlate Photos"
 msgstr "Привязать фотографии"
 
-#: gui.c:735 gui.c:739
+#: gui.c:753 gui.c:757
 msgid ""
 "Begin the correlation process, writing back into the photos' EXIF tags "
 "(unless Don't write is selected)."
@@ -279,359 +287,363 @@ msgstr ""
 "Начать процесс привязки и записи EXIF тегов (если не выбрана опция 'Не "
 "сохранять')."
 
-#: gui.c:745
+#: gui.c:763
 msgid "<b>4. Correlate!</b>"
 msgstr "<b>4. Привязать!</b>"
 
-#: gui.c:764
+#: gui.c:782
 msgid "Strip GPS tags"
 msgstr "Очистить GPS теги"
 
-#: gui.c:769 gui.c:772
+#: gui.c:787 gui.c:790
 msgid "Strip GPS tags from the selected photos."
 msgstr "Очистить GPS теги с выделенных фотографий."
 
-#: gui.c:777
+#: gui.c:795
 msgid "Help"
 msgstr "Справка"
 
-#: gui.c:782 gui.c:785
+#: gui.c:800 gui.c:803
 msgid "View help for this application."
 msgstr "Вызвать справку для этого приложения."
 
-#: gui.c:790
+#: gui.c:808
 msgid "About"
 msgstr "О программе"
 
-#: gui.c:795 gui.c:798
+#: gui.c:813 gui.c:816
 msgid "Show information about the program."
 msgstr "Информация о программе."
 
-#: gui.c:803
+#: gui.c:821
 msgid "<b>Other Tools</b>"
 msgstr "<b>Другие инструменты</b>"
 
-#: gui.c:839
+#: gui.c:857
 msgid "File"
 msgstr "Файл"
 
-#: gui.c:846
+#: gui.c:864
 msgid "Latitude"
 msgstr "Широта"
 
-#: gui.c:853
+#: gui.c:871
 msgid "Longitude"
 msgstr "Долгота"
 
-#: gui.c:860
+#: gui.c:878
 msgid "Elevation"
 msgstr "Высота"
 
-#: gui.c:867
+#: gui.c:885
 msgid "Time"
 msgstr "Время"
 
-#: gui.c:874
+#: gui.c:892
 msgid "State"
 msgstr "Состояние"
 
-#: gui.c:978 gui.c:983
+#: gui.c:997 gui.c:1002
 msgid "Add Photos..."
 msgstr "Добавить фотографии..."
 
-#: gui.c:997
+#: gui.c:1016
 msgid "JPEG images"
 msgstr "JPEG изображения"
 
-#: gui.c:1003 gui.c:1375
+#: gui.c:1022 gui.c:1394
 msgid "All files"
 msgstr "Все файлы"
 
-#: gui.c:1103 gui.c:1274
+#: gui.c:1122 gui.c:1293
 msgid "No EXIF data"
 msgstr "Нет EXIF данных"
 
-#: gui.c:1279
+#: gui.c:1298
 msgid "GPS Data Present"
 msgstr "GPS данные присутствуют"
 
-#: gui.c:1287
+#: gui.c:1306
 msgid "S"
 msgstr "ю.ш."
 
-#: gui.c:1287
+#: gui.c:1306
 msgid "N"
 msgstr "с.ш."
 
-#: gui.c:1295
+#: gui.c:1314
 msgid "W"
 msgstr "з.д."
 
-#: gui.c:1295
+#: gui.c:1314
 msgid "E"
 msgstr "в.д."
 
-#: gui.c:1302
+#: gui.c:1321
 msgid "m"
 msgstr "м"
 
-#: gui.c:1308
+#: gui.c:1327
 msgid "Ready"
 msgstr "Готово"
 
-#: gui.c:1350 gui.c:1355
+#: gui.c:1369 gui.c:1374
 msgid "Select GPS Data..."
 msgstr "Выбрать GPS данные..."
 
-#: gui.c:1369
+#: gui.c:1388
 msgid "GPX files"
 msgstr "GPX файлы"
 
-#: gui.c:1400
+#: gui.c:1419
 msgid "Loading GPS data from file... Won't be a moment..."
 msgstr "Загрузка GPS данных из файла..."
 
-#: gui.c:1426
+#: gui.c:1445
 msgid "multiple files"
 msgstr "несколько файлов"
 
-#: gui.c:1472
+#: gui.c:1491
 #, c-format
 msgid "Read from: %s"
 msgstr "Читать из: %s"
 
-#: gui.c:1484
+#: gui.c:1503
 #, c-format
 msgid "Unable to read file %s for some reason. Please try again."
 msgstr "Невозможно прочитать файл %s. Пожалуйста, попробуйте еще раз."
 
-#: gui.c:1531
+#: gui.c:1550
 msgid "No photos selected to match! Please use Add to add photos first!"
 msgstr ""
 "Не выбрано ни одной фотографии! Пожалуйста, добавьте сначала фотографии."
 
-#: gui.c:1544
+#: gui.c:1563
 msgid "No GPS data loaded! Please select a GPX file to read GPS data from."
 msgstr "GPS данные не загружены! Выберите GPX файл."
 
-#: gui.c:1619
+#: gui.c:1641
 msgid "Internal error"
 msgstr "Внутренняя ошибка"
 
-#: gui.c:1624
+#: gui.c:1646
 msgid "Correlating..."
 msgstr "Привязка..."
 
-#: gui.c:1647
+#: gui.c:1670
 msgid "Exact Match"
 msgstr "Точное совпадение"
 
-#: gui.c:1651
+#: gui.c:1674
 msgid "Interpolated Match"
 msgstr "Интерполированное совпадение"
 
-#: gui.c:1655
+#: gui.c:1678
 msgid "Rounded Match"
 msgstr "Округленное совпадение"
 
-#: gui.c:1659
+#: gui.c:1682
 msgid "Write Failure"
 msgstr "Ошибка записи"
 
-#: gui.c:1673
+#: gui.c:1696
 msgid "Data Already Present"
 msgstr "Данные уже присутствуют"
 
-#: gui.c:1680
+#: gui.c:1703
 msgid "No Match"
 msgstr "Нет совпадений"
 
-#: gui.c:1684
+#: gui.c:1707
 msgid "Too far"
 msgstr "Слишком далеко"
 
-#: gui.c:1688
+#: gui.c:1711
 msgid "No data"
 msgstr "Нет данных"
 
-#: gui.c:1743
+#: gui.c:1766
 msgid "Stripping..."
 msgstr "Очистка..."
 
-#: gui.c:1760
+#: gui.c:1783
 msgid "Error Stripping"
 msgstr "Ошибка очистки"
 
-#: gui.c:1819
+#: gui.c:1842
 msgid "GPS Correlate attaches EXIF GPS location tags to images."
 msgstr "GPS Correlate прикрепляет к изображениям теги местоположения GPS EXIF."
 
-#: gui.c:1821
+#: gui.c:1844
 msgid "Copyright © 2005-2024 Daniel Foote, Dan Fandrich"
 msgstr "Авторские права © 2005-2024 Daniel Foote, Dan Fandrich"
 
-#: main-command.c:83
+#: main-command.c:84
 #, c-format
 msgid "%s, ver. %s. %s\n"
 msgstr "%s, ver. %s. %s\n"
 
-#: main-command.c:85
+#: main-command.c:86
 msgid "Copyright (C) 2005-2024 Daniel Foote, Dan Fandrich"
 msgstr "Авторские права © 2005-2024 Daniel Foote, Dan Fandrich"
 
-#: main-command.c:91
+#: main-command.c:92
 #, c-format
 msgid "Usage: %s [options] file.jpg ...\n"
 msgstr ""
 
-#: main-command.c:92
-msgid "-g, --gps file.gpx       Specifies GPX file with GPS data"
-msgstr ""
-
 #: main-command.c:93
-msgid ""
-"-l, --latlong LAT,LONG[,E] Specifies latitude/longitude/elevation directly"
+msgid "-g, --gps file.gpx       Specifies GPX file with GPS data"
 msgstr ""
 
 #: main-command.c:94
 msgid ""
-"-z, --timeadd +/-HH[:MM] Time to add to GPS data to make it match photos"
+"-l, --latlong LAT,LONG[,E] Specifies latitude/longitude/elevation directly"
 msgstr ""
 
 #: main-command.c:95
+msgid ""
+"-z, --timeadd +/-HH[:MM] Time to add to GPS data to make it match photos"
+msgstr ""
+
+#: main-command.c:96
 msgid ""
 "-i, --no-interpolation   Disable interpolation between points; "
 "interpolation\n"
 "                         is linear, points rounded if disabled"
 msgstr ""
 
-#: main-command.c:97
-msgid "-d, --datum DATUM        Specify measurement datum (defaults to WGS-84)"
-msgstr ""
-
 #: main-command.c:98
-msgid ""
-"-n, --no-write           Do not write the EXIF data. Useful with --verbose"
+msgid "-d, --datum DATUM        Specify measurement datum (defaults to WGS-84)"
 msgstr ""
 
 #: main-command.c:99
 msgid ""
-"-R, --replace            Overwrite any GPS tags already in the image file"
+"-n, --no-write           Do not write the EXIF data. Useful with --verbose"
 msgstr ""
 
 #: main-command.c:100
 msgid ""
-"-m, --max-dist SECS      Max time outside points that photo will be matched"
+"-R, --replace            Overwrite any GPS tags already in the image file"
 msgstr ""
 
 #: main-command.c:101
-msgid "    --heading            Store the direction of movement in the image"
+msgid ""
+"-m, --max-dist SECS      Max time outside points that photo will be matched"
 msgstr ""
 
 #: main-command.c:102
-msgid ""
-"-B, --max-heading DEG    Max degrees between points that will be matched"
+msgid "    --heading            Store the direction of movement in the image"
 msgstr ""
 
 #: main-command.c:103
 msgid ""
-"-b, --direction DEG      Angular offset of camera from forward direction"
+"-B, --max-heading DEG    Max degrees between points that will be matched"
 msgstr ""
 
 #: main-command.c:104
-msgid "-s, --show               Just show the GPS data from the given files"
+msgid ""
+"-b, --direction DEG      Angular offset of camera from forward direction"
 msgstr ""
 
 #: main-command.c:105
+msgid "-s, --show               Just show the GPS data from the given files"
+msgstr ""
+
+#: main-command.c:106
 msgid ""
 "-o, --machine            Like --show but with machine-readable CSV output"
 msgstr ""
 
-#: main-command.c:106
+#: main-command.c:107
 msgid "-x, --show-gpx           Like --show but with GPX output"
 msgstr ""
 
-#: main-command.c:107
+#: main-command.c:108
 msgid "-r, --remove             Strip GPS tags from the given files"
 msgstr ""
 
-#: main-command.c:108
+#: main-command.c:109
 msgid "-t, --ignore-tracksegs   Interpolate between track segments, too"
 msgstr ""
 
-#: main-command.c:109
+#: main-command.c:110
 msgid "-M, --no-mtime           Don't change mtime of modified files"
 msgstr ""
 
-#: main-command.c:110
+#: main-command.c:111
 msgid ""
 "-f, --fix-datestamps     Fix broken GPS datestamps written with ver. < 1.5.2"
 msgstr ""
 
-#: main-command.c:111
+#: main-command.c:112
 msgid ""
 "    --degmins            Write location as DD MM.MM (was default before "
 "v1.5.3)"
 msgstr ""
 
-#: main-command.c:112
+#: main-command.c:113
 msgid ""
 "-O, --photooffset SECS   Offset added to photo time to make it match the GPS"
 msgstr ""
 
-#: main-command.c:113
-msgid "-h, --help               Display this help message"
-msgstr ""
-
 #: main-command.c:114
-msgid "-v, --verbose            Show more detailed output"
+msgid "    --no-photo-tz        Ignore time zone tags within photos"
 msgstr ""
 
 #: main-command.c:115
+msgid "-h, --help               Display this help message"
+msgstr ""
+
+#: main-command.c:116
+msgid "-v, --verbose            Show more detailed output"
+msgstr ""
+
+#: main-command.c:117
 msgid "-V, --version            Display version information"
 msgstr ""
 
-#: main-command.c:215
+#: main-command.c:217
 #, c-format
 msgid "Warning: image files are not ordered by time.\n"
 msgstr ""
 
-#: main-command.c:241
+#: main-command.c:243
 #, c-format
 msgid "%s: %s, Lat %f, Long %f, Elevation "
 msgstr ""
 
-#: main-command.c:246
+#: main-command.c:248
 #, c-format
 msgid "(unknown)"
 msgstr ""
 
-#: main-command.c:255
+#: main-command.c:257
 #, c-format
 msgid "%s: %s, No GPS Data.\n"
 msgstr ""
 
-#: main-command.c:264 main-command.c:317
+#: main-command.c:266 main-command.c:319
 #, c-format
 msgid "%s: No EXIF data.\n"
 msgstr ""
 
-#: main-command.c:293
+#: main-command.c:295
 #, c-format
 msgid "%s: Removed GPS tags.\n"
 msgstr ""
 
-#: main-command.c:296
+#: main-command.c:298
 #, c-format
 msgid "%s: Tag removal failure.\n"
 msgstr ""
 
-#: main-command.c:320
+#: main-command.c:322
 #, c-format
 msgid "%s: No GPS data.\n"
 msgstr ""
 
-#: main-command.c:346
+#: main-command.c:348
 #, c-format
 msgid ""
 "%s: Wrong timestamp:\n"
@@ -640,140 +652,145 @@ msgid ""
 "   Corrected: %s\n"
 msgstr ""
 
-#: main-command.c:351
+#: main-command.c:353
 #, c-format
 msgid "%s: Timestamp is OK: Photo %s (localtime), GPS %s (UTC).\n"
 msgstr ""
 
-#: main-command.c:433
+#: main-command.c:436
 #, c-format
 msgid "Reading GPS Data..."
 msgstr ""
 
-#: main-command.c:465
+#: main-command.c:468
 #, c-format
 msgid "Error parsing location.\n"
 msgstr ""
 
-#: main-command.c:539
+#: main-command.c:547
 #, c-format
 msgid "The --direction value must be between -359..359\n"
 msgstr ""
 
-#: main-command.c:556
+#: main-command.c:564
 #, c-format
 msgid "The --max-heading value must be between 0..179\n"
 msgstr ""
 
-#: main-command.c:569
+#: main-command.c:577
 #, c-format
 msgid ""
 "This is free software; see the source for copying conditions.  There is NO\n"
 "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
 msgstr ""
 
-#: main-command.c:647
+#: main-command.c:655
 #, c-format
 msgid "At least one image file name must be given.\n"
 msgstr ""
 
-#: main-command.c:706
+#: main-command.c:715
 #, c-format
 msgid "A time offset must be given with the -z option to fix photos.\n"
 msgstr ""
 
-#: main-command.c:724
+#: main-command.c:733
 #, c-format
 msgid "Cannot continue since no GPS data is available.\n"
 msgstr ""
 
-#: main-command.c:732
+#: main-command.c:741
 #, c-format
 msgid ""
 "Legend: . = Ok, / = Interpolated, < = Rounded, - = No match, ^ = Too far\n"
 "        w = Write Fail, ? = No EXIF date, ! = GPS already present\n"
 msgstr ""
 
-#: main-command.c:737
+#: main-command.c:746
 #, c-format
 msgid ""
 "\n"
 "Correlate: "
 msgstr ""
 
-#: main-command.c:773
+#: main-command.c:790
 #, c-format
 msgid "%s: Exact match: "
 msgstr ""
 
-#: main-command.c:783
+#: main-command.c:799
 #, c-format
 msgid "%s: Interpolated: "
 msgstr ""
 
-#: main-command.c:793
+#: main-command.c:808
 #, c-format
 msgid "%s: Rounded: "
 msgstr ""
 
-#: main-command.c:803
+#: main-command.c:817
 #, c-format
 msgid "%s: EXIF write failure: "
 msgstr ""
 
-#: main-command.c:811
+#: main-command.c:825
 #, c-format
 msgid "Lat %f, Long %f, Elev "
 msgstr ""
 
-#: main-command.c:816
+#: main-command.c:830
 #, c-format
 msgid "(unknown).\n"
 msgstr ""
 
-#: main-command.c:827
+#: main-command.c:841
 #, c-format
 msgid "%s: No match.\n"
 msgstr ""
 
-#: main-command.c:837
+#: main-command.c:850
 #, c-format
 msgid "%s: Too far from nearest point.\n"
 msgstr ""
 
-#: main-command.c:847
+#: main-command.c:859
 #, c-format
 msgid "%s: No EXIF date tag present.\n"
 msgstr ""
 
-#: main-command.c:857
+#: main-command.c:868
 #, c-format
 msgid "%s: GPS Data already present.\n"
 msgstr ""
 
-#: main-command.c:882
+#: main-command.c:893
 #, c-format
 msgid ""
 "\n"
 "Completed correlation process.\n"
 msgstr ""
 
-#: main-command.c:887
+#: main-command.c:899
 #, c-format
-msgid "Used time zone offset %d:%02d\n"
+msgid "Used time zone offset (multiple)\n"
 msgstr ""
 
-#: main-command.c:889
+#: main-command.c:901
+#, c-format
+msgid "Used time zone offset %s%ld:%02ld\n"
+msgstr ""
+
+#: main-command.c:904
 #, c-format
 msgid "Matched: %5d (%d Exact, %d Interpolated, %d Rounded).\n"
 msgstr ""
 
-#: main-command.c:892
+#: main-command.c:907
 #, c-format
 msgid "Failed:  %5d (%d Not matched, %d Write failure, %d Too Far,\n"
 msgstr ""
 
-#: main-command.c:895
+#: main-command.c:910
 #, c-format
 msgid "                %d No Date, %d GPS Already Present.)\n"
 msgstr ""

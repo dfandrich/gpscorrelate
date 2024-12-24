@@ -3,6 +3,7 @@ Installation of GPS Correlate
 To build, you will need these prerequisites:
 
 * The Exiv2 library (C++ EXIF tag handling): https://www.exiv2.org/
+  (ver. 0.27.4 or newer is required for time zone tag support)
 * libxml2 (XML parsing): http://www.xmlsoft.org/
 * pkgconfig: https://pkg-config.freedesktop.org/
 * make, such as GNU makes: https://www.gnu.org/software/make/make.html
@@ -12,6 +13,7 @@ To build, you will need these prerequisites:
   https://docbook.sourceforge.net/ or an OS package (often named something like
   docbook-xsl or docbook-style-xsl)
 * intltool (only for rebuilding the AppStream metadata file)
+* exiv2 CLI (only for running the test suite)
 
 You can build the command line version and the GUI together simply with:
   make

@@ -36,6 +36,7 @@ struct CorrelateOptions {
 	int TimeZoneHours;  /* To add to photos to make them UTC. */
 	int TimeZoneMins;
 	int AutoTimeZone;
+	int TimeZoneFromPhoto;
 	int FeatherTime;
 	int WriteHeading;
 	int HeadingOffset;
@@ -81,8 +82,8 @@ struct CorrelateOptions {
 
 
 struct GPSPoint* CorrelatePhoto(const char* Filename,
-		struct CorrelateOptions* Options);
+		long *UsedOffset, struct CorrelateOptions* Options);
 void SetAutoTimeZoneOptions(const char *TimeTemp,
 		struct CorrelateOptions* Options);
 struct timespec ConvertTimeToUnixTime(const char *TimeTemp, const char *TimeFormat,
-		const struct CorrelateOptions* Options);
+		long OffsetTime, long *UsedOffset, const struct CorrelateOptions* Options);

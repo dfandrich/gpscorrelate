@@ -85,7 +85,7 @@ int main(int argc, char* argv[])
 	printf("Done write, now reading...\n");
 
 	int GPS = 0;
-	char* Ret = ReadExifData(argv[1], &GPS, NULL, NULL, NULL);
+	char* Ret = ReadExifData(argv[1], &GPS, NULL, NULL, NULL, NULL);
 	if (Ret)
 	{
 		printf("Date: %s.\n", Ret);
@@ -103,7 +103,8 @@ int main(int argc, char* argv[])
 };
 */
 
-char* ReadExifData(const char* File, int* IncludesGPS, double* Lat, double* Long, double* Elev)
+char* ReadExifData(const char* File, int* IncludesGPS, double* Lat, double* Long, double* Elev,
+		long *OffsetTime)
 {
 	*IncludesGPS = 0;
 
@@ -154,6 +155,26 @@ char* ReadExifData(const char* File, int* IncludesGPS, double* Lat, double* Long
 
 	// Copy the tag and return that.
 	char* DateTime = strdup(Value.c_str());
+
+	// Look for time offset
+	if (OffsetTime) {
+#if EXIV2_TEST_VERSION(0, 27, 4)
+		Exiv2::Exifdatum& OffsetTimeTag = ExifRead["Exif.Photo.OffsetTimeOriginal"];
+		std::string OffsetTimeValue = OffsetTimeTag.toString();
+		if (OffsetTimeValue.length() == 6) {
+			/* Split into hours, minutes with the same sign for both. */
+			int OffsetHours, OffsetMins;
+			if (sscanf(OffsetTimeValue.c_str(), "%d:%d", &OffsetHours, &OffsetMins) == 2) {
+				/* Can't look at sign of hours because it might be -0 */
+				if (OffsetTimeValue[0] == '-')
+					OffsetMins *= -1;
+				*OffsetTime = OffsetHours * 3600 + OffsetMins * 60;
+			} else
+				*OffsetTime = NO_OFFSET_TIME;
+		} else
+#endif
+			*OffsetTime = NO_OFFSET_TIME;
+	}
 
 	// Check if we have GPS tags.
 	Exiv2::Exifdatum GPSData = ExifRead["Exif.GPSInfo.GPSVersionID"];

@@ -208,13 +208,13 @@ static void ExtractTrackPoints(xmlNodePtr Start)
 				LastPoint->MoveHeading = atof(Heading);
 				LastPoint->HeadingRef = HeadingRef;
 			}
-			struct timespec Timespec = ConvertToUnixTime(Time, GPX_DATE_FORMAT, 0, 0);
+			struct timespec Timespec = ConvertToUnixTime(Time, GPX_DATE_FORMAT, 0);
 			LastPoint->Time = Timespec.tv_sec;
 
 			/* Debug...
 			printf("TrackPoint. Lat %s (%f), Long %s (%f). Elev %s (%f), Time %d.\n",
 					Lat, atof(Lat), Long, atof(Long), Elev, atof(Elev),
-					ConvertToUnixTime(Time, GPX_DATE_FORMAT, 0, 0));
+					ConvertToUnixTime(Time, GPX_DATE_FORMAT, 0));
 			printf("Decimals %d %d %d\n", LastPoint->LatDecimals, LastPoint->LongDecimals, LastPoint->ElevDecimals);
 			*/
 

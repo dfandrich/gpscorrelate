@@ -1,0 +1,6 @@
+TITLE='Show GPS data in GPX format with images including OffsetTime'
+# First file uses -07:00 (EXIF tag), remainder use -02:00 (automatic)
+COMMAND='env TZ=WGT2 $PROGRAM -x "$STAGINGDIR/withgps.jpg" "$STAGINGDIR/noelev.jpg" "$STAGINGDIR/withtz.jpg" > "$OUTFILE" 2>&1'
+RESULTCODE=0
+# Strip paths & version number.
+SEDCOMMAND='s/(creator="gpscorrelate )[^"]*/\1VERSION/;/\!--/s@[^ ]*/@@'

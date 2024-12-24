@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="gpscorrelate VERSION"
+  xmlns="http://www.topografix.com/GPX/1/1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+ <trk>
+  <trkseg>
+   <trkpt lat="37.420418" lon="-122.084027">
+    <ele>10.000</ele>
+    <time>2012-11-22T11:34:56Z</time>
+    <!-- withgps.jpg -->
+   </trkpt>
+   <trkpt lat="37.420418" lon="-122.084027">
+    <time>2012-11-22T11:40:00Z</time>
+    <!-- noelev.jpg -->
+   </trkpt>
+   <trkpt lat="38.598576" lon="-109.573474">
+    <ele>1180.156</ele>
+    <time>2012-11-22T11:35:20Z</time>
+    <!-- withtz.jpg -->
+   </trkpt>
+  </trkseg>
+ </trk>
+</gpx>
+Warning: image files are not ordered by time.

@@ -1,0 +1,6 @@
+TITLE='Correlate a file with OffsetTime tag'
+PRECOMMAND='cat "$STAGINGDIR/point1-6.jpg" >"$LOGDIR/test.jpg"'
+COMMAND='$PROGRAM -v -g "$STAGINGDIR/track10.gpx" "$LOGDIR/test.jpg" > "$OUTFILE" 2>&1 && exiv2 -pv pr "$LOGDIR/test.jpg" >> "$OUTFILE" 2>&1'
+POSTCOMMAND='rm -f "$LOGDIR/test.jpg"'
+RESULTCODE=0
+SEDCOMMAND='s@^([a-zA-Z]:)?/.*/|.*Copyright.*$@@' # strip path and copyright line

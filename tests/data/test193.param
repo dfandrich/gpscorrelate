@@ -1,0 +1,7 @@
+TITLE='Correlate multiple files with and without OffsetTime tags ignoring tags'
+# Both files use -2:00 (automatic)
+PRECOMMAND='cat "$STAGINGDIR/point1-6.jpg" >"$LOGDIR/test1.jpg" && cat "$STAGINGDIR/point1-1.jpg" >"$LOGDIR/test2.jpg"'
+COMMAND='env TZ=WGT2 $PROGRAM -v --no-photo-tz -t -g "$STAGINGDIR/track10.gpx" "$LOGDIR/test1.jpg" "$LOGDIR/test2.jpg" > "$OUTFILE" 2>&1 && exiv2 -pv pr "$LOGDIR/test1.jpg" >> "$OUTFILE" 2>&1 && exiv2 -pv pr "$LOGDIR/test2.jpg" >> "$OUTFILE" 2>&1'
+POSTCOMMAND='rm -f "$LOGDIR/test1.jpg" "$LOGDIR/test2.jpg"'
+RESULTCODE=0
+SEDCOMMAND='s@^([a-zA-Z]:)?/.*/|.*Copyright.*$@@' # strip path and copyright line

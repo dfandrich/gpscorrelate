@@ -74,6 +74,7 @@ static const struct option program_options[] = {
 	{ "heading", no_argument, 0, '('},
 	{ "direction", required_argument, 0, 'b'},
 	{ "max-heading", required_argument, 0, 'B'},
+	{ "no-photo-tz", no_argument, 0, ')'},
 	{ 0, 0, 0, 0 }
 };
 
@@ -110,6 +111,7 @@ static void PrintUsage(const char* ProgramName)
 	puts(  _("-f, --fix-datestamps     Fix broken GPS datestamps written with ver. < 1.5.2"));
 	puts(  _("    --degmins            Write location as DD MM.MM (was default before v1.5.3)"));
 	puts(  _("-O, --photooffset SECS   Offset added to photo time to make it match the GPS"));
+	puts(  _("    --no-photo-tz        Ignore time zone tags within photos"));
 	puts(  _("-h, --help               Display this help message"));
 	puts(  _("-v, --verbose            Show more detailed output"));
 	puts(  _("-V, --version            Display version information"));
@@ -154,7 +156,8 @@ static int ShowFileDetails(const char* File, enum OutputFormat Format,
 	int IncludesGPS = 0;
 	Lat = Long = 0;
 	Elev = NAN; /* Elevation is optional, so this means it's missing */
-	char* Time = ReadExifData(File, &IncludesGPS, &Lat, &Long, &Elev);
+	long OffsetTime = 0;
+	char* Time = ReadExifData(File, &IncludesGPS, &Lat, &Long, &Elev, &OffsetTime);
 	int rc = 1;
 	char* OldLocale = NULL;
 	static int Started = 0;
@@ -207,7 +210,8 @@ static int ShowFileDetails(const char* File, enum OutputFormat Format,
 			} else if (Format == GPX_FORMAT)
 			{
 				/* Now convert the time into Unixtime. */
-				struct timespec PhotoTime = ConvertTimeToUnixTime(Time, EXIF_DATE_FORMAT, Options);
+				struct timespec PhotoTime = ConvertTimeToUnixTime(Time, EXIF_DATE_FORMAT,
+						OffsetTime, NULL, Options);
 				static time_t LastGpxTime;
 				if (CompareTimes(PhotoTime, LastGpxTime) < 0)
 					fprintf(stderr, _("Warning: image files are not ordered by time.\n"));
@@ -320,11 +324,11 @@ static int FixDatestamp(const char* File, int AdjustmentHours, int AdjustmentMin
 	} else {
 		/* Check the timestamp. */
 		struct timespec PhotoTime = ConvertToUnixTime(OriginalDateStamp, EXIF_DATE_FORMAT,
-			AdjustmentHours, AdjustmentMinutes);
+			AdjustmentHours * 3600 + AdjustmentMinutes * 60);
 
 		snprintf(CombinedTime, sizeof(CombinedTime), "%s %s", DateStamp, TimeStamp);
 
-		struct timespec GPSTime = ConvertToUnixTime(CombinedTime, EXIF_DATE_FORMAT, 0, 0);
+		struct timespec GPSTime = ConvertToUnixTime(CombinedTime, EXIF_DATE_FORMAT, 0);
 
 		if (CompareTimes(PhotoTime, GPSTime.tv_sec)) {
 			/* Timestamp is wrong. Fix it.
@@ -392,6 +396,7 @@ int main(int argc, char** argv)
 	int RemoveTags = 0;
 	int DoBetweenTrackSegs = 0;
 	int NoChangeMtime = 0;
+	int NoPhotoTz = 0;
 	int FixDatestamps = 0;
 	int DegMinSecs = 1;
 	double PhotoOffset = 0;
@@ -528,6 +533,10 @@ int main(int argc, char** argv)
 				/* This option specifies to write the GPSTrack tag, if possible. */
 				WriteHeading = 1;
 				break;
+			case ')':
+				/* This option causes OffsetTime tags within photos to be ignored. */
+				NoPhotoTz = 1;
+				break;
 			case 'b':
 				/* This option gives us the offset of the camera from forward. */
 				if (optarg)
@@ -657,8 +666,9 @@ int main(int argc, char** argv)
 	struct CorrelateOptions Options;
 	Options.NoWriteExif   = NoWriteExif;
 	Options.OverwriteExisting = OverwriteExisting;
-	Options.NoInterpolate = (Interpolate ? 0 : 1);
+	Options.NoInterpolate = !Interpolate;
 	Options.AutoTimeZone  = !HaveTimeAdjustment;
+	Options.TimeZoneFromPhoto = !NoPhotoTz && !HaveTimeAdjustment;
 	Options.TimeZoneHours = TimeZoneHours;
 	Options.TimeZoneMins  = TimeZoneMins;
 	Options.FeatherTime   = FeatherTime;
@@ -748,6 +758,8 @@ int main(int argc, char** argv)
 	int TooFar     = 0;
 	int NoDate     = 0;
 	int GPSPresent = 0;
+	long UsedOffset = NO_OFFSET_TIME;
+	int OffsetCount = 0;
 
 	/* Now it is time to correlate the photos. Feed one in at a time, and
 	 * see what happens.*/
@@ -757,8 +769,14 @@ int main(int argc, char** argv)
 	while (optind < argc)
 	{
 		File = argv[optind++];
+		long ThisOffset;
 		/* Pass the file along to Correlate and see what happens. */
-		Result = CorrelatePhoto(File, &Options);
+		Result = CorrelatePhoto(File, &ThisOffset, &Options);
+		if (UsedOffset == NO_OFFSET_TIME)
+			UsedOffset = ThisOffset;
+		else if (ThisOffset != NO_OFFSET_TIME && ThisOffset != UsedOffset)
+			/* Multiple offsets were encountered */
+			++OffsetCount;
 
 		/* Was result non-NULL? */
 		if (Result)
@@ -773,8 +791,7 @@ int main(int argc, char** argv)
 				} else {
 					printf(".");
 				}
-			}
-			if (Options.Result == CORR_INTERPOLATED)
+			} else if (Options.Result == CORR_INTERPOLATED)
 			{
 				MatchInter++;
 				if (ShowDetails)
@@ -783,8 +800,7 @@ int main(int argc, char** argv)
 				} else {
 					printf("/");
 				}
-			}
-			if (Options.Result == CORR_ROUND)
+			} else if (Options.Result == CORR_ROUND)
 			{
 				MatchRound++;
 				if (ShowDetails)
@@ -793,8 +809,7 @@ int main(int argc, char** argv)
 				} else {
 					printf("<");
 				}
-			}
-			if (Options.Result == CORR_EXIFWRITEFAIL)
+			} else if (Options.Result == CORR_EXIFWRITEFAIL)
 			{
 				WriteFail++;
 				if (ShowDetails)
@@ -827,8 +842,7 @@ int main(int argc, char** argv)
 				} else {
 					printf("-");
 				}
-			}
-			if (Options.Result == CORR_TOOFAR)
+			} else if (Options.Result == CORR_TOOFAR)
 			{
 				TooFar++;
 				if (ShowDetails)
@@ -837,8 +851,7 @@ int main(int argc, char** argv)
 				} else {
 					printf("^");
 				}
-			}
-			if (Options.Result == CORR_NOEXIFINPUT)
+			} else if (Options.Result == CORR_NOEXIFINPUT)
 			{
 				NoDate++;
 				if (ShowDetails)
@@ -847,8 +860,7 @@ int main(int argc, char** argv)
 				} else {
 					printf("?");
 				}
-			}
-			if (Options.Result == CORR_GPSDATAEXISTS)
+			} else if (Options.Result == CORR_GPSDATAEXISTS)
 			{
 				GPSPresent++;
 				if (ShowDetails)
@@ -879,12 +891,16 @@ int main(int argc, char** argv)
 
 	/* Print details of what happened. */
 	printf(_("\nCompleted correlation process.\n"));
-	if (ShowDetails)
+	if (ShowDetails && UsedOffset != NO_OFFSET_TIME) {
 		/* This has to be shown at the end in case auto time zone
 		 * was used, since it isn't known before the first file
 		 * is processed. */
-		printf(_("Used time zone offset %d:%02d\n"),
-		       Options.TimeZoneHours, abs(Options.TimeZoneMins));
+		if (OffsetCount)
+			printf(_("Used time zone offset (multiple)\n"));
+		else
+			printf(_("Used time zone offset %s%ld:%02ld\n"), UsedOffset < 0 ? "-" : "",
+				   labs(UsedOffset / 3600), labs(UsedOffset % 3600) / 60);
+	}
 	printf(_("Matched: %5d (%d Exact, %d Interpolated, %d Rounded).\n"),
 			MatchExact + MatchInter + MatchRound,
 			MatchExact, MatchInter, MatchRound);

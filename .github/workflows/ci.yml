@@ -152,7 +152,7 @@ jobs:
             cxx: g++
             target: gpscorrelate
             install_target: install
-            valgrind: yes
+            check_options: -m
           - name: 'locale tests'
             cc: gcc
             gtk: 3
@@ -173,7 +173,6 @@ jobs:
             cxxflags: -std=c++11 -D_POSIX_C_SOURCE=200809L -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
             target: all
             install_target: install install-po install-desktop-file
-            osver: 20.04
         exclude:
           # Exclude configurations intended for a single OS version
           - osver: 22.04
@@ -194,33 +193,34 @@ jobs:
         run: env ASAN_OPTIONS="${{ matrix.build.asan_options }}" ./gpscorrelate -V
       - name: 'test'
         run: |
-          if [[ -z "${{ matrix.build.failing_tests }}" ]] ; then
-            make check CHECK_OPTIONS=-v ASAN_OPTIONS="${{ matrix.build.asan_options }}"
+          if [[ "${{ matrix.osver }}" == "20.04" ]]; then
+            # Ubuntu 20.04 has an old version of exiv2 that doesn't support
+            # time zone tags, so those 8 tests are expected to fail
+            FAILING_TESTS="$((8 + ${{ matrix.build.failing_tests || '0'}}))"
           else
-            # Debug logging enabled makes some tests fail due to differing output
-            echo 'Expecting ${{ matrix.build.failing_tests }} test failures'
-            make check CHECK_OPTIONS=-v | tee /dev/stderr | grep -q '${{ matrix.build.failing_tests }} test(s) have FAILED'
+            FAILING_TESTS="${{ matrix.build.failing_tests }}"
           fi
-      - if: matrix.build.valgrind == 'yes'
-        name: 'valgrind test'
-        run: make check CHECK_OPTIONS='-v -m'
-      - if: matrix.build.locale
-        name: 'locale test'
-        env:
-          LC_ADDRESS: ${{ matrix.build.locale }}
-          LC_COLLATE: ${{ matrix.build.locale }}
-          LC_CTYPE: ${{ matrix.build.locale }}
-          LC_IDENTIFICATION: ${{ matrix.build.locale }}
-          LC_MEASUREMENT: ${{ matrix.build.locale }}
-          LC_MESSAGES: ${{ matrix.build.locale }}
-          LC_MONETARY: ${{ matrix.build.locale }}
-          LC_NAME: ${{ matrix.build.locale }}
-          LC_NUMERIC: ${{ matrix.build.locale }}
-          LC_PAPER: ${{ matrix.build.locale }}
-          LC_SOURCED: ${{ matrix.build.locale }}
-          LC_TELEPHONE: ${{ matrix.build.locale }}
-          LC_TIME: ${{ matrix.build.locale }}
-        run: make check CHECK_OPTIONS='-v'
+          if [[ -n "${{ matrix.build.locale }}" ]]; then
+            export LC_ADDRESS="${{ matrix.build.locale }}"
+            export LC_COLLATE="${{ matrix.build.locale }}"
+            export LC_CTYPE="${{ matrix.build.locale }}"
+            export LC_IDENTIFICATION="${{ matrix.build.locale }}"
+            export LC_MEASUREMENT="${{ matrix.build.locale }}"
+            export LC_MESSAGES="${{ matrix.build.locale }}"
+            export LC_MONETARY="${{ matrix.build.locale }}"
+            export LC_NAME="${{ matrix.build.locale }}"
+            export LC_NUMERIC="${{ matrix.build.locale }}"
+            export LC_PAPER="${{ matrix.build.locale }}"
+            export LC_SOURCED="${{ matrix.build.locale }}"
+            export LC_TELEPHONE="${{ matrix.build.locale }}"
+            export LC_TIME="${{ matrix.build.locale }}"
+          fi
+          if [[ -z "$FAILING_TESTS" ]] ; then
+            make check CHECK_OPTIONS="-v ${{ matrix.build.check_options }}" ASAN_OPTIONS="${{ matrix.build.asan_options }}"
+          else
+            echo "Expecting $FAILING_TESTS test failures"
+            make check CHECK_OPTIONS="-v ${{ matrix.build.check_options }}" | tee /dev/stderr | grep -Fq "$FAILING_TESTS test(s) have FAILED"
+          fi
       - name: 'install test'
         run: make prefix= DESTDIR="${PWD}" ${{ matrix.build.install_target }}
 

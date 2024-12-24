@@ -1,0 +1,10 @@
+TITLE='Show GPS data in GPX format with images ignoring OffsetTime and out-of-order'
+# All files use -01:00 (manual)
+COMMAND='$PROGRAM -z 1 --no-photo-tz -x "$STAGINGDIR/withgps.jpg" "$STAGINGDIR/noelev.jpg" "$STAGINGDIR/withtz.jpg" > "$OUTFILE" 2>&1'
+RESULTCODE=0
+# Strip paths & version number. Also, move the Warning: line(s) to the end of
+# the file so they are in a known location (carefully, especially with edge
+# cases like the line already appearing at the end of the file), since the
+# blending of stdout/stderr is done differently on different platforms.
+# Unfortunately, BSD sed doesn't support grouping commands with {}.
+SEDCOMMAND='s/(creator="gpscorrelate )[^"]*/\1VERSION/;/\!--/s@[^ ]*/@@;$G;s/\n//;$q;/^Warning:/H;/^Warning:/d'

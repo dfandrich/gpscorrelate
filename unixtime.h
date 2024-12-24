@@ -32,5 +32,5 @@
 #define GPX_DATE_FORMAT "%d-%d-%dT%d:%d:%dZ"
 
 struct timespec ConvertToUnixTime(const char* StringTime, const char* Format,
-		int TZOffsetHours, int TZOffsetMinutes);
+		long TZOffset);
 int CompareTimes(struct timespec a, time_t b);

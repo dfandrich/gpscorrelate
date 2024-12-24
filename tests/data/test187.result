@@ -1,0 +1,11 @@
+
+Reading GPS Data...
+
+Correlate: 
+test.jpg: No match.
+
+Completed correlation process.
+Used time zone offset 0:00
+Matched:     0 (0 Exact, 0 Interpolated, 0 Rounded).
+Failed:      1 (1 Not matched, 0 Write failure, 0 Too Far,
+                0 No Date, 0 GPS Already Present.)

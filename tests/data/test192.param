@@ -1,0 +1,7 @@
+TITLE='Correlate multiple files with and without OffsetTime tags with manual time zone'
+# Both files use -02:00 (manual)
+PRECOMMAND='cat "$STAGINGDIR/point1-6.jpg" >"$LOGDIR/test1.jpg" && cat "$STAGINGDIR/point1-1.jpg" >"$LOGDIR/test2.jpg"'
+COMMAND='env TZ=UTC $PROGRAM -v -z -2 -t -g "$STAGINGDIR/track10.gpx" "$LOGDIR/test1.jpg" "$LOGDIR/test2.jpg" > "$OUTFILE" 2>&1 && exiv2 -pv pr "$LOGDIR/test1.jpg" >> "$OUTFILE" 2>&1 && exiv2 -pv pr "$LOGDIR/test2.jpg" >> "$OUTFILE" 2>&1'
+POSTCOMMAND='rm -f "$LOGDIR/test1.jpg" "$LOGDIR/test2.jpg"'
+RESULTCODE=0
+SEDCOMMAND='s@^([a-zA-Z]:)?/.*/|.*Copyright.*$@@' # strip path and copyright line

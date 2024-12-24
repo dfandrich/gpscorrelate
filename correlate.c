@@ -65,7 +65,7 @@ void SetAutoTimeZoneOptions(const char *Time,
 	/* PhotoTime isn't a true epoch time, but is rather out
 	 * by the local offset from UTC */
 	struct timespec PhotoTime =
-		ConvertToUnixTime(Time, EXIF_DATE_FORMAT, 0, 0);
+		ConvertToUnixTime(Time, EXIF_DATE_FORMAT, 0);
 
 	/* Extract the component time values */
 	struct tm *PhotoTm = gmtime(&PhotoTime.tv_sec);
@@ -82,11 +82,18 @@ void SetAutoTimeZoneOptions(const char *Time,
 
 /* Convert a time into Unixtime with the configured time zone conversion. */
 struct timespec ConvertTimeToUnixTime(const char *Time, const char *TimeFormat,
-		const struct CorrelateOptions* Options)
+		long OffsetTime, long *UsedOffset, const struct CorrelateOptions* Options)
 {
-	struct timespec PhotoTime =
-		ConvertToUnixTime(Time, TimeFormat,
-			Options->TimeZoneHours, Options->TimeZoneMins);
+	long TZOffset;
+	if (Options->TimeZoneFromPhoto && OffsetTime != NO_OFFSET_TIME)
+		/* Use the photo's time zone */
+		TZOffset = OffsetTime;
+	else
+		/* Use the automatic or manually-specified time zone */
+		TZOffset = Options->TimeZoneHours * 3600 + Options->TimeZoneMins * 60;
+	if (UsedOffset)
+		*UsedOffset = TZOffset;
+	struct timespec PhotoTime = ConvertToUnixTime(Time, TimeFormat, TZOffset);
 
 	/* Add the PhotoOffset time. This is to make the Photo time match
 	 * the GPS time - i.e., it is (GPS - Photo). */
@@ -112,11 +119,14 @@ struct timespec ConvertTimeToUnixTime(const char *Time, const char *TimeFormat,
  * the files - ie, just correlate and keep into memory... */
 
 struct GPSPoint* CorrelatePhoto(const char* Filename,
-		struct CorrelateOptions* Options)
+		long *UsedOffset, struct CorrelateOptions* Options)
 {
+	*UsedOffset = NO_OFFSET_TIME;
 	/* Read out the timestamp from the EXIF data. */
 	int IncludesGPS = 0;
-	char* TimeTemp = ReadExifData(Filename, &IncludesGPS, NULL, NULL, NULL);
+	long OffsetTime = 0;
+	char* TimeTemp = ReadExifData(Filename, &IncludesGPS, NULL, NULL, NULL,
+			&OffsetTime);
 	if (!TimeTemp)
 	{
 		/* Error reading the time from the file. Abort. */
@@ -141,10 +151,11 @@ struct GPSPoint* CorrelatePhoto(const char* Filename,
 		SetAutoTimeZoneOptions(TimeTemp, Options);
 		Options->AutoTimeZone = 0;
 	}
-	//printf("Using offset %02d:%02d\n", Options->TimeZoneHours, Options->TimeZoneMins);
+	//printf("Using offset %ld sec.\n", OffsetTime);
 
 	/* Now convert the time into Unixtime with the configured time zone conversion. */
-	struct timespec PhotoTime = ConvertTimeToUnixTime(TimeTemp, EXIF_DATE_FORMAT, Options);
+	struct timespec PhotoTime = ConvertTimeToUnixTime(TimeTemp, EXIF_DATE_FORMAT, OffsetTime,
+			UsedOffset, Options);
 
 	/* Free the memory for the time string - it won't otherwise
 	 * be freed for us. */

@@ -50,10 +50,29 @@
     <cmdsynopsis>
       <command>&dhpackage;</command>
       <group>
-        <arg choice="plain">-z</arg>
-        <arg choice="plain">
-          --timeadd +/-<replaceable>HH</replaceable>[:<replaceable>MM</replaceable>]
+        <arg choice="req">
+          -g <replaceable>file.gpx</replaceable>
         </arg>
+
+        <arg choice="req">
+          <group>
+            <arg choice="plain">-l</arg>
+            <arg choice="plain">--latlong
+            <replaceable>latitude,longitude<group><arg choice="plain">,elevation</arg></group></replaceable>
+            </arg>
+          </group>
+        </arg>
+      </group>
+
+      <group>
+        <arg choice="plain">-z</arg>
+        <arg choice="plain">--timeadd
+        +/-<replaceable>HH</replaceable>[:<replaceable>MM</replaceable>]
+        </arg>
+      </group>
+
+      <group>
+        <arg choice="plain">--no-photo-tz</arg>
       </group>
 
       <group>
@@ -125,20 +144,6 @@
         <arg choice="plain">--degmins</arg>
       </group>
 
-      <group>
-        <arg choice="plain">
-          -g <replaceable>file.gpx</replaceable>
-        </arg>
-
-        <arg choice="plain">
-          <group>
-            <arg choice="plain">-l</arg>
-            <arg choice="plain">--latlong</arg>
-          </group>
-          <replaceable>latitude,longitude<group><arg choice="plain">,elevation</arg></group></replaceable>
-        </arg>
-      </group>
-
       <arg rep="repeat" choice="plain">
         <replaceable>image.jpg</replaceable>
       </arg>
@@ -146,13 +151,39 @@
 
     <cmdsynopsis>
       <command>&dhpackage;</command>
-      <group choice="plain">
+      <group choice="req">
         <arg choice="plain">-s</arg>
         <arg choice="plain">--show</arg>
-        <arg choice="plain">-x</arg>
-        <arg choice="plain">--show-gpx</arg>
         <arg choice="plain">-o</arg>
         <arg choice="plain">--machine</arg>
+      </group>
+      <arg rep="repeat" choice="plain"><replaceable>image.jpg</replaceable></arg>
+    </cmdsynopsis>
+
+
+    <cmdsynopsis>
+      <command>&dhpackage;</command>
+      <group choice="req">
+        <arg choice="plain">-x</arg>
+        <arg choice="plain">--show-gpx</arg>
+      </group>
+
+      <group>
+        <arg choice="plain">-z</arg>
+        <arg choice="plain">
+          --timeadd +/-<replaceable>HH</replaceable>[:<replaceable>MM</replaceable>]
+        </arg>
+      </group>
+
+      <group>
+        <arg choice="plain">--no-photo-tz</arg>
+      </group>
+
+      <group>
+        <arg choice="plain">-O</arg>
+        <arg choice="plain">
+          --photooffset <replaceable>seconds</replaceable>
+        </arg>
       </group>
       <arg rep="repeat" choice="plain"><replaceable>image.jpg</replaceable></arg>
     </cmdsynopsis>
@@ -282,7 +313,8 @@
         </term>
         <listitem>
           <para>Only show the GPS data already in the given image's EXIF tags
-          instead of correlating them.</para>
+          instead of correlating them. The time shown comes directly from
+          the image without adjustments.</para>
         </listitem>
       </varlistentry>
 
@@ -312,7 +344,8 @@
         </term>
         <listitem>
           <para>Only show the GPS data of the given images in a
-          machine-readable CSV format. Images without GPS tags are
+          machine-readable CSV format. The time shown comes directly from the
+          image without adjustments.  Images without GPS tags are
           ignored. The fields output are file name, date and time, latitude,
           longitude, elevation, where the first value is the filename, as
           passed, the second is the timestamp, and the last three are floating
@@ -345,9 +378,28 @@
             in local time.  Enter the timezone used when taking the images; e.g.,
             <userinput>+8</userinput> for Perth, Western Australia or
             <userinput>-2:30</userinput> for St. John's, Newfoundland.
-            This defaults to the UTC offset of the local time zone as of the
-            time of the first image processed (versions before 1.7 defaulted to
-            00:00). </para>
+            This defaults to the time zone embedded in the image, or if that is not
+            available (or when <userinput>--no-photo-tz</userinput> is given), the
+            UTC offset of the local time zone as of the time of the first image
+            processed (versions before 1.7 defaulted to 00:00).</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>
+          <option>--no-photo-tz</option>
+        </term>
+        <listitem>
+          <para>
+            Ignore any <userinput>OffsetTimeOriginal</userinput> EXIF tags in
+            photos that specify the time zone in which the photo was taken.
+            If the tag is wrong, such as if the user forgot to update the time
+            zone manually when travelling, then this will prevent it from being
+            used. If this option is given, then <command>gpscorrelate</command>
+            reverts to using automatic time zone detection for the photo, or
+            a manually-specified one (if <userinput>--timeadd</userinput> is
+            given).
+            </para>
         </listitem>
       </varlistentry>
 
@@ -681,10 +733,10 @@
 
     <para>
     Correlate a photo taken from a camera with a fast clock (i.e., the clock
-    was 77.5 seconds ahead of GPS time):
-    </para>
+    was 77.5 seconds ahead of GPS time) and with incorrectly-specified time zone
+    tags:</para>
     <para>
-    <userinput>gpscorrelate -g Test.gpx -O -77.5 photo.jpg</userinput>
+    <userinput>gpscorrelate -g Test.gpx -O -77.5 --no-photo-tz photo.jpg</userinput>
     </para>
 
     <para>
