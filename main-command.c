@@ -177,8 +177,6 @@ static int ShowFileDetails(const char* File, enum OutputFormat Format,
 			PACKAGE_VERSION);
 		if (Options->AutoTimeZone && Time)
 		{
-			/* Use the local time zone as of the date of first picture
-			 * as the time for correlating all the remainder. */
 			SetAutoTimeZoneOptions(Time, Options);
 			Options->AutoTimeZone = 0;
 		}
@@ -762,7 +760,7 @@ int main(int argc, char** argv)
 		/* Pass the file along to Correlate and see what happens. */
 		Result = CorrelatePhoto(File, &Options);
 
-		/* Was result NULL? */
+		/* Was result non-NULL? */
 		if (Result)
 		{
 			/* Result not null. But what did happen? */

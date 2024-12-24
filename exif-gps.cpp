@@ -258,9 +258,6 @@ char* ReadExifData(const char* File, int* IncludesGPS, double* Lat, double* Long
 // DateStamp and TimeStamp should be 12-char strings.
 char* ReadGPSTimestamp(const char* File, char* DateStamp, char* TimeStamp, int* IncludesGPS)
 {
-	// This function varies in that it reads
-	// much more data than the last, specifically
-	// for display purposes. For the GUI version.
 	// Open and read the file.
 	Exiv2::Image::UNIQUEPTR Image;
 
