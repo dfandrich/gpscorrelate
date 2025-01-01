@@ -1,0 +1,11 @@
+TITLE='Correlate with a GPX file with time going backward with interpolation'
+PRECOMMAND='cat "$STAGINGDIR/point1-1.jpg" >"$LOGDIR/test.jpg"'
+COMMAND='$PROGRAM --no-interpolation --photooffset 9 -z 0 -g "$STAGINGDIR/timeback.gpx" "$LOGDIR/test.jpg" > "$OUTFILE" 2>&1 && exiv2 -pv pr "$LOGDIR/test.jpg" >> "$OUTFILE" 2>&1'
+POSTCOMMAND='rm -f "$LOGDIR/test.jpg"'
+RESULTCODE=2
+# Mixing output on stdout and stderr results in different output on Windows
+# compared to POSIX platforms. Massage the output to allow meaningful
+# and practical comparisons on all platforms by Deleting the "Reading..." line
+# and moving the "Warning:" line to the end.
+# Unfortunately, BSD sed doesn't support grouping commands with {}.
+SEDCOMMAND='s/^Reading.*\.\.\.//;$G;s/\n//;$q;/Warning:/H;/Warning:/d'

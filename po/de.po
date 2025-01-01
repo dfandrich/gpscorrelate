@@ -3,12 +3,12 @@
 # This file is distributed under the same license as the gpscorrelate package.
 # Dan Fandrich <dan@coneharvesters.com>, 2013.
 #
-#: gui.c:1807
+#: gui.c:1806
 msgid ""
 msgstr ""
 "Project-Id-Version: gpscorrelate 2.2\n"
 "Report-Msgid-Bugs-To: dan@coneharvesters.com\n"
-"POT-Creation-Date: 2024-12-30 15:58-0800\n"
+"POT-Creation-Date: 2025-01-01 16:12-0800\n"
 "PO-Revision-Date: 2024-10-17 21:41-0700\n"
 "Last-Translator: Dan Fandrich <dan@coneharvesters.com>\n"
 "Language-Team: deutsch\n"
@@ -17,24 +17,32 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: gpx-read.c:194 gui.c:209 gui.c:902 gui.c:1109 gui.c:1178 gui.c:1455
+#: gpx-read.c:193 gui.c:209 gui.c:902 gui.c:1109 gui.c:1178 gui.c:1455
 #: gui.c:1481 main-command.c:199 main-command.c:226 main-command.c:412
 #: main-command.c:450 main-command.c:463 main-command.c:631 main-command.c:642
 #, c-format
 msgid "Out of memory.\n"
 msgstr "Kein Speicherplatz mehr.\n"
 
-#: gpx-read.c:289
+#: gpx-read.c:280
+#, c-format
+msgid ""
+"Warning: track points are not ordered by time (first bad point at %s).\n"
+msgstr ""
+"Warnung: Track-Punkte sind nicht nach Zeit geordnet (erster defekter Punkt "
+"bei %s).\n"
+
+#: gpx-read.c:300
 #, c-format
 msgid "Failed to parse GPX data from %s.\n"
 msgstr "Analyse der GPX-Daten von %s fehlgeschlagen.\n"
 
-#: gpx-read.c:300
+#: gpx-read.c:311
 #, c-format
 msgid "Invalid GPX file has no root.\n"
 msgstr "Ungültige GPX-Datei hat keine Wurzel.\n"
 
-#: gpx-read.c:313
+#: gpx-read.c:324
 #, c-format
 msgid "Invalid GPX file.\n"
 msgstr "Ungültige GPX-Datei.\n"
@@ -435,59 +443,59 @@ msgstr ""
 "Keine GPS-Daten geladen. Wähle einen GPX-Datei, woraus GPS-Daten gelesen "
 "werden können."
 
-#: gui.c:1641
+#: gui.c:1640
 msgid "Internal error"
 msgstr "Interner Fehler"
 
-#: gui.c:1646
+#: gui.c:1645
 msgid "Correlating..."
 msgstr "Korrelieren…"
 
-#: gui.c:1670
+#: gui.c:1669
 msgid "Exact Match"
 msgstr "Exakte Übereinstimmung"
 
-#: gui.c:1674
+#: gui.c:1673
 msgid "Interpolated Match"
 msgstr "Interpolierte Übereinstimmung"
 
-#: gui.c:1678
+#: gui.c:1677
 msgid "Rounded Match"
 msgstr "Gerundeter Übereinstimmung"
 
-#: gui.c:1682
+#: gui.c:1681
 msgid "Write Failure"
 msgstr "Fehler beim Schreiben"
 
-#: gui.c:1696
+#: gui.c:1695
 msgid "Data Already Present"
 msgstr "Daten bereits vorhanden"
 
-#: gui.c:1703
+#: gui.c:1702
 msgid "No Match"
 msgstr "Keine Übereinstimmung"
 
-#: gui.c:1707
+#: gui.c:1706
 msgid "Too far"
 msgstr "Zu weit"
 
-#: gui.c:1711
+#: gui.c:1710
 msgid "No data"
 msgstr "Keine Daten"
 
-#: gui.c:1766
+#: gui.c:1765
 msgid "Stripping..."
 msgstr "Entfernen…"
 
-#: gui.c:1783
+#: gui.c:1782
 msgid "Error Stripping"
 msgstr "Fehler beim Entfernen"
 
-#: gui.c:1842
+#: gui.c:1841
 msgid "GPS Correlate attaches EXIF GPS location tags to images."
 msgstr "GPS Correlate fügt Bildern EXIF GPS-Standort-Metadaten bei."
 
-#: gui.c:1844
+#: gui.c:1843
 msgid "Copyright © 2005-2024 Daniel Foote, Dan Fandrich"
 msgstr "Copyright © 2005-2024 Daniel Foote, Dan Fandrich"
 

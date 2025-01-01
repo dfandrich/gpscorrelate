@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gpx xmlns:tc2="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tp1="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="TC2 to GPX11 XSLT stylesheet" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd">
+<trk>
+<name>2012-11-22T12:34:40Z</name>
+<trkseg>
+<trkpt lat="31.4587340" lon="35.3998730">
+<ele>400</ele>
+<time>2012-11-22T12:34:40Z</time>
+</trkpt>
+</trkseg>
+<trkseg>
+<trkpt lat="31.4587449" lon="35.3998310">
+<ele>500</ele>
+<time>2012-11-22T12:35:06Z</time>
+</trkpt>
+<trkpt lat="31.4587780" lon="35.3997909">
+<ele>490</ele>
+<time>2012-11-22T12:35:01Z</time>
+</trkpt>
+<trkpt lat="31.4588210" lon="35.3997590">
+<ele>510</ele>
+<time>2012-11-22T12:35:23Z</time>
+</trkpt>
+</trkseg>
+</trk>
+</gpx>

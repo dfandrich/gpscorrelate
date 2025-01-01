@@ -262,6 +262,8 @@ static void GetTrackRange(struct GPSTrack* Track)
 	const struct GPSPoint* Fill = NULL;
 	Track->MaxTime = 0;
 	Track->MinTime = Track->Points->Time;
+	long LastTime = 0;
+	int Warned = 0;
 	for (Fill = Track->Points; Fill; Fill = Fill->Next)
 	{
 		/* Check the Min time */
@@ -270,6 +272,16 @@ static void GetTrackRange(struct GPSTrack* Track)
 		/* Check the Max time */
 		if (Fill->Time > Track->MaxTime)
 			Track->MaxTime = Fill->Time;
+		if (Fill->Time < LastTime && !Warned) {
+			struct tm *Tm = gmtime(&Fill->Time);
+			char TimeStr[21];
+			strftime(TimeStr, sizeof(TimeStr), "%Y-%m-%dT%H:%M:%SZ", Tm);
+			fprintf(stderr,
+					_("Warning: track points are not ordered by time (first bad point at %s).\n"),
+					TimeStr);
+			Warned = 1;
+		}
+		LastTime = Fill->Time;
 	}
 }
 

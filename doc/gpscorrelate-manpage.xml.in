@@ -253,7 +253,24 @@
       kilometres apart (such as on an infrequently-sampled airplane track), it
       will introduce some error versus the great circle route an airplane
       normally flies. A measure of the approximate accuracy of the GPS location
-      reading is preserved when written into the image.
+      reading is preserved when written into the image through the denominator
+      of rational value fields.
+    </para>
+
+    <para>
+      The interpolation algorithm assumes that time values in GPX files are
+      strictly increasing, which is normally the case. If a GPX file is found
+      to violate this assumption, the message <userinput>Warning: track points
+      are not ordered by time</userinput> is written so stderr along
+      with the first backwards-going time value. Any location values written
+      to images using such a file may not be using the best GPS coordinate
+      points available if the images were taken around the time of the time
+      incongruity.  No warning is given if time between track segments goes
+      backwards, which would only affect correlations when
+      <userinput>--ignore-tracksegs</userinput> is used.
+      The <userinput>--max-dist</userinput> option can be used to place a limit
+      on how large a time gap is accepted, which can limit the effect if this
+      occurs.
     </para>
 
   </refsect1>
@@ -332,7 +349,9 @@
            <option>-O</option>/<option>--photooffset</option> options are
            honoured just as in correlation to determine the correct time zone
            of the images. Images that can't be read or aren't GPS tagged are
-           ignored.
+           ignored. If the times of the photos given on the command-line are not
+           strictly increasing, the message <userinput>Warning: image files are
+           not ordered by time.</userinput> is written to stderr.
           </para>
         </listitem>
       </varlistentry>
