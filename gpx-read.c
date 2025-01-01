@@ -93,8 +93,7 @@ static void ExtractTrackPoints(xmlNodePtr Start)
 				if (strcmp((const char *)Properties->name, "lat") == 0)
 				{
 					Lat = (const char *)Properties->children->content;
-				}
-				if (strcmp((const char *)Properties->name, "lon") == 0)
+				} else if (strcmp((const char *)Properties->name, "lon") == 0)
 				{
 					Long = (const char *)Properties->children->content;
 				}
@@ -155,7 +154,7 @@ static void ExtractTrackPoints(xmlNodePtr Start)
 						}
 					}
 				}
-				else if (strcmp((const char *)CCurrent->name, "course") == 0)
+				else if (strcmp((const char *)CCurrent->name, "course") == 0 && !Heading)
 				{
 					/* course is part of the GPX 1.0 specification but not 1.1.
 					 * Technically, we want the heading, not the course, but if
