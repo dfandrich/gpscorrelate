@@ -1,0 +1,9 @@
+Legend: . = Ok, / = Interpolated, < = Rounded, - = No match, ^ = Too far
+        w = Write Fail, ? = No EXIF date, ! = GPS already present
+
+Correlate: ?
+
+Completed correlation process.
+Matched:     0 (0 Exact, 0 Interpolated, 0 Rounded).
+Failed:      1 (0 Not matched, 0 Write failure, 0 Too Far,
+                1 No Date, 0 GPS Already Present.)

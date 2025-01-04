@@ -120,11 +120,17 @@ char* ReadExifData(const char* File, int* IncludesGPS, double* Lat, double* Long
 		DEBUGLOG("Failed to open file %s.\n", File);
 		return NULL;
 	}
-	Image->readMetadata();
 	if (Image.get() == NULL)
 	{
 		DEBUGLOG("Failed to read file %s %s.\n",
 			 File, Exiv2::strError().c_str());
+		return NULL;
+	}
+
+	try {
+		Image->readMetadata();
+	} catch (Exiv2::Error& e) {
+		DEBUGLOG("Failed to read EXIF metadata in %s.\n", File);
 		return NULL;
 	}
 
@@ -288,11 +294,17 @@ char* ReadGPSTimestamp(const char* File, char* DateStamp, char* TimeStamp, int* 
 		DEBUGLOG("Failed to open file %s.\n", File);
 		return NULL;
 	}
-	Image->readMetadata();
 	if (Image.get() == NULL)
 	{
 		DEBUGLOG("Failed to read file %s %s.\n",
 			 File, Exiv2::strError().c_str());
+		return NULL;
+	}
+
+	try {
+		Image->readMetadata();
+	} catch (Exiv2::Error& e) {
+		DEBUGLOG("Failed to read EXIF metadata in %s.\n", File);
 		return NULL;
 	}
 
@@ -458,12 +470,18 @@ int WriteGPSData(const char* File, const struct GPSPoint* Point,
 		DEBUGLOG("Failed to open file %s.\n", File);
 		return 0;
 	}
-	Image->readMetadata();
 	if (Image.get() == NULL)
 	{
 		// It failed if we got here.
 		DEBUGLOG("Failed to read file %s %s.\n",
 			 File, Exiv2::strError().c_str());
+		return 0;
+	}
+
+	try {
+		Image->readMetadata();
+	} catch (Exiv2::Error& e) {
+		DEBUGLOG("Failed to read EXIF metadata in %s.\n", File);
 		return 0;
 	}
 
@@ -661,12 +679,18 @@ int WriteFixedDatestamp(const char* File, struct timespec Time)
 		DEBUGLOG("Failed to open file %s.\n", File);
 		return 0;
 	}
-	Image->readMetadata();
 	if (Image.get() == NULL)
 	{
 		// It failed if we got here.
 		DEBUGLOG("Failed to read file %s %s.\n",
 			 File, Exiv2::strError().c_str());
+		return 0;
+	}
+
+	try {
+		Image->readMetadata();
+	} catch (Exiv2::Error& e) {
+		DEBUGLOG("Failed to read EXIF metadata in %s.\n", File);
 		return 0;
 	}
 
@@ -723,12 +747,18 @@ int RemoveGPSExif(const char* File, int NoChangeMtime, int NoWriteExif)
 		DEBUGLOG("Failed to open file %s.\n", File);
 		return 0;
 	}
-	Image->readMetadata();
 	if (Image.get() == NULL)
 	{
 		// It failed if we got here.
 		DEBUGLOG("Failed to read file %s %s.\n",
 			 File, Exiv2::strError().c_str());
+		return 0;
+	}
+
+	try {
+		Image->readMetadata();
+	} catch (Exiv2::Error& e) {
+		DEBUGLOG("Failed to read EXIF metadata in %s.\n", File);
 		return 0;
 	}
 

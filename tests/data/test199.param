@@ -1,0 +1,4 @@
+TITLE='Correlate a file with corrupted EXIF with --replace'
+PRECOMMAND='cat "$STAGINGDIR/badexif.jpg" >"$LOGDIR/test.jpg"'
+COMMAND='$PROGRAM -l "1 2" -R "$LOGDIR/test.jpg" > "$OUTFILE" 2>&1'
+RESULTCODE=2

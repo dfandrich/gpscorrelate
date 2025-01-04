@@ -126,7 +126,7 @@ jobs:
             cxx: g++
             target: all
             install_target: install install-po install-desktop-file
-            failing_tests: 16
+            failing_tests: 18
           - name: sanitize
             cc: clang
             gtk: 3
