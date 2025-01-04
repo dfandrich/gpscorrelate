@@ -120,7 +120,12 @@ char* ReadExifData(const char* File, int* IncludesGPS, double* Lat, double* Long
 		DEBUGLOG("Failed to open file %s.\n", File);
 		return NULL;
 	}
-	Image->readMetadata();
+	try {
+		Image->readMetadata();
+	} catch (Exiv2::Error& e) {
+		DEBUGLOG("Failed to read EXIF metadata in %s.\n", File);
+		return NULL;
+	}
 	if (Image.get() == NULL)
 	{
 		DEBUGLOG("Failed to read file %s %s.\n",

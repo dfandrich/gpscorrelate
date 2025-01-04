@@ -1,0 +1,4 @@
+TITLE='Show GPS data on file with corrupt EXIF'
+COMMAND='$PROGRAM -s "$STAGINGDIR/badexif.jpg" > "$OUTFILE" 2>&1'
+RESULTCODE=1
+SEDCOMMAND='s@^.*/@@' # strip path
