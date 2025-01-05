@@ -1685,6 +1685,7 @@ void CorrelateButtonPress( GtkWidget *Widget, gpointer Data )
 			SetListItem(&Walk->ListPointer, Walk->Filename,
 					Walk->Time, Result->Lat, Result->Long,
 					Result->Elev, State, 1);
+			free(Result);
 		} else {
 			/* Result was null. This means something
 			 * really went wrong. Find out and put that
@@ -1792,6 +1793,7 @@ void StripGPSButtonPress( GtkWidget *Widget, gpointer Data )
 	}
 	printf("--------------------------------------------------------------\n");*/
 
+	g_list_free_full (Selected, (GDestroyNotify) gtk_tree_path_free);
 }
 
 #define HELP_FILE_NAME "gui.html"
