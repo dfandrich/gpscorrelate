@@ -507,7 +507,7 @@ GtkWidget* CreateMatchWindow (void)
   /* Toggle visibility of photo time zone entry when auto time zone is toggled */
   entry_toggle_visibility_inv(AutoTimeZoneCheck, PhotoTimeZoneCheck);
   g_signal_connect(AutoTimeZoneCheck, "toggled",
-                   G_CALLBACK (entry_toggle_visibility_inv), GTK_ENTRY (PhotoTimeZoneCheck));
+                   G_CALLBACK (entry_toggle_visibility_inv), GTK_CHECK_BUTTON (PhotoTimeZoneCheck));
 
   HeadingCheck = gtk_check_button_new_with_mnemonic (_("Write heading"));
   gtk_widget_show (HeadingCheck);
