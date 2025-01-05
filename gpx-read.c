@@ -64,6 +64,7 @@ static void ExtractTrackPoints(xmlNodePtr Start)
 	const char* Lat;
 	const char* Long;
 	const char* Elev;
+	const char* HDOP;
 	const char* Time;
 	const char* Heading;
 	char HeadingRef = 'T';
@@ -80,6 +81,7 @@ static void ExtractTrackPoints(xmlNodePtr Start)
 			Lat = NULL;
 			Long = NULL;
 			Elev = NULL;
+			HDOP = NULL;
 			Time = NULL;
 			Heading = NULL;
 
@@ -111,6 +113,11 @@ static void ExtractTrackPoints(xmlNodePtr Start)
 				{
 					if (CCurrent->children)
 						Elev = (const char *)CCurrent->children->content;
+				}
+				else if (strcmp((const char *)CCurrent->name, "hdop") == 0)
+				{
+					if (CCurrent->children)
+						HDOP = (const char *)CCurrent->children->content;
 				}
 				else if (strcmp((const char *)CCurrent->name, "time") == 0)
 				{
@@ -202,6 +209,9 @@ static void ExtractTrackPoints(xmlNodePtr Start)
 			if (Elev) {
 				LastPoint->Elev = atof(Elev);
 				LastPoint->ElevDecimals = NumDecimals(Elev);
+			}
+			if (HDOP) {
+				LastPoint->HDOP = atof(HDOP);
 			}
 			if (Heading) {
 				LastPoint->MoveHeading = atof(Heading);

@@ -363,6 +363,7 @@ void Round(const struct GPSPoint* First, struct GPSPoint* Result,
 	Result->LongDecimals = CopyFrom->LongDecimals;
 	Result->Elev = CopyFrom->Elev;
 	Result->ElevDecimals = CopyFrom->ElevDecimals;
+	Result->HDOP = CopyFrom->HDOP;
 	Result->HeadingRef = CopyFrom->HeadingRef;
 	Result->MoveHeading = -1;
 	Result->Heading = -1;
@@ -411,6 +412,10 @@ void Interpolate(const struct GPSPoint* First, struct GPSPoint* Result,
 	Result->Elev = First->Elev + ((First->Next->Elev - First->Elev) * Scale);
 	Result->ElevDecimals = MIN(First->ElevDecimals, First->Next->ElevDecimals);
 
+	/* Do not write the HDOP since the interpolation process itself means
+	 * the accuracy of the resulting point is unknown. */
+	Result->HDOP = -1;
+
 	/* Heading and Direction */
 	Result->HeadingRef = First->HeadingRef;
 	Result->MoveHeading = -1;
@@ -454,6 +459,7 @@ void Exact(const struct GPSPoint* First, struct GPSPoint* Result,
 	Result->LongDecimals = First->LongDecimals;
 	Result->Elev = First->Elev;
 	Result->ElevDecimals = First->ElevDecimals;
+	Result->HDOP = First->HDOP;
 	Result->HeadingRef = First->HeadingRef;
 	Result->MoveHeading = First->MoveHeading;
 	if (HeadingOffset >= 0 && First->MoveHeading >= 0)

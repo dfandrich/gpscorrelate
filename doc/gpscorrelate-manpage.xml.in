@@ -253,8 +253,11 @@
       kilometres apart (such as on an infrequently-sampled airplane track), it
       will introduce some error versus the great circle route an airplane
       normally flies. A measure of the approximate accuracy of the GPS location
-      reading is preserved when written into the image through the denominator
-      of rational value fields.
+      reading (based on the number of digits recorded in the track point) is
+      preserved when written into the image through the denominator
+      of rational value fields. A <userinput>GPSDOP</userinput> tag is also
+      written for exact point matches when satellite HDOP information is
+      available, providing a more dependable estimate of location accuracy.
     </para>
 
     <para>

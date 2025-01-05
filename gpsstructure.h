@@ -35,6 +35,7 @@ struct GPSPoint {
 	int LongDecimals;
 	double Elev;
 	int ElevDecimals;
+	double HDOP;
 	double MoveHeading;
 	double Heading;
 	char HeadingRef;	// Direction reference: byte "T" meaning true direction

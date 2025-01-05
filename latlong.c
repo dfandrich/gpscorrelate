@@ -43,6 +43,7 @@ struct GPSPoint *NewGPSPoint(void) {
 		Point->LongDecimals = 0;
 		Point->Elev = 0;
 		Point->ElevDecimals = -1;	// default meaning no altitude was found
+		Point->HDOP = -1;			// default meaning no HDOP was found
 		Point->MoveHeading = -1;	// default meaning no heading was found
 		Point->Heading = -1;		// this is set later, if enabled
 		Point->HeadingRef = 'T';

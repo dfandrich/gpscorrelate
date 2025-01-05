@@ -599,6 +599,17 @@ int WriteGPSData(const char* File, const struct GPSPoint* Point,
 	Value->read(ScratchBuf);
 	replace(ExifToWrite, Exiv2::ExifKey("Exif.GPSInfo.GPSLongitude"), Value.get());
 
+	// HDOP (Horizontal Dilution of Precision)
+	if (Point->HDOP >= 0) {
+		Value = Exiv2::Value::create(Exiv2::unsignedRational);
+		// Only store this with single decimal precision
+		ConvertToRational(Point->HDOP, 1, ScratchBuf, sizeof(ScratchBuf));
+		Value->read(ScratchBuf);
+		replace(ExifToWrite, Exiv2::ExifKey("Exif.GPSInfo.GPSDOP"), Value.get());
+		// This means GPSDOP holds HDOP, not PDOP
+		ExifToWrite["Exif.GPSInfo.GPSMeasureMode"] = "2";
+	}
+
 	// Heading.
 	if (Point->Heading >= 0) {
 		Value = Exiv2::Value::create(Exiv2::asciiString);
