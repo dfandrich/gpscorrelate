@@ -1634,19 +1634,43 @@ void CorrelateButtonPress( GtkWidget *Widget, gpointer Data )
 	/* Store the GPS track */
 	Options.Track = GPSData;
 
+	/* Get the list of photos on which to operate */
+	/* First, see if any photos have been individually selected */
+	GtkTreeSelection* Selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(PhotoList));
+	GList* Selected = gtk_tree_selection_get_selected_rows(Selection, NULL);
+	if (!Selected) {
+		/* No photos have been individually selected */
+		/* Create a GList with all photos */
+		for (struct GUIPhotoList* Walk = FirstPhoto; Walk; Walk = Walk->Next)
+		{
+			GtkTreePath *Path = gtk_tree_model_get_path(GTK_TREE_MODEL(PhotoListStore), &Walk->ListPointer);
+			Selected = g_list_prepend(Selected, Path);
+		}
+		Selected = g_list_reverse(Selected);
+	}
+
 	/* Walk through the list, correlating, and updating the screen. */
-	struct GUIPhotoList* Walk;
-	struct GPSPoint* Result;
 	const char* State = _("Internal error");
-	GtkTreePath* ShowPath;
-	for (Walk = FirstPhoto; Walk; Walk = Walk->Next)
+	for (GList *Walk = g_list_first(Selected); Walk; Walk = g_list_next(Walk))
 	{
+		/* Get an Iter for this selected row. */
+		GtkTreeIter Iter;
+		struct GUIPhotoList* PhotoData = NULL;
+		if (gtk_tree_model_get_iter(GTK_TREE_MODEL(PhotoListStore), &Iter,
+					    (GtkTreePath*) Walk->data)) {
+			/* Fetch out the data... */
+			gtk_tree_model_get(GTK_TREE_MODEL(PhotoListStore), &Iter, LIST_POINTER, &PhotoData, -1);
+		} else {
+			/* Unable to get the iter...
+			 * ignore */
+			continue;
+		}
 		/* Say that we're doing it... */
-		SetState(&Walk->ListPointer, _("Correlating..."));
+		SetState(&Iter, _("Correlating..."));
 
 		/* Point to the cell, too... ie, scroll the tree view
 		 * to ensure that the one we're playing with can be seen on screen. */
-		ShowPath = gtk_tree_model_get_path(GTK_TREE_MODEL(PhotoListStore), &Walk->ListPointer);
+		GtkTreePath* ShowPath = gtk_tree_model_get_path(GTK_TREE_MODEL(PhotoListStore), &Iter);
 		gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(PhotoList),
 				ShowPath, NULL, FALSE, 0, 0);
 		gtk_tree_path_free(ShowPath);
@@ -1654,7 +1678,7 @@ void CorrelateButtonPress( GtkWidget *Widget, gpointer Data )
 
 		/* Do the correlation. */
 		long UsedOffset;
-		Result = CorrelatePhoto(Walk->Filename, &UsedOffset, &Options);
+		struct GPSPoint* Result = CorrelatePhoto(PhotoData->Filename, &UsedOffset, &Options);
 
 		/* Figure out if it worked. */
 		if (Result)
@@ -1682,8 +1706,8 @@ void CorrelateButtonPress( GtkWidget *Widget, gpointer Data )
 					break;
 			}
 			/* Now update the screen with the numbers. */
-			SetListItem(&Walk->ListPointer, Walk->Filename,
-					Walk->Time, Result->Lat, Result->Long,
+			SetListItem(&Iter, PhotoData->Filename,
+					PhotoData->Time, Result->Lat, Result->Long,
 					Result->Elev, State, 1);
 			free(Result);
 		} else {
@@ -1693,7 +1717,7 @@ void CorrelateButtonPress( GtkWidget *Widget, gpointer Data )
 			if (Options.Result == CORR_GPSDATAEXISTS)
 			{
 				/* Do nothing... */
-				SetState(&Walk->ListPointer, _("Data Already Present"));
+				SetState(&Iter, _("Data Already Present"));
 				continue;
 			}
 			switch (Options.Result)
@@ -1712,9 +1736,7 @@ void CorrelateButtonPress( GtkWidget *Widget, gpointer Data )
 					break;
 			}
 			/* Now update the screen with the changed state. */
-			SetListItem(&Walk->ListPointer, Walk->Filename,
-					Walk->Time, 0, 0, 0,
-					State, 0);
+			SetListItem(&Iter, PhotoData->Filename, PhotoData->Time, 0, 0, 0, State, 0);
 		} /* End if Result */
 	} /* End for Walk the list ... */
 
@@ -1746,12 +1768,10 @@ void StripGPSButtonPress( GtkWidget *Widget, gpointer Data )
 	int NoWriteExif = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(NoWriteCheck));
 
 	/* Walk through and remove the items from our internal list. */
-	GList* Walk;
-	struct GUIPhotoList* PhotoData = NULL;
-	GtkTreePath* ShowPath;
-	for (Walk = Selected; Walk; Walk = Walk->next)
+	for (GList* Walk = g_list_first(Selected); Walk; Walk = g_list_next(Walk))
 	{
 		/* Get an Iter for this selected row. */
+		struct GUIPhotoList* PhotoData = NULL;
 		if (gtk_tree_model_get_iter(GTK_TREE_MODEL(PhotoListStore), &Iter,
 					    (GtkTreePath*) Walk->data)) {
 			/* Fetch out the data... */
@@ -1767,7 +1787,7 @@ void StripGPSButtonPress( GtkWidget *Widget, gpointer Data )
 
 		/* Point to the cell, too... ie, scroll the tree view
 		 * to ensure that the one we're playing with can be seen on screen. */
-		ShowPath = gtk_tree_model_get_path(GTK_TREE_MODEL(PhotoListStore), &PhotoData->ListPointer);
+		GtkTreePath* ShowPath = gtk_tree_model_get_path(GTK_TREE_MODEL(PhotoListStore), &PhotoData->ListPointer);
 		gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(PhotoList),
 				ShowPath, NULL, FALSE, 0, 0);
 		gtk_tree_path_free(ShowPath);
