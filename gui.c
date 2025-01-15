@@ -195,6 +195,7 @@ static void CorrelateButtonPress( GtkWidget *Widget, gpointer Data );
 static void StripGPSButtonPress( GtkWidget *Widget, gpointer Data );
 static void HelpButtonPress( GtkWidget *Widget, gpointer Data );
 static void AboutButtonPress( GtkWidget *Widget, gpointer Data );
+static void OpenImageButtonPress( GtkWidget *Widget, gpointer Data );
 
 static void GtkGUIUpdate(void);
 
@@ -894,6 +895,10 @@ GtkWidget* CreateMatchWindow (void)
 							NULL);
   gtk_tree_view_column_set_resizable (StateColumn, TRUE);
   gtk_tree_view_append_column (GTK_TREE_VIEW (PhotoList), StateColumn);
+
+  /* Display image when double clicked */
+  g_signal_connect (GTK_TREE_VIEW (PhotoList), "row-activated",
+			G_CALLBACK (OpenImageButtonPress), NULL);
 
   /* Get the track list store ready.
    * Create the empty terminating entry. */
@@ -1824,7 +1829,7 @@ static const gchar *HelpUrl( void )
 {
     /* Determine the language used by gettext. This way is more accurate than
      * using nl_langinfo because gettext uses its own language selection
-     * heuristics which don't always match. */
+     * heuristics which don't always match. This depends on GNU gettext. */
     if (strstr(_(""), "Language: fr\n")) {
         return "file://" PACKAGE_DOC_DIR "/fr/" HELP_FILE_NAME;
     }
@@ -1847,6 +1852,32 @@ void HelpButtonPress( GtkWidget *Widget, gpointer Data )
 					GDK_CURRENT_TIME,
 					NULL);
 #endif
+}
+
+void OpenImageButtonPress( GtkWidget *Widget, gpointer Data ) {
+	GtkTreeIter Iter;
+	if (gtk_tree_model_get_iter(GTK_TREE_MODEL(PhotoListStore), &Iter, (GtkTreePath*)Data)) {
+		/* Fetch out the selected file data... */
+		struct GUIPhotoList* PhotoData = NULL;
+		gtk_tree_model_get (GTK_TREE_MODEL(PhotoListStore), &Iter, LIST_POINTER, &PhotoData, -1);
+		if (PhotoData) {
+			GFile* file = g_file_new_for_path (PhotoData->Filename);
+			if (file) {
+				char *url = g_file_get_uri (file);
+				if (url) {
+					GtkWidget *Toplevel = gtk_widget_get_toplevel (Widget);
+#if GTK_CHECK_VERSION(3, 22, 0)
+					gtk_show_uri_on_window (GTK_WINDOW(Toplevel), url, GDK_CURRENT_TIME, NULL);
+#else
+					gtk_show_uri (gtk_window_get_screen(GTK_WINDOW(Toplevel)),
+								  url, GDK_CURRENT_TIME, NULL);
+#endif
+					g_free(url);
+				}
+				g_object_unref(file);
+			}
+		}
+	}
 }
 
 void AboutButtonPress( GtkWidget *Widget, gpointer Data )
