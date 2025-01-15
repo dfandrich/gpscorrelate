@@ -506,7 +506,7 @@ GtkWidget* CreateMatchWindow (void)
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (PhotoTimeZoneCheck), g_key_file_get_boolean(GUISettings, "default", "phototimezone", &error));
   /* Toggle visibility of photo time zone entry when auto time zone is toggled */
   entry_toggle_visibility_inv(AutoTimeZoneCheck, PhotoTimeZoneCheck);
-  g_signal_connect(AutoTimeZoneCheck, "toggled",
+  g_signal_connect(G_OBJECT (AutoTimeZoneCheck), "toggled",
                    G_CALLBACK (entry_toggle_visibility_inv), GTK_CHECK_BUTTON (PhotoTimeZoneCheck));
 
   HeadingCheck = gtk_check_button_new_with_mnemonic (_("Write heading"));
@@ -636,7 +636,7 @@ GtkWidget* CreateMatchWindow (void)
 
   /* Toggle visibility of max heading entry when heading is toggled */
   entry_toggle_visibility_inv(HeadingCheck, MaxHeadingEntry);
-  g_signal_connect(HeadingCheck, "toggled",
+  g_signal_connect(G_OBJECT (HeadingCheck), "toggled",
                    G_CALLBACK (entry_toggle_visibility_inv), GTK_ENTRY (MaxHeadingEntry));
   ++row;
 
@@ -661,7 +661,7 @@ GtkWidget* CreateMatchWindow (void)
 
   /* Toggle visibility of direction entry when direction is toggled */
   entry_toggle_visibility_inv(DirectionCheck, CameraDirectionEntry);
-  g_signal_connect(DirectionCheck, "toggled",
+  g_signal_connect(G_OBJECT (DirectionCheck), "toggled",
                    G_CALLBACK (entry_toggle_visibility_inv), GTK_ENTRY (CameraDirectionEntry));
   ++row;
 
@@ -688,7 +688,7 @@ GtkWidget* CreateMatchWindow (void)
 
   /* Toggle visibility of time zone entry when auto time zone is toggled */
   entry_toggle_visibility(AutoTimeZoneCheck, TimeZoneEntry);
-  g_signal_connect(AutoTimeZoneCheck, "toggled",
+  g_signal_connect(G_OBJECT (AutoTimeZoneCheck), "toggled",
                    G_CALLBACK (entry_toggle_visibility), GTK_ENTRY (TimeZoneEntry));
   ++row;
 
