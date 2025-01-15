@@ -196,8 +196,9 @@ static void CorrelateButtonPress( GtkWidget *Widget, gpointer Data );
 static void StripGPSButtonPress( GtkWidget *Widget, gpointer Data );
 static void HelpButtonPress( GtkWidget *Widget, gpointer Data );
 static void AboutButtonPress( GtkWidget *Widget, gpointer Data );
-static void OpenImageButtonPress( GtkWidget *Widget, gpointer Data );
+static void OpenImageButtonPress( GtkWidget *Widget, GtkTreePath* Path );
 
+static void FreeAllTracks(void);
 static void GtkGUIUpdate(void);
 
 /* Load settings, insert defaults. */
@@ -901,14 +902,9 @@ GtkWidget* CreateMatchWindow (void)
   g_signal_connect (GTK_TREE_VIEW (PhotoList), "row-activated",
 			G_CALLBACK (OpenImageButtonPress), NULL);
 
-  /* Get the track list store ready.
-   * Create the empty terminating entry. */
-  GPSData = (struct GPSTrack*) calloc(1, sizeof(*GPSData));
-  if (GPSData == NULL) {
-	fprintf(stderr, _("Out of memory.\n"));
-	abort();
-  }
+  /* Get the track list store ready. */
   NumTracks = 0;
+  FreeAllTracks();
 
   /* Final thing: show the window. */
   gtk_widget_show(MatchWindow);
@@ -967,11 +963,7 @@ gboolean DestroyWindow(GtkWidget *Widget,
 	}
 
 	/* Free the memory for the GPS data, if applicable. */
-	while (NumTracks > 0)
-	{
-		--NumTracks;
-		FreeTrack(&GPSData[NumTracks]);
-	}
+	FreeAllTracks();
 	free(GPSData);
 
 	/* Tell GTK that we're done. */
@@ -1360,7 +1352,37 @@ void SetState(GtkTreeIter* Iter, const char* State)
 		-1);
 }
 
-static int AddGpxFiles(GSList* FileNames, char **FirstOrBadFileName) {
+static GtkWidget *ShowGPXLoadingDialog(void) {
+	GtkWidget *LoadDialog = gtk_message_dialog_new (GTK_WINDOW(MatchWindow),
+		(GtkDialogFlags) (GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL),
+		GTK_MESSAGE_INFO,
+		GTK_BUTTONS_NONE,
+		_("Loading GPS data from file... Won't be a moment..."));
+	gtk_widget_show(LoadDialog);
+	GtkGUIUpdate();
+	return LoadDialog;
+}
+
+/* Free any existing GPS tracks to start from scratch. */
+static void FreeAllTracks(void) {
+	while (NumTracks > 0)
+	{
+		--NumTracks;
+		FreeTrack(&GPSData[NumTracks]);
+	}
+
+	/* (Re)create the empty terminating entry. */
+	GPSData = (struct GPSTrack*) realloc(GPSData, sizeof(*GPSData));
+	if (GPSData == NULL) {
+		fprintf(stderr, _("Out of memory.\n"));
+		abort();
+	}
+	memset(GPSData, 0, sizeof(*GPSData));
+}
+
+static int ReplaceGpxFiles(GSList* FileNames, char **FirstOrBadFileName) {
+	FreeAllTracks();
+
 	int ReadOk = 1;
 	GSList* Run;
 	for (Run = FileNames; Run; Run = Run->next)
@@ -1410,6 +1432,49 @@ static int AddGpxFiles(GSList* FileNames, char **FirstOrBadFileName) {
 	return ReadOk;
 }
 
+static void UpdateGpxStatus(int ReadOk, char *FirstOrBadFileName) {
+	GtkWidget *ErrorDialog;
+
+	/* Prepare our "scratch" for rewriting labels. */
+	const size_t ScratchLength = strlen(FirstOrBadFileName) + 100;
+	char* Scratch = (char*) malloc(sizeof(char) * ScratchLength);
+	if (Scratch == NULL) {
+		fprintf(stderr, _("Out of memory.\n"));
+		abort();
+	}
+
+	/* Check if all the data was read ok. */
+	if (ReadOk)
+	{
+		/* It's all good!
+		 * Adjust the label to say so. */
+		snprintf(Scratch, ScratchLength,
+			 _("Read from: %s"), strrchr(FirstOrBadFileName, G_DIR_SEPARATOR)+1);
+		gtk_label_set_text(GTK_LABEL(GPSSelectedLabel), Scratch);
+	} else {
+		/* Not good. Say so. */
+		/* Set the label... */
+		snprintf(Scratch, ScratchLength, _("Read from: No file"));
+		gtk_label_set_text(GTK_LABEL(GPSSelectedLabel), Scratch);
+		/* Show an error dialog. */
+		ErrorDialog = gtk_message_dialog_new (GTK_WINDOW(MatchWindow),
+				GTK_DIALOG_DESTROY_WITH_PARENT,
+				GTK_MESSAGE_ERROR,
+				GTK_BUTTONS_CLOSE,
+				_("Unable to read file %s for some reason. Please try again."),
+				FirstOrBadFileName);
+		gtk_dialog_run (GTK_DIALOG (ErrorDialog));
+		gtk_widget_destroy (ErrorDialog);
+
+		/* Clean up any tracks already read in */
+		FreeAllTracks();
+	}
+
+	/* Clean up... */
+	free(Scratch);
+	free(FirstOrBadFileName);
+}
+
 void SelectGPSButtonPress( GtkWidget *Widget, gpointer Data )
 {
 	(void) Widget;  // Unused
@@ -1421,7 +1486,6 @@ void SelectGPSButtonPress( GtkWidget *Widget, gpointer Data )
 #else
 	GtkWidget *GPSDataDialog;
 #endif
-	GtkWidget *ErrorDialog;
 
 	/* Get the dialog ready... */
 #if GTK_CHECK_VERSION(3, 20, 0)
@@ -1461,23 +1525,8 @@ void SelectGPSButtonPress( GtkWidget *Widget, gpointer Data )
 	if (gtk_dialog_run (GTK_DIALOG (GPSDataDialog)) == GTK_RESPONSE_ACCEPT)
 #endif
 	{
-		/* Sanity check: free the GPS tracks in case we already have one.
-		 * Note: we check this now, because if we cancelled the dialog,
-		 * we should run with the old data. */
-		while (NumTracks > 0)
-		{
-			--NumTracks;
-			FreeTrack(&GPSData[NumTracks]);
-		}
-
 		/* Display a dialog so the user knows what's going down. */
-		ErrorDialog = gtk_message_dialog_new (GTK_WINDOW(MatchWindow),
-			(GtkDialogFlags) (GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL),
-			GTK_MESSAGE_INFO,
-			GTK_BUTTONS_NONE,
-			_("Loading GPS data from file... Won't be a moment..."));
-		gtk_widget_show(ErrorDialog);
-		GtkGUIUpdate();
+		GtkWidget *LoadDialog = ShowGPXLoadingDialog();
 
 		char *FirstOrBadFileName = NULL;
 
@@ -1486,53 +1535,12 @@ void SelectGPSButtonPress( GtkWidget *Widget, gpointer Data )
 		GSList* FileNames = gtk_file_chooser_get_filenames (GTK_FILE_CHOOSER(GPSDataDialog));
 
 		/* Add the files to our list */
-		int ReadOk = AddGpxFiles(FileNames, &FirstOrBadFileName);
+		int ReadOk = ReplaceGpxFiles(FileNames, &FirstOrBadFileName);
 
 		/* Close the dialog now that we're done. */
-		gtk_widget_destroy(ErrorDialog);
+		gtk_widget_destroy(LoadDialog);
 
-		/* Prepare our "scratch" for rewriting labels. */
-		const size_t ScratchLength = strlen(FirstOrBadFileName) + 100;
-		char* Scratch = (char*) malloc(sizeof(char) * ScratchLength);
-		if (Scratch == NULL) {
-			fprintf(stderr, _("Out of memory.\n"));
-			abort();
-		}
-
-		/* Check if all the data was read ok. */
-		if (ReadOk)
-		{
-			/* It's all good!
-			 * Adjust the label to say so. */
-			snprintf(Scratch, ScratchLength,
-				 _("Read from: %s"), strrchr(FirstOrBadFileName, G_DIR_SEPARATOR)+1);
-			gtk_label_set_text(GTK_LABEL(GPSSelectedLabel), Scratch);
-		} else {
-			/* Not good. Say so. */
-			/* Set the label... */
-			snprintf(Scratch, ScratchLength, _("Read from: No file"));
-			gtk_label_set_text(GTK_LABEL(GPSSelectedLabel), Scratch);
-			/* Show an error dialog. */
-			ErrorDialog = gtk_message_dialog_new (GTK_WINDOW(MatchWindow),
-					GTK_DIALOG_DESTROY_WITH_PARENT,
-					GTK_MESSAGE_ERROR,
-					GTK_BUTTONS_CLOSE,
-					_("Unable to read file %s for some reason. Please try again."),
-					FirstOrBadFileName);
-			gtk_dialog_run (GTK_DIALOG (ErrorDialog));
-			gtk_widget_destroy (ErrorDialog);
-
-			/* Clean up the tracks already read in */
-			while (NumTracks > 0)
-			{
-				--NumTracks;
-				FreeTrack(&GPSData[NumTracks]);
-			}
-		}
-
-		/* Clean up... */
-		free(Scratch);
-		free(FirstOrBadFileName);
+		UpdateGpxStatus(ReadOk, FirstOrBadFileName);
 	}
 
 	/* Make a note of the directory we stopped at. */
@@ -1866,9 +1874,9 @@ void HelpButtonPress( GtkWidget *Widget, gpointer Data )
 #endif
 }
 
-void OpenImageButtonPress( GtkWidget *Widget, gpointer Data ) {
+void OpenImageButtonPress( GtkWidget *Widget, GtkTreePath* Path ) {
 	GtkTreeIter Iter;
-	if (gtk_tree_model_get_iter(GTK_TREE_MODEL(PhotoListStore), &Iter, (GtkTreePath*)Data)) {
+	if (gtk_tree_model_get_iter(GTK_TREE_MODEL(PhotoListStore), &Iter, Path)) {
 		/* Fetch out the selected file data... */
 		struct GUIPhotoList* PhotoData = NULL;
 		gtk_tree_model_get (GTK_TREE_MODEL(PhotoListStore), &Iter, LIST_POINTER, &PhotoData, -1);
