@@ -197,6 +197,15 @@ static void StripGPSButtonPress( GtkWidget *Widget, gpointer Data );
 static void HelpButtonPress( GtkWidget *Widget, gpointer Data );
 static void AboutButtonPress( GtkWidget *Widget, gpointer Data );
 static void OpenImageButtonPress( GtkWidget *Widget, GtkTreePath* Path );
+static void DragDrop( GtkWidget *Widget,
+		GdkDragContext* context,
+		gint x,
+		gint y,
+		GtkSelectionData* data,
+		guint info,
+		guint time,
+		gpointer user_data
+);
 
 static void FreeAllTracks(void);
 static void GtkGUIUpdate(void);
@@ -837,15 +846,20 @@ GtkWidget* CreateMatchWindow (void)
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (PhotoListScroll), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (PhotoListScroll), GTK_SHADOW_IN);
 
+  /* Drag-and-drop of images and GPX files onto the photo list box */
+  gtk_drag_dest_set (PhotoListScroll, GTK_DEST_DEFAULT_ALL, NULL, 0, GDK_ACTION_LINK);
+  gtk_drag_dest_add_uri_targets (PhotoListScroll);
+  g_signal_connect (G_OBJECT (PhotoListScroll), "drag-data-received", G_CALLBACK (DragDrop), NULL);
+
   /* Get the photo list store ready. */
   PhotoListStore = gtk_list_store_new(LIST_NOCOLUMNS,
-		  G_TYPE_STRING,  /* The Filename */
-		  G_TYPE_STRING,  /* Latitude     */
-		  G_TYPE_STRING,  /* Longitude    */
-		  G_TYPE_STRING,  /* Elevation    */
-		  G_TYPE_STRING,  /* The Time     */
-		  G_TYPE_STRING,  /* The State    */
-		  G_TYPE_POINTER); /* Pointer to the matching list item. */
+		  G_TYPE_STRING,   /* LIST_FILENAME The Filename */
+		  G_TYPE_STRING,   /* LIST_LAT      Latitude     */
+		  G_TYPE_STRING,   /* LIST_LONG     Longitude    */
+		  G_TYPE_STRING,   /* LIST_ELEV     Elevation    */
+		  G_TYPE_STRING,   /* LIST_TIME     The Time     */
+		  G_TYPE_STRING,   /* LIST_STATE    The State    */
+		  G_TYPE_POINTER); /* LIST_POINTER  Pointer to the matching list item. */
 
   PhotoList = gtk_tree_view_new_with_model (GTK_TREE_MODEL(PhotoListStore));
   gtk_widget_show (PhotoList);
@@ -1922,6 +1936,67 @@ void AboutButtonPress( GtkWidget *Widget, gpointer Data )
 						"version", PACKAGE_VERSION,
 						"website", "https://dfandrich.github.io/gpscorrelate/",
 NULL);
+}
+
+void DragDrop( GtkWidget *Widget,
+		GdkDragContext* context,
+		gint x,
+		gint y,
+		GtkSelectionData* data,
+		guint info,
+		guint time,
+		gpointer user_data
+) {
+	(void) Widget;     // Unused
+	(void) context;    // Unused
+	(void) x;          // Unused
+	(void) y;          // Unused
+	(void) info;       // Unused
+	(void) time;       // Unused
+	(void) user_data;  // Unused
+	gchar ** uris = gtk_selection_data_get_uris (data);
+	if (uris) {
+		/* Create two lists of all the GPX and image files provided. */
+		GSList *gpx = NULL;
+		GSList *images = NULL;
+		gchar **uri;
+		for (uri = uris; *uri; ++uri) {
+			GFile* file = g_file_new_for_uri (*uri);
+			if (file) {
+				char *path = g_file_get_path (file);
+				if (path) {
+					size_t len = strlen(path);
+					// Assume anything other than .gpx is an image
+					if (len >= 4 && !g_ascii_strcasecmp(".gpx", path + len - 4))
+						gpx = g_slist_prepend(gpx, path);
+					else
+						images = g_slist_prepend(images, path);
+					// Don't free path--ownership is transferred to the list
+				}
+				g_object_unref(file);
+			}
+		}
+		g_strfreev(uris);
+
+		gpx = g_slist_reverse(gpx);
+		images = g_slist_reverse(images);
+
+		if (gpx) {
+			// Warn the user in case the GPX file takes a long time to load
+			GtkWidget *ErrorDialog = ShowGPXLoadingDialog();
+			// Replace GPX files with the new ones that were given
+			char *FirstOrBadFileName = NULL;
+			int ReadOk = ReplaceGpxFiles(gpx, &FirstOrBadFileName);
+
+			/* Close the dialog now that we're done. */
+			gtk_widget_destroy(ErrorDialog);
+
+			UpdateGpxStatus(ReadOk, FirstOrBadFileName);
+		}
+
+		// Add any images to the images list
+		AddPhotoFiles(images);
+	}
 }
 
 void GtkGUIUpdate(void)
