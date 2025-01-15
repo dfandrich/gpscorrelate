@@ -184,6 +184,7 @@ static gboolean DestroyWindow(GtkWidget *Widget, GdkEvent *Event, gpointer Data)
 
 static void AddPhotosButtonPress(GtkWidget *Widget, gpointer Data);
 static void AddPhotoToList(const char* Filename);
+static void AddPhotoFiles(GSList* FileNames);
 static void RemovePhotosButtonPress( GtkWidget *Widget, gpointer Data );
 
 static void SetListItem(GtkTreeIter* Iter, const char* Filename,
@@ -1040,21 +1041,7 @@ void AddPhotosButtonPress( GtkWidget *Widget, gpointer Data )
 		 * add them to the internal list and onto the screen. */
 		/* GTK returns a GSList - a singly-linked list of filenames. */
 		GSList* FileNames = gtk_file_chooser_get_filenames (GTK_FILE_CHOOSER(AddPhotosDialog));
-		GSList* Run;
-		for (Run = FileNames; Run; Run = Run->next)
-		{
-			/* Show what's happening on the screen. */
-			GtkGUIUpdate();
-			/*printf("Filename: %s.\n", (char*)Run->data);*/
-			/* Call the other function with the filename - this
-			 * function adds it to the internal list, and adds it
-			 * to the screen display, too. */
-			AddPhotoToList((char*)Run->data);
-			/* Free the memory passed to us. */
-			g_free(Run->data);
-		}
-		/* We're done with the list - free it. */
-		g_slist_free(FileNames);
+		AddPhotoFiles(FileNames);
 	}
 
 	/* Copy out the directory that the user ended up at. */
@@ -1067,6 +1054,24 @@ void AddPhotosButtonPress( GtkWidget *Widget, gpointer Data )
 #else
 	gtk_widget_destroy (AddPhotosDialog);
 #endif
+}
+
+void AddPhotoFiles(GSList* FileNames) {
+	GSList* Run;
+	for (Run = FileNames; Run; Run = Run->next)
+	{
+		/* Show what's happening on the screen. */
+		GtkGUIUpdate();
+		/*printf("Filename: %s.\n", (char*)Run->data);*/
+		/* Call the other function with the filename - this
+		 * function adds it to the internal list, and adds it
+		 * to the screen display, too. */
+		AddPhotoToList((char*)Run->data);
+		/* Free the memory passed to us. */
+		g_free(Run->data);
+	}
+	/* We're done with the list - free it. */
+	g_slist_free(FileNames);
 }
 
 void AddPhotoToList(const char* Filename)
@@ -1355,6 +1360,55 @@ void SetState(GtkTreeIter* Iter, const char* State)
 		-1);
 }
 
+static int AddGpxFiles(GSList* FileNames, char **FirstOrBadFileName) {
+	int ReadOk = 1;
+	GSList* Run;
+	for (Run = FileNames; Run; Run = Run->next)
+	{
+		/* Read in the new data, but stop trying after the first failure. */
+		if (ReadOk)
+		{
+			if (*FirstOrBadFileName == NULL)
+			{
+				/* If only one file is given, this is it */
+				*FirstOrBadFileName = strdup((char *)Run->data);
+			}
+			else
+			{
+				/* If more than one file is given, say so */
+				free(*FirstOrBadFileName);
+				/* This string must look like a file path */
+				*FirstOrBadFileName = strdup(_(G_DIR_SEPARATOR_S "multiple files"));
+			}
+
+			ReadOk = ReadGPX((char*)Run->data, &GPSData[NumTracks]);
+			if (ReadOk)
+			{
+				/* Make room for a new end-of-array entry */
+				++NumTracks;
+				GPSData = (struct GPSTrack*) realloc(GPSData, sizeof(*GPSData)*(NumTracks+1));
+				if (GPSData == NULL) {
+					fprintf(stderr, _("Out of memory.\n"));
+					abort();
+				}
+				memset(&GPSData[NumTracks], 0, sizeof(*GPSData));
+			} else
+			{
+				/* If a file could not be read, give the name */
+				free(*FirstOrBadFileName);
+				*FirstOrBadFileName = strdup((char *)Run->data);
+			}
+		}
+
+		/* Free the memory passed to us. */
+		g_free(Run->data);
+	}
+
+	/* We're done with the list - free it. */
+	g_slist_free(FileNames);
+
+	return ReadOk;
+}
 
 void SelectGPSButtonPress( GtkWidget *Widget, gpointer Data )
 {
@@ -1426,55 +1480,13 @@ void SelectGPSButtonPress( GtkWidget *Widget, gpointer Data )
 		GtkGUIUpdate();
 
 		char *FirstOrBadFileName = NULL;
-		int ReadOk = 1;
 
 		/* GTK returns a GSList - a singly-linked list of filenames. */
 		/* Process the result of the dialog... */
 		GSList* FileNames = gtk_file_chooser_get_filenames (GTK_FILE_CHOOSER(GPSDataDialog));
-		GSList* Run;
-		for (Run = FileNames; Run; Run = Run->next)
-		{
-			/* Read in the new data, but stop trying after the first failure. */
-			if (ReadOk)
-			{
-				if (FirstOrBadFileName == NULL)
-				{
-					/* If only one file is given, this is it */
-					FirstOrBadFileName = strdup((char *)Run->data);
-				}
-				else
-				{
-					/* If more than one file is given, say so */
-					free(FirstOrBadFileName);
-					/* This string must look like a file path */
-					FirstOrBadFileName = strdup(_(G_DIR_SEPARATOR_S "multiple files"));
-				}
 
-				ReadOk = ReadGPX((char*)Run->data, &GPSData[NumTracks]);
-				if (ReadOk)
-				{
-					/* Make room for a new end-of-array entry */
-					++NumTracks;
-					GPSData = (struct GPSTrack*) realloc(GPSData, sizeof(*GPSData)*(NumTracks+1));
-					if (GPSData == NULL) {
-						fprintf(stderr, _("Out of memory.\n"));
-						abort();
-					}
-					memset(&GPSData[NumTracks], 0, sizeof(*GPSData));
-				} else
-				{
-					/* If a file could not be read, give the name */
-					free(FirstOrBadFileName);
-					FirstOrBadFileName = strdup((char *)Run->data);
-				}
-			}
-
-			/* Free the memory passed to us. */
-			g_free(Run->data);
-		}
-
-		/* We're done with the list - free it. */
-		g_slist_free(FileNames);
+		/* Add the files to our list */
+		int ReadOk = AddGpxFiles(FileNames, &FirstOrBadFileName);
 
 		/* Close the dialog now that we're done. */
 		gtk_widget_destroy(ErrorDialog);
