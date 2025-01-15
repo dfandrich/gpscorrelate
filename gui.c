@@ -287,10 +287,10 @@ GtkWidget* CreateMatchWindow (void)
 
   /* Start with the window itself. */
   MatchWindow = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  char title[40];
+  char title[80];
   snprintf(title, sizeof(title), _("GPS Photo Correlate %s"), PACKAGE_VERSION);
   gtk_window_set_title (GTK_WINDOW (MatchWindow), title);
-  gtk_window_set_default_size (GTK_WINDOW (MatchWindow), 792, -1);
+  gtk_window_set_default_size (GTK_WINDOW (MatchWindow), 1050, -1);
 
   g_signal_connect (G_OBJECT (MatchWindow), "delete_event",
   		G_CALLBACK (DestroyWindow), NULL);
@@ -542,7 +542,7 @@ GtkWidget* CreateMatchWindow (void)
 #endif
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (DirectionCheck), g_key_file_get_boolean(GUISettings, "default", "direction", &error));
 
-  OptionsTable = gtk_table_new (6, 2, FALSE);
+  OptionsTable = gtk_table_new (16, 2, FALSE);
   gtk_widget_show (OptionsTable);
   gtk_box_pack_start (GTK_BOX (OptionsVBox), OptionsTable, TRUE, TRUE, 0);
   int row = 0;
