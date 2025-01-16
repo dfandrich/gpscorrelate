@@ -9,6 +9,9 @@ v2.x: X
 	- Warn if the times in the GPX file are not strictly increasing
 	- Correlate just the selected files in the GUI if only some are selected
 	- Store GPSDOP tag in image when available and exact match
+	- Display an image by double-clicking it in the GUI
+	- Increase the width of the default GUI window
+	- Support drag-and-drop for GPX files and images in the GUI
 
 v2.2: 17 October 2024
 	- Fix metainfo nits
