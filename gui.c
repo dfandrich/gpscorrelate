@@ -237,7 +237,7 @@ void LoadSettings(void)
 	while (ConfigDefaults[i])
 	{
 		/* If the setting doesn't exist, set the default. */
-		if (NULL == g_key_file_get_value(GUISettings, "default", ConfigDefaults[i], NULL))
+		if (!g_key_file_has_key(GUISettings, "default", ConfigDefaults[i], NULL))
 		{
 			g_key_file_set_value(GUISettings, "default", ConfigDefaults[i], ConfigDefaults[i+1]);
 		}
@@ -625,7 +625,9 @@ GtkWidget* CreateMatchWindow (void)
           "this value (from both points on either side), the location will "
 	  "not match."), NULL);
 #endif
-  gtk_entry_set_text (GTK_ENTRY (GapTimeEntry), g_key_file_get_value(GUISettings, "default", "maxgap", NULL));
+  gchar *value = g_key_file_get_value(GUISettings, "default", "maxgap", NULL);
+  gtk_entry_set_text (GTK_ENTRY (GapTimeEntry), value);
+  g_free(value);
   gtk_entry_set_width_chars (GTK_ENTRY (GapTimeEntry), 7);
   ++row;
 
@@ -643,7 +645,9 @@ GtkWidget* CreateMatchWindow (void)
         _("Maximum number of degrees of rotation allowed between points "
           "while still writing a heading tag. -1 means no maximum."), NULL);
 #endif
-  gtk_entry_set_text (GTK_ENTRY (MaxHeadingEntry), g_key_file_get_value(GUISettings, "default", "maxheading", NULL));
+  value = g_key_file_get_value(GUISettings, "default", "maxheading", NULL);
+  gtk_entry_set_text (GTK_ENTRY (MaxHeadingEntry), value);
+  g_free(value);
   gtk_entry_set_width_chars (GTK_ENTRY (MaxHeadingEntry), 7);
 
   /* Toggle visibility of max heading entry when heading is toggled */
@@ -668,7 +672,9 @@ GtkWidget* CreateMatchWindow (void)
 		  "camera faces. If the camera is facing out the right-hand window of "
 		  "a car, this would be 90."), NULL);
 #endif
-  gtk_entry_set_text (GTK_ENTRY (CameraDirectionEntry), g_key_file_get_value(GUISettings, "default", "directionoffset", NULL));
+  value = g_key_file_get_value(GUISettings, "default", "directionoffset", NULL);
+  gtk_entry_set_text (GTK_ENTRY (CameraDirectionEntry), value);
+  g_free(value);
   gtk_entry_set_width_chars (GTK_ENTRY (CameraDirectionEntry), 7);
 
   /* Toggle visibility of direction entry when direction is toggled */
@@ -695,7 +701,9 @@ GtkWidget* CreateMatchWindow (void)
 	  "enter +8:00 here so that the correct adjustment to the photo's time "
 	  "can be made. GPS data is always in UTC."), NULL);
 #endif
-  gtk_entry_set_text (GTK_ENTRY (TimeZoneEntry), g_key_file_get_value(GUISettings, "default", "timezone", NULL));
+  value = g_key_file_get_value(GUISettings, "default", "timezone", NULL);
+  gtk_entry_set_text (GTK_ENTRY (TimeZoneEntry), value);
+  g_free(value);
   gtk_entry_set_width_chars (GTK_ENTRY (TimeZoneEntry), 7);
 
   /* Toggle visibility of time zone entry when auto time zone is toggled */
@@ -720,7 +728,9 @@ GtkWidget* CreateMatchWindow (void)
 	  "the GPS data. Calculate this with (GPS - Photo). "
 	  "Can be negative or positive and fractional seconds are allowed."), NULL);
 #endif
-  gtk_entry_set_text (GTK_ENTRY (PhotoOffsetEntry), g_key_file_get_value(GUISettings, "default", "photooffset", NULL));
+  value = g_key_file_get_value(GUISettings, "default", "photooffset", NULL);
+  gtk_entry_set_text (GTK_ENTRY (PhotoOffsetEntry), value);
+  g_free(value);
   gtk_entry_set_width_chars (GTK_ENTRY (PhotoOffsetEntry), 7);
   ++row;
 
@@ -738,7 +748,9 @@ GtkWidget* CreateMatchWindow (void)
 	_("The datum used for the GPS data. This text here is recorded in the "
 	  "EXIF tags as the source datum. WGS-84 is very commonly used."), NULL);
 #endif
-  gtk_entry_set_text (GTK_ENTRY (GPSDatumEntry), g_key_file_get_value(GUISettings, "default", "gpsdatum", NULL));
+  value = g_key_file_get_value(GUISettings, "default", "gpsdatum", NULL);
+  gtk_entry_set_text (GTK_ENTRY (GPSDatumEntry), value);
+  g_free(value);
   gtk_entry_set_width_chars (GTK_ENTRY (GPSDatumEntry), 7);
   ++row;
 
@@ -965,13 +977,12 @@ gboolean DestroyWindow(GtkWidget *Widget,
 		/* Walk through the singly-linked list
 		 * freeing stuff. */
 		Free = FirstPhoto;
-		while (1)
+		while (Free)
 		{
 			free(Free->Filename);
 			free(Free->Time);
 			Free2 = Free->Next;
 			free(Free);
-			if (Free2 == NULL) break;
 			Free = Free2;
 		}
 	}
@@ -1150,12 +1161,6 @@ void AddPhotoToList(const char* Filename)
 	free(Time);
 }
 
-static void gtk_tree_path_free_(gpointer path, gpointer data)
-{
-	(void) data;  // Unused
-	gtk_tree_path_free((GtkTreePath *)path);
-}
-
 void RemovePhotosButtonPress( GtkWidget *Widget, gpointer Data )
 {
 	(void) Widget;  // Unused
@@ -1279,8 +1284,7 @@ void RemovePhotosButtonPress( GtkWidget *Widget, gpointer Data )
 	free(RemoveIters);
 
 	/* Free the memory used by GList. */
-	g_list_foreach(Selected, gtk_tree_path_free_, NULL);
-	g_list_free(Selected);
+	g_list_free_full (Selected, (GDestroyNotify) gtk_tree_path_free);
 
 	/* Debug: walk the photo list tree. */
 	/*struct GUIPhotoList* List;
@@ -1778,6 +1782,8 @@ void CorrelateButtonPress( GtkWidget *Widget, gpointer Data )
 			SetListItem(&Iter, PhotoData->Filename, PhotoData->Time, 0, 0, 0, State, 0);
 		} /* End if Result */
 	} /* End for Walk the list ... */
+
+	g_list_free_full (Selected, (GDestroyNotify) gtk_tree_path_free);
 
 	free(Options.Datum);
 }
