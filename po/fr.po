@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gpscorrelate 2.2\n"
 "Report-Msgid-Bugs-To: dan@coneharvesters.com\n"
 "POT-Creation-Date: 2025-02-12 13:03-0800\n"
-"PO-Revision-Date: 2025-02-13 07:09+0100\n"
-"Last-Translator: jybz, papoteur\n"
+"PO-Revision-Date: 2025-02-13 08:08+0100\n"
+"Last-Translator: David Geiger <david.david@mageialinux-online.org>\n"
 "Language-Team: français\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -26,12 +26,12 @@ msgid "Out of memory.\n"
 msgstr "Manque de mémoire.\n"
 
 #: gpx-read.c:290
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Warning: track points are not ordered by time (first bad point at %s).\n"
 msgstr ""
-"Attention : les fichiers d'images ne sont pas classés par ordre "
-"chronologique.\n"
+"Attention : les points de piste ne sont pas classés par ordre chronologique "
+"(premier mauvais point à %s).\n"
 
 #: gpx-read.c:310
 #, c-format
