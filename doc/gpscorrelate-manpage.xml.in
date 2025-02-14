@@ -276,6 +276,23 @@
       occurs.
     </para>
 
+    <para>
+      GPX files often contain gaps in location coverage. Line of sight to the
+      GPS satellites can be lost if the receiver goes into a tunnel or a
+      dense forest, for example, and track recording will stop until the
+      connection can be reestablished. Some track recorders will stop recording
+      points if the receiver stops moving. This results in points in the GPX
+      file with timestamps far apart from each rather, rather than only the
+      normal one second apart (or another short interval). The interpolation
+      that <command>gpscorrelate</command> performs by default assumes a smooth
+      movement between the two known points on either side, but if those
+      two points are minutes or hours apart (or even longer!) the
+      interpolated position is unlikely to make sense. To avoid ending up
+      with a bad location for an image, the <userinput>--max-dist</userinput>
+      option can be used to skip correlating photos that were taken within a
+      large gap in coverage.
+    </para>
+
   </refsect1>
   <refsect1>
     <title>OPTIONS</title>
