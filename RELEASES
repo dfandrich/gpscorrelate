@@ -1,5 +1,7 @@
 Release History:
 
+v2.x: X
+
 v2.3: 13 February 2025
 	- Use subsecond times in an image for better interpolation
 	- When interpolation is disabled, round up when exactly half way
