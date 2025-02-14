@@ -39,8 +39,12 @@ version of the program.
 * The program can "interpolate" between points (linearly) to get better
   results. (That is, for GPS logs that are not one sample per second, like
   those I get off my Garmin eTrex GPS)
-* The resolution is down to one second. But that should be good enough for most
-  things. (This is a limit of the EXIF tags format, as well as GPX)
+* The resolution of GPX positions is down to one second, but sub-second photo
+  time is used (when available in the photo) to more accurately estimate the
+  camera position between those points.
+* A time zone tag embedded in the photo is used to determine the local time of
+  the image when found, otherwise the time zone is assumed to be same as the
+  local machine.
 * For best results, you should synchronise your camera to the GPS time before
   you start taking photos. Note: digital cameras clocks drift quickly - even
   over a short period of time (say, a week).

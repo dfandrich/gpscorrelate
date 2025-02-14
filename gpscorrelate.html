@@ -20,27 +20,35 @@ filling EXIF fields</p>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="cmdsynopsis">
-<p><code class="command">gpscorrelate</code> [ -z | --timeadd
-+/-<em class="replaceable"><code>HH</code></em>[:<em class=
-"replaceable"><code>MM</code></em>] ] [ -O | --photooffset
-<em class="replaceable"><code>seconds</code></em> ] [ -i |
---no-interpolation ] [ -v | --verbose ] [ -d | --datum <em class=
-"replaceable"><code>datum</code></em> ] [ -n | --no-write ] [ -R |
---replace ] [ -m | --max-dist <em class=
+<p><code class="command">gpscorrelate</code> [{ -g <em class=
+"replaceable"><code>file.gpx</code></em> } | { [ -l | --latlong
+<em class="replaceable"><code>latitude,longitude[ ,elevation
+]</code></em> ] }] [ -z | --timeadd +/-<em class=
+"replaceable"><code>HH</code></em>[:<em class=
+"replaceable"><code>MM</code></em>] ] [ --no-photo-tz ] [ -O |
+--photooffset <em class="replaceable"><code>seconds</code></em> ] [
+-i | --no-interpolation ] [ -v | --verbose ] [ -d | --datum
+<em class="replaceable"><code>datum</code></em> ] [ -n | --no-write
+] [ -R | --replace ] [ -m | --max-dist <em class=
 "replaceable"><code>time</code></em> ] [ -t | --ignore-tracksegs ]
 [ --heading ] [ -B | --max-heading <em class=
 "replaceable"><code>degrees</code></em> ] [ -b | --direction
 <em class="replaceable"><code>degrees</code></em> ] [ -M |
---no-mtime ] [ --degmins ] [ -g <em class=
-"replaceable"><code>file.gpx</code></em> | [ -l | --latlong ]
-<em class="replaceable"><code>latitude,longitude[ ,elevation
-]</code></em> ] <em class="replaceable"><code>image.jpg</code></em>
-...</p>
+--no-mtime ] [ --degmins ] <em class=
+"replaceable"><code>image.jpg</code></em> ...</p>
 </div>
 <div class="cmdsynopsis">
-<p><code class="command">gpscorrelate</code> -s | --show | -x |
---show-gpx | -o | --machine <em class=
+<p><code class="command">gpscorrelate</code> { -s | --show | -o |
+--machine } <em class=
 "replaceable"><code>image.jpg</code></em>...</p>
+</div>
+<div class="cmdsynopsis">
+<p><code class="command">gpscorrelate</code> { -x | --show-gpx } [
+-z | --timeadd +/-<em class=
+"replaceable"><code>HH</code></em>[:<em class=
+"replaceable"><code>MM</code></em>] ] [ --no-photo-tz ] [ -O |
+--photooffset <em class="replaceable"><code>seconds</code></em> ]
+<em class="replaceable"><code>image.jpg</code></em>...</p>
 </div>
 <div class="cmdsynopsis">
 <p><code class="command">gpscorrelate</code> { -r | --remove } [ -M
@@ -75,12 +83,50 @@ to as <span class="emphasis"><em>correlation</em></span>.</p>
 taken (with a 1-second granularity) the GPS data are stored
 unmodified in EXIF fields. If they are not, linear interpolation of
 GPS data available at moments before and after the image was taken
-can be used. Linear interpolation gives good results when points
-are close together, but if they are several kilometres apart on an
-airplane route, it will introduce some error versus the great
-circle route an airplane flies. A measure of the approximate
-accuracy of the GPS location reading is preserved when written into
-the image.</p>
+can be used. If the image contains sub-second time resolution, it
+is used to obtain a more accurate estimate of the position between
+the two points. Linear interpolation gives good results when points
+are close together, but if they are several kilometres apart (such
+as on an infrequently-sampled airplane track), it will introduce
+some error versus the great circle route an airplane normally
+flies. A measure of the approximate accuracy of the GPS location
+reading (based on the number of digits recorded in the track point)
+is preserved when written into the image through the denominator of
+rational value fields. A <strong class=
+"userinput"><code>GPSDOP</code></strong> tag is also written for
+exact point matches when satellite HDOP information is available,
+providing a more dependable estimate of location accuracy.</p>
+<p>The interpolation algorithm assumes that time values in GPX
+files are strictly increasing, which is normally the case. If a GPX
+file is found to violate this assumption, the message
+<strong class="userinput"><code>Warning: track points are not
+ordered by time</code></strong> is written so stderr along with the
+first backwards-going time value. Any location values written to
+images using such a file may not be using the best GPS coordinate
+points available if the images were taken around the time of the
+time incongruity. No warning is given if time between track
+segments goes backwards, which would only affect correlations when
+<strong class="userinput"><code>--ignore-tracksegs</code></strong>
+is used. The <strong class=
+"userinput"><code>--max-dist</code></strong> option can be used to
+place a limit on how large a time gap is accepted, which can limit
+the effect if this occurs.</p>
+<p>GPX files often contain gaps in location coverage. Line of sight
+to the GPS satellites can be lost if the receiver goes into a
+tunnel or a dense forest, for example, and track recording will
+stop until the connection can be reestablished. Some track
+recorders will stop recording points if the receiver stops moving.
+This results in points in the GPX file with timestamps far apart
+from each rather, rather than only the normal one second apart (or
+another short interval). The interpolation that <span class=
+"command"><strong>gpscorrelate</strong></span> performs by default
+assumes a smooth movement between the two known points on either
+side, but if those two points are minutes or hours apart (or even
+longer!) the interpolated position is unlikely to make sense. To
+avoid ending up with a bad location for an image, the
+<strong class="userinput"><code>--max-dist</code></strong> option
+can be used to skip correlating photos that were taken within a
+large gap in coverage.</p>
 </div>
 <div class="refsect1"><a name="id1339" id="id1339"></a>
 <h2>OPTIONS</h2>
@@ -125,7 +171,8 @@ other than ".".</p>
 "option">--show</code></span></dt>
 <dd>
 <p>Only show the GPS data already in the given image's EXIF tags
-instead of correlating them.</p>
+instead of correlating them. The time shown comes directly from the
+image without adjustments.</p>
 </dd>
 <dt><span class="term"><code class="option">-x</code>, <code class=
 "option">--show-gpx</code></span></dt>
@@ -138,13 +185,18 @@ which they were photographed. The <code class=
 <code class="option">-O</code>/<code class=
 "option">--photooffset</code> options are honoured just as in
 correlation to determine the correct time zone of the images.
-Images that can't be read or aren't GPS tagged are ignored.</p>
+Images that can't be read or aren't GPS tagged are ignored. If the
+times of the photos given on the command-line are not strictly
+increasing, the message <strong class="userinput"><code>Warning:
+image files are not ordered by time.</code></strong> is written to
+stderr.</p>
 </dd>
 <dt><span class="term"><code class="option">-o</code>, <code class=
 "option">--machine</code></span></dt>
 <dd>
 <p>Only show the GPS data of the given images in a machine-readable
-CSV format. Images without GPS tags are ignored. The fields output
+CSV format. The time shown comes directly from the image without
+adjustments. Images without GPS tags are ignored. The fields output
 are file name, date and time, latitude, longitude, elevation, where
 the first value is the filename, as passed, the second is the
 timestamp, and the last three are floating point values with an
@@ -171,19 +223,36 @@ generally in local time. Enter the timezone used when taking the
 images; e.g., <strong class="userinput"><code>+8</code></strong>
 for Perth, Western Australia or <strong class=
 "userinput"><code>-2:30</code></strong> for St. John's,
-Newfoundland. This defaults to the UTC offset of the local time
-zone as of the time of the first image processed (versions before
-1.7 defaulted to 00:00).</p>
+Newfoundland. This defaults to the time zone embedded in the image,
+or if that is not available (or when <strong class=
+"userinput"><code>--no-photo-tz</code></strong> is given), the UTC
+offset of the local time zone as of the time of the first image
+processed (versions before 1.7 defaulted to 00:00).</p>
+</dd>
+<dt><span class="term"><code class=
+"option">--no-photo-tz</code></span></dt>
+<dd>
+<p>Ignore any <strong class=
+"userinput"><code>OffsetTimeOriginal</code></strong> EXIF tags in
+photos that specify the time zone in which the photo was taken. If
+the tag is wrong, such as if the user forgot to update the time
+zone manually when travelling, then this will prevent it from being
+used. If this option is given, then <span class=
+"command"><strong>gpscorrelate</strong></span> reverts to using
+automatic time zone detection for the photo, or a
+manually-specified one (if <strong class=
+"userinput"><code>--timeadd</code></strong> is given).</p>
 </dd>
 <dt><span class="term"><code class="option">-O</code>, <code class=
 "option">--photooffset</code> <em class=
 "replaceable"><code>seconds</code></em></span></dt>
 <dd>
-<p>Time in seconds to add to the photo timestamp to make it match
-the GPS timestamp. To determine the number of seconds needed, just
-create a photograph of your GPS device showing the current time and
-compare it with the timestamp of your photo file. The EXIF time
-tags in the image are not modified based on this value.</p>
+<p>Time in seconds (fractional seconds are allowed) to add to the
+photo timestamp to make it match the GPS timestamp. To determine
+the number of seconds needed, just create a photograph of your GPS
+device showing the current time and compare it with the timestamp
+of your photo file. The EXIF time tags in the image are not
+modified based on this value.</p>
 </dd>
 <dt><span class="term"><code class="option">-i</code>, <code class=
 "option">--no-interpolation</code></span></dt>
@@ -416,9 +485,10 @@ inaccurate tags):</p>
 --heading --max-heading 45 --direction 90 --max-dist 6
 --ignore-tracksegs *.jpg</code></strong></p>
 <p>Correlate a photo taken from a camera with a fast clock (i.e.,
-the clock was 77 seconds ahead of GPS time):</p>
-<p><strong class="userinput"><code>gpscorrelate -g Test.gpx -O -77
-photo.jpg</code></strong></p>
+the clock was 77.5 seconds ahead of GPS time) and with
+incorrectly-specified time zone tags:</p>
+<p><strong class="userinput"><code>gpscorrelate -g Test.gpx -O
+-77.5 --no-photo-tz photo.jpg</code></strong></p>
 <p>Show existing GPS tags in a photo:</p>
 <p><strong class="userinput"><code>gpscorrelate --show
 photo.jpg</code></strong></p>

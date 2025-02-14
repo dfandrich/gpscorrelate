@@ -12,19 +12,20 @@
 
 <h2>The Correlation Window</h2>
 
-<img src="corr.png" alt="The Correlation Window" width="854" height="819">
+<img src="corr.png" alt="The Correlation Window" width="1052" height="798">
 
 <h2>How to use the Correlation Window</h2>
 
 <h3>Step 1: Add Photos</h3>
 
-<p>Clicking the "Add Photos..." button will allow you to select photos to add to the list. You can select multiple photos in one go from the open dialog that appears. Once you have chosen the photos that you want, click "Open" to select the photos. They will be scanned for EXIF tags and added to the list. If they already have GPS EXIF tags, the data from those tags will be shown in the window. Otherwise, you will just see the timestamp from the photo, and the status of the photo.</p>
+<p>Clicking the "Add Photos..." button will allow you to select photos to add to the list. You can select multiple photos in one go from the open dialog that appears. Once you have chosen the photos that you want, click "Open" to select the photos. They will be scanned for EXIF tags and added to the list. If they already have GPS EXIF tags, the data from those tags will be shown in the window. Otherwise, you will just see the timestamp from the photo, and the status of the photo. Double-clicking on an image will display it. Additional photos can be added to the list by repeating this step. Images can also be added with drag-and-drop from the desktop onto the photo list window.</p>
 
 <p>Selecting a photo or multiple photos from the list on the right and clicking "Remove Photos" will remove these from the list.</p>
 
+
 <h3>Step 2: GPS Data</h3>
 
-<p>Clicking the "Choose..." button will bring up a dialog asking the GPX file to read GPS data from. Once you have selected the file or files, it will be loaded into memory. While the loading is proceeding, you will see a dialog asking you to wait while the data is loaded. Once loaded, the name of the file that the data is coming from will be shown above the button.</p>
+<p>Clicking the "Choose..." button will bring up a dialog asking the GPX file to read GPS data from. Once you have selected the file or files, it will be loaded into memory. While the loading is proceeding, you will see a dialog asking you to wait while the data is loaded. Once loaded, the name of the file that the data is coming from will be shown above the button. GPX files can also be added with drag-and-drop from the desktop onto the photo list window. Each time a GPX file is chosen, any files previously loaded are forgotten. To select more than one file, they must all be chosen at the same time from the same file dialog or dropped onto the window in a single batch.</p>
 
 <h3>Step 3: Set options</h3>
 
@@ -42,6 +43,8 @@
 
 <p>The <b>"Auto time zone"</b> checkbox, if checked, will choose an appropriate value for "Time Zone", based on the local time zone and the time of the first photo in the list to be correlated.</p>
 
+<p>The <b>"Use photo time zone"</b> checkbox, if checked, will use each photo's time zone tag to determine the local time of the image. If this tag is not available, the regular "Auto time zone" behaviour will take effect.</p>
+
 <p>The <b>"Write heading"</b> checkbox, if checked, will write tags into the picture indicating the direction of movement at the time the picture was taken, when these data are available in the GPX file. These tags are not written during times of rapid turning, determined by the <b>Max heading change</b> setting.</p>
 
 <p>The <b>"Write camera direction"</b> checkbox, if checked, will write tags into the picture indicating the direction that the camera was facing at the time the picture was taken. This is determined by adding the <b>Camera direction</b> value to the heading written in <b>Write heading</b>.</p>
@@ -54,13 +57,13 @@
 
 <p>The <b>"Time Zone"</b> box specifies the time zone that the photos were taken in so that the times of the photos can be adjusted to match the GPS data. The format is hours from UTC or HH:MM and may be negative. This can only be specified if "Auto time zone" is unset.</p>
 
-<p>The <b>"Photo Offset"</b> box specifies the number of seconds to add to the photos time to match the GPS data. See the <a href="concepts.html">GPS Correlate Concepts</a> documentation to understand this value.</p>
+<p>The <b>"Photo Offset"</b> box specifies the number of seconds to add to the photos time to match the GPS data (fractional seconds are allowed). See the <a href="concepts.html">GPS Correlate Concepts</a> documentation to understand this value.</p>
 
 <p>The <b>"GPS Datum"</b> box specifies the Datum of the source GPS data, which is written into the GPS EXIF tags. By default this is "WGS-84", but really should not be changed, as the GPX format is only supposed to store WGS-84 data. However, you can change this if you wish.</p>
 
 <h3>Step 4: Correlate!</h3>
 
-<p>The "Correlate Photos" button will start the correlation procedure on the selected photos with the loaded GPS data. If no photos are selected or no GPS data is loaded, then an error will be generated. Otherwise, the photos will be correlated and you will see their status change in the list as the process goes on. As photos are matched, their locations are also shown in the photo list.</p>
+<p>The "Correlate Photos" button will start the correlation procedure on the selected photos with the loaded GPS data. If no photos are added or no GPS data is loaded, then an error will be generated. Otherwise, the selected photos will be correlated and you will see their status change in the list as the process goes on. As photos are matched, their locations are also shown in the photo list.</p>
 
 <h3>Other Tools</h3>
 
