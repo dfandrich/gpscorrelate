@@ -6,7 +6,7 @@
  * is found, writes the GPS data into the EXIF data
  * in the photo. For future reference... */
 
-/* Copyright 2005-2024 Daniel Foote, Dan Fandrich.
+/* Copyright 2005-2025 Daniel Foote, Dan Fandrich.
  *
  * This file is part of gpscorrelate.
  *

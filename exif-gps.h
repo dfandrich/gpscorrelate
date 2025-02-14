@@ -7,7 +7,7 @@
  * mangling, as C++ has a habit of doing.
  */
 
-/* Copyright 2005-2019 Daniel Foote, Dan Fandrich.
+/* Copyright 2005-2024 Daniel Foote, Dan Fandrich.
  *
  * This file is part of gpscorrelate.
  *

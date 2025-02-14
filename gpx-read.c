@@ -5,7 +5,7 @@
  * containing GPS data.
  */
 
-/* Copyright 2005-2024 Daniel Foote, Dan Fandrich.
+/* Copyright 2005-2025 Daniel Foote, Dan Fandrich.
  *
  * This file is part of gpscorrelate.
  *

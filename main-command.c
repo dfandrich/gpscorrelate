@@ -6,7 +6,7 @@
  * Writes the output back into the GPS exif tags.
  */
 
-/* Copyright 2005-2023 Daniel Foote, Dan Fandrich.
+/* Copyright 2005-2024 Daniel Foote, Dan Fandrich.
  *
  * This file is part of gpscorrelate.
  *

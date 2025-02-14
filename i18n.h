@@ -4,7 +4,7 @@
  */
 
 /*
- * Copyright © 2001 Lutz Müller <lutz@users.sourceforge.net>
+ * Copyright © 2001-2012 Lutz Müller <lutz@users.sourceforge.net> et. al.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

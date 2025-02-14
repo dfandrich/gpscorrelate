@@ -5,7 +5,7 @@
  * the Unix time functions.
  */
 
-/* Copyright 2005-2012 Daniel Foote, Dan Fandrich.
+/* Copyright 2005-2024 Daniel Foote, Dan Fandrich.
  *
  * This file is part of gpscorrelate.
  *

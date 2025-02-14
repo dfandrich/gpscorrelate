@@ -4,7 +4,7 @@
  * This file contains routines to parse latitude/longitude.
  */
 
-/* Copyright 2016-2023 Daniel Fandrich.
+/* Copyright 2016-2025 Daniel Fandrich.
  *
  * This file is part of gpscorrelate.
  *

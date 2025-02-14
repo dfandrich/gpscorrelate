@@ -1,6 +1,6 @@
 Release History:
 
-v2.x: X
+v2.3: 13 February 2025
 	- Use subsecond times in an image for better interpolation
 	- When interpolation is disabled, round up when exactly half way
 	- Allow fractional times in --photooffset
@@ -12,6 +12,8 @@ v2.x: X
 	- Display an image by double-clicking it in the GUI
 	- Increase the width of the default GUI window
 	- Support drag-and-drop for GPX files and images in the GUI
+	- Update the German & French translation
+	- Clean up memory handling and fix some memory leaks in the GUI
 
 v2.2: 17 October 2024
 	- Fix metainfo nits

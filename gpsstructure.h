@@ -6,7 +6,7 @@
  * could share it.
  */
 
-/* Copyright 2005-2023 Daniel Foote, Dan Fandrich.
+/* Copyright 2005-2025 Daniel Foote, Dan Fandrich.
  *
  * This file is part of gpscorrelate.
  *
