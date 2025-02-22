@@ -1933,7 +1933,7 @@ void AboutButtonPress( GtkWidget *Widget, gpointer Data )
 						"authors", authors,
 						"comments", _("GPS Correlate attaches EXIF GPS location tags to images."),
 						// The following hex bytes are the copyright symbol in UTF-8
-						"copyright", _("Copyright \xC2\xA9 2005-2024 Daniel Foote, Dan Fandrich"),
+						"copyright", _("Copyright \xC2\xA9 2005-2025 Daniel Foote, Dan Fandrich"),
 						"license", "GPL 2+",
 #if GTK_CHECK_VERSION(3, 0, 0)
 						"license-type", GTK_LICENSE_GPL_2_0,

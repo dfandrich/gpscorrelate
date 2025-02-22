@@ -83,7 +83,7 @@ static void PrintVersion(const char* ProgramName)
 {
 	printf(_("%s, ver. %s. %s\n"),
 	       ProgramName, PACKAGE_VERSION,
-	       _("Copyright (C) 2005-2024 Daniel Foote, Dan Fandrich"));
+	       _("Copyright (C) 2005-2025 Daniel Foote, Dan Fandrich"));
 }
 
 /* Function to print the usage info. */

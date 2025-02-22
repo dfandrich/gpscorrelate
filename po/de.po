@@ -1,5 +1,5 @@
 # Translation template for gpscorrelate
-# Copyright (C) 2005-2024 Daniel Foote, Dan Fandrich
+# Copyright (C) 2005-2025 Daniel Foote, Dan Fandrich
 # This file is distributed under the same license as the gpscorrelate package.
 # Dan Fandrich <dan@coneharvesters.com>, 2013.
 #
@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: gpscorrelate 2.2\n"
 "Report-Msgid-Bugs-To: dan@coneharvesters.com\n"
 "POT-Creation-Date: 2025-02-12 13:03-0800\n"
-"PO-Revision-Date: 2024-10-17 21:41-0700\n"
+"PO-Revision-Date: 2025-02-22 00:00-0700\n"
 "Last-Translator: Dan Fandrich <dan@coneharvesters.com>\n"
 "Language-Team: deutsch\n"
 "Language: de\n"
@@ -496,8 +496,8 @@ msgid "GPS Correlate attaches EXIF GPS location tags to images."
 msgstr "GPS Correlate fügt Bildern EXIF GPS-Standort-Metadaten bei."
 
 #: gui.c:1936
-msgid "Copyright © 2005-2024 Daniel Foote, Dan Fandrich"
-msgstr "Copyright © 2005-2024 Daniel Foote, Dan Fandrich"
+msgid "Copyright © 2005-2025 Daniel Foote, Dan Fandrich"
+msgstr "Copyright © 2005-2025 Daniel Foote, Dan Fandrich"
 
 #: main-command.c:84
 #, c-format
@@ -505,8 +505,8 @@ msgid "%s, ver. %s. %s\n"
 msgstr "%s, Ver. %s. %s\n"
 
 #: main-command.c:86
-msgid "Copyright (C) 2005-2024 Daniel Foote, Dan Fandrich"
-msgstr "Copyright © 2005-2024 Daniel Foote, Dan Fandrich"
+msgid "Copyright (C) 2005-2025 Daniel Foote, Dan Fandrich"
+msgstr "Copyright © 2005-2025 Daniel Foote, Dan Fandrich"
 
 #: main-command.c:92
 #, c-format
