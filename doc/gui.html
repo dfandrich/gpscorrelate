@@ -77,6 +77,11 @@
 
 <p>As of 1.5.4, when you exit the GUI program, it will save your settings to ~/.config/.gpscorrelaterc (or ~/.gpscorrelaterc). These will be reloaded next time you start gpscorrelate. The command line version does not make use of this file.</p>
 
+<h3>Flatpak</h3>
+
+<p>The drag-and-drop functionality is not available by default in the Flatpak version of the application. It can be enabled by adding the "home" permission using <cite>Flatseal</cite> or running a command like: <code>sudo flatpak override io.github.dfandrich.gpscorrelate --filesystem=~</code> which opens a hole in the sandbox to allow gpscorrelate to read files in your home directory.
+</p>
+
 <hr>
 
 <a href="index.html">Return to the contents</a>
