@@ -8,11 +8,11 @@ freebsd_task:
     '.github/**'
     )"
   freebsd_instance:
-    memory: 1000M
+    memory: 950M
     cpu: 1
     matrix:
       image_family: freebsd-14-2
-      image_family: freebsd-13-4
+      image_family: freebsd-13-5
 
   env:
     # Set to 10 instead of 1 to avoid problems when new commits are submitted
@@ -55,7 +55,7 @@ linux_arm_task:
     )"
   arm_container:
     image: ubuntu:24.04
-    memory: 400M
+    memory: 350M
     cpu: 1
 
   env:

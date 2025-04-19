@@ -29,73 +29,40 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        osver: [20.04, 22.04, 24.04]
+        osver: [22.04, 24.04]
         build:
-          - cc: gcc
+          - cc: gcc-10
             gtk: 2
-            install: desktop-file-utils docbook-xsl exiv2 libexiv2-dev libgtk2.0-dev xsltproc gettext
+            install: desktop-file-utils docbook-xsl exiv2 libexiv2-dev libgtk2.0-dev xsltproc gettext gcc-10
             cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
             cxx: g++
             target: all
             install_target: install install-po install-desktop-file
-            osver: 20.04
-          - cc: clang
-            gtk: 2
-            install: desktop-file-utils docbook-xsl exiv2 libexiv2-dev libgtk2.0-dev xsltproc gettext
-            cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
-            cxx: clang++
-            target: all
-            install_target: install install-po install-desktop-file
-            osver: 20.04
-          - name: no-nls
-            cc: gcc
-            gtk: 2
-            install: desktop-file-utils docbook-xsl exiv2 libexiv2-dev libgtk2.0-dev xsltproc
-            cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3
-            cxx: g++
-            target: all
-            install_target: install install-desktop-file
-            osver: 20.04
-          - cc: gcc-8
-            gtk: 2
-            install: desktop-file-utils docbook-xsl exiv2 libexiv2-dev libgtk2.0-dev xsltproc gettext gcc-8
-            cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
-            cxx: g++
-            target: all
-            install_target: install install-po install-desktop-file
-            osver: 20.04
-          - cc: gcc-8
+            osver: 22.04
+          - cc: gcc-10
             gtk: 3
-            install: desktop-file-utils docbook-xsl exiv2 libexiv2-dev libgtk-3-dev xsltproc gettext gcc-8
+            install: desktop-file-utils docbook-xsl exiv2 libexiv2-dev libgtk-3-dev xsltproc gettext gcc-10
             cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
             cxx: g++
             target: all
             install_target: install install-po install-desktop-file
-            osver: 20.04
-          - cc: clang-8
+            osver: 22.04
+          - cc: clang-11
             gtk: 2
-            install: clang-8 desktop-file-utils docbook-xsl exiv2 libexiv2-dev libgtk2.0-dev gettext xsltproc
+            install: desktop-file-utils docbook-xsl exiv2 libexiv2-dev libgtk2.0-dev gettext xsltproc clang-11
             cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
-            cxx: clang++-8
+            cxx: clang++-11
             target: all
             install_target: install install-po install-desktop-file
-            osver: 20.04
-          - cc: clang-9
-            gtk: 2
-            install: clang-9 desktop-file-utils docbook-xsl exiv2 libexiv2-dev libgtk2.0-dev gettext xsltproc
+            osver: 22.04
+          - cc: clang-11
+            gtk: 3
+            install: desktop-file-utils docbook-xsl exiv2 libexiv2-dev libgtk-3-dev xsltproc gettext clang-11
             cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
-            cxx: clang++-9
+            cxx: clang++-11
             target: all
             install_target: install install-po install-desktop-file
-            osver: 20.04
-          - cc: clang-10
-            gtk: 2
-            install: clang-10 desktop-file-utils docbook-xsl exiv2 libexiv2-dev libgtk2.0-dev gettext xsltproc
-            cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
-            cxx: clang++-10
-            target: all
-            install_target: install install-po install-desktop-file
-            osver: 20.04
+            osver: 22.04
           - cc: gcc
             gtk: 3
             install: desktop-file-utils docbook-xsl exiv2 libexiv2-dev libgtk-3-dev xsltproc gettext
@@ -174,13 +141,10 @@ jobs:
             target: all
             install_target: install install-po install-desktop-file
         exclude:
-          # Exclude configurations intended for a single OS version
-          - osver: 22.04
-            build:
-              osver: 20.04
+          # Exclude configurations from the matrix intended for a single OS version
           - osver: 24.04
             build:
-              osver: 20.04
+              osver: 22.04
 
     steps:
       - uses: actions/checkout@v4
@@ -193,13 +157,7 @@ jobs:
         run: env ASAN_OPTIONS="${{ matrix.build.asan_options }}" ./gpscorrelate -V
       - name: 'test'
         run: |
-          if [[ "${{ matrix.osver }}" == "20.04" ]]; then
-            # Ubuntu 20.04 has an old version of exiv2 that doesn't support
-            # time zone tags, so those 8 tests are expected to fail
-            FAILING_TESTS="$((8 + ${{ matrix.build.failing_tests || '0'}}))"
-          else
-            FAILING_TESTS="${{ matrix.build.failing_tests }}"
-          fi
+          FAILING_TESTS="${{ matrix.build.failing_tests }}"
           if [[ -n "${{ matrix.build.locale }}" ]]; then
             export LC_ADDRESS="${{ matrix.build.locale }}"
             export LC_COLLATE="${{ matrix.build.locale }}"
@@ -215,11 +173,11 @@ jobs:
             export LC_TELEPHONE="${{ matrix.build.locale }}"
             export LC_TIME="${{ matrix.build.locale }}"
           fi
-          if [[ -z "$FAILING_TESTS" ]] ; then
+          if [[ -z "${{ matrix.build.failing_tests }}" ]] ; then
             make check CHECK_OPTIONS="-v ${{ matrix.build.check_options }}" ASAN_OPTIONS="${{ matrix.build.asan_options }}"
           else
-            echo "Expecting $FAILING_TESTS test failures"
-            make check CHECK_OPTIONS="-v ${{ matrix.build.check_options }}" | tee /dev/stderr | grep -Fq "$FAILING_TESTS test(s) have FAILED"
+            echo "Expecting ${{ matrix.build.failing_tests }} test failures"
+            make check CHECK_OPTIONS="-v ${{ matrix.build.check_options }}" | tee /dev/stderr | grep -Fq "${{ matrix.build.failing_tests }} test(s) have FAILED"
           fi
       - name: 'install test'
         run: make prefix= DESTDIR="${PWD}" ${{ matrix.build.install_target }}
@@ -326,7 +284,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        osver: [39, 41]
+        osver: [40, 41, 42]
         build:
           - cc: gcc
             gtk: 3
@@ -376,7 +334,7 @@ jobs:
           - name: 'x86_64 testing'
             cc: gcc
             cxx: g++
-            install: make gcc g++ exiv2 libexiv2-dev libgtk-3-dev gettext libxml2-dev
+            install: make gcc g++ exiv2 libexiv2-dev libgtk-3-dev gettext libxml2-dev adduser
             cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
             target: gpscorrelate gpscorrelate-gui
             arch: amd64
