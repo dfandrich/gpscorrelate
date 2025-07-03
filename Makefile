@@ -8,7 +8,7 @@ EXEEXT =
 PKG_CONFIG=pkg-config
 CFLAGS   = -Wall -O2
 CXXFLAGS = $(CFLAGS)
-LDFLAGS  = -Wall -O2 -lm
+LDFLAGS  = -lm
 GTK      = 3
 CHECK_OPTIONS=
 
@@ -38,9 +38,10 @@ localedir = $(datadir)/locale
 
 DEFS = -DPACKAGE_VERSION=\"$(PACKAGE_VERSION)\" -DPACKAGE_LOCALE_DIR=\"$(localedir)\" -DPACKAGE_DOC_DIR=\"$(docdir)\"
 
-TARGETS = gpscorrelate-gui$(EXEEXT) gpscorrelate$(EXEEXT) doc/gpscorrelate.1 doc/gpscorrelate.html
+TARGETS = gpscorrelate$(EXEEXT) gpscorrelate-gui$(EXEEXT)
+DOCTARGETS = doc/gpscorrelate.1 doc/gpscorrelate.html
 
-all:	$(TARGETS)
+all: $(TARGETS) docs
 
 gpscorrelate$(EXEEXT): $(COBJS)
 	$(CXX) -o $@ $(COBJS) $(LDFLAGS) $(LIBS)
@@ -61,14 +62,15 @@ check: gpscorrelate$(EXEEXT)
 	(cd tests && ./testsuite $(CHECK_OPTIONS))
 
 clean:
-	rm -f *.o gpscorrelate$(EXEEXT) gpscorrelate-gui$(EXEEXT) doc/gpscorrelate-manpage.xml tests/log/* io.github.dfandrich.gpscorrelate.metainfo.xml $(TARGETS)
+	rm -f *.o doc/gpscorrelate-manpage.xml tests/log/* io.github.dfandrich.gpscorrelate.metainfo.xml $(TARGETS) $(DOCTARGETS)
 
 distclean: clean clean-po
 	rm -f AUTHORS
 
-install: all
+# install CLI and docs
+install-gpscorrelate$(EXEEXT): gpscorrelate$(EXEEXT) docs
 	install -d $(DESTDIR)$(bindir)
-	install -m 0755 gpscorrelate$(EXEEXT) gpscorrelate-gui$(EXEEXT) $(DESTDIR)$(bindir)
+	install -m 0755 gpscorrelate$(EXEEXT) $(DESTDIR)$(bindir)
 	install -d $(DESTDIR)$(mandir)/man1
 	install -m 0644 doc/gpscorrelate.1 $(DESTDIR)$(mandir)/man1
 	install -d $(DESTDIR)$(docdir)
@@ -77,12 +79,19 @@ install: all
 	install -d $(DESTDIR)$(docdir)/fr
 	install -p -m 0644 doc/fr/*.html doc/fr/*.png $(DESTDIR)$(docdir)/fr
 
+# install GUI
+install-gpscorrelate-gui$(EXEEXT): gpscorrelate-gui$(EXEEXT) install-desktop-file
+	install -d $(DESTDIR)$(bindir)
+	install -m 0755 gpscorrelate-gui$(EXEEXT) $(DESTDIR)$(bindir)
+
 install-desktop-file:
 	desktop-file-install --vendor="" --dir="$(DESTDIR)$(applicationsdir)" gpscorrelate.desktop
 	install -d $(DESTDIR)$(datadir)/icons/hicolor/scalable/apps
 	install -p -m 0644 gpscorrelate-gui.svg $(DESTDIR)$(datadir)/icons/hicolor/scalable/apps/gpscorrelate-gui.svg
 
-docs: doc/gpscorrelate.1 doc/gpscorrelate.html
+install: $(foreach target,$(TARGETS),install-$(target))
+
+docs: $(DOCTARGETS)
 
 # BSD make doesn't work with $< as the prerequisite in the following rules but $? is fine
 doc/gpscorrelate-manpage.xml: doc/gpscorrelate-manpage.xml.in

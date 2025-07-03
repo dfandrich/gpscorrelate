@@ -37,7 +37,7 @@ jobs:
             cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
             cxx: g++
             target: all
-            install_target: install install-po install-desktop-file
+            install_target: install install-po
             osver: 22.04
           - cc: gcc-10
             gtk: 3
@@ -45,7 +45,7 @@ jobs:
             cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
             cxx: g++
             target: all
-            install_target: install install-po install-desktop-file
+            install_target: install install-po
             osver: 22.04
           - cc: clang-11
             gtk: 2
@@ -53,7 +53,7 @@ jobs:
             cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
             cxx: clang++-11
             target: all
-            install_target: install install-po install-desktop-file
+            install_target: install install-po
             osver: 22.04
           - cc: clang-11
             gtk: 3
@@ -61,7 +61,7 @@ jobs:
             cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
             cxx: clang++-11
             target: all
-            install_target: install install-po install-desktop-file
+            install_target: install install-po
             osver: 22.04
           - cc: gcc
             gtk: 3
@@ -69,14 +69,14 @@ jobs:
             cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
             cxx: g++
             target: all
-            install_target: install install-po install-desktop-file
+            install_target: install install-po
           - cc: clang
             gtk: 3
             install: desktop-file-utils docbook-xsl exiv2 libexiv2-dev libgtk-3-dev xsltproc gettext
             cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
             cxx: clang++
             target: all
-            install_target: install install-po install-desktop-file
+            install_target: install install-po
           - name: no-nls
             cc: gcc
             gtk: 3
@@ -84,7 +84,7 @@ jobs:
             cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3
             cxx: g++
             target: all
-            install_target: install install-desktop-file
+            install_target: install
           - name: debuglog
             cc: gcc
             gtk: 3
@@ -92,7 +92,7 @@ jobs:
             cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1 -DDEBUG
             cxx: g++
             target: all
-            install_target: install install-po install-desktop-file
+            install_target: install install-po
             failing_tests: 18
           - name: sanitize
             cc: clang
@@ -102,7 +102,7 @@ jobs:
             ldflags: -g -O0 -fsanitize=address -fsanitize=undefined
             cxx: clang++
             target: all
-            install_target: install install-po install-desktop-file
+            install_target: install install-po
             asan_options: strict_string_checks=0:detect_stack_use_after_return=1:check_initialization_order=1:strict_init_order=1:use_sigaltstack=0
           - name: 'compile as c++'
             cc: g++
@@ -111,14 +111,14 @@ jobs:
             cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
             cxx: g++
             target: all
-            install_target: install install-po install-desktop-file
+            install_target: install install-po
           - name: 'valgrind tests'
             cc: gcc
             install: docbook-xsl exiv2 libexiv2-dev libgtk-3-dev xsltproc gettext valgrind
             cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
             cxx: g++
             target: gpscorrelate
-            install_target: install
+            install_target: install-gpscorrelate
             check_options: -m
           - name: 'locale tests'
             cc: gcc
@@ -127,7 +127,7 @@ jobs:
             cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
             cxx: g++
             target: all
-            install_target: install install-po install-desktop-file
+            install_target: install install-po
             # Turkish is one of the better locales to test in that it has unusual
             # upper/lowercase folding and comma as decimal separator.
             locale: tr_TR
@@ -139,7 +139,7 @@ jobs:
             cxx: g++
             cxxflags: -std=c++11 -D_POSIX_C_SOURCE=200809L -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
             target: all
-            install_target: install install-po install-desktop-file
+            install_target: install install-po
         exclude:
           # Exclude configurations from the matrix intended for a single OS version
           - osver: 24.04

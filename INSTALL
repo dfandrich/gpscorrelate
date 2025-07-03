@@ -13,6 +13,8 @@ To build, you will need these prerequisites:
   with manpages/docbook.xsl properly installed from
   https://docbook.sourceforge.net/ or an OS package (often named something like
   docbook-xsl or docbook-style-xsl)
+* desktop-file-utils: https://www.freedesktop.org/wiki/Software/desktop-file-utils/
+  (required when installing the GUI)
 * intltool (only for rebuilding the AppStream metadata file)
 * exiv2 CLI (only for running the test suite)
 
