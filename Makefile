@@ -25,8 +25,8 @@ LIBSGUI   = `$(PKG_CONFIG) --libs gtk+-$(GTK).0`
 
 CFLAGSINC += $(GTKFLAGS)
 
-# Put --nonet here to avoid downloading DTDs while building documentation
-XSLTFLAGS =
+# --nonet here stops downloading DTDs while building documentation, which aren't needed
+XSLTFLAGS = --nonet
 
 prefix   = /usr/local
 bindir   = $(prefix)/bin
