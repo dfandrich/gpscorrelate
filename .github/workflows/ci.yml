@@ -263,7 +263,7 @@ jobs:
       - name: install deps
         run: brew install ${{ matrix.build.install }}
       - name: build
-        run: make CFLAGS="-I$(brew --prefix)/include ${{ matrix.build.cflags }}" CXXFLAGS="${{ matrix.build.cxxflags }}" LDFLAGS="-L$(brew --prefix)/lib ${{ matrix.build.ldflags }}" CC="${{ matrix.build.cc }}" CXX="${{ matrix.build.cxx }}" GTK="${{ matrix.build.gtk }}" ${{ matrix.build.make_opts }} XML_CATALOG_FILES="$(brew --prefix)/etc/xml/catalog" XSLTFLAGS=--nonet ${{ matrix.build.target }}
+        run: make CFLAGS="-I$(brew --prefix)/include ${{ matrix.build.cflags }}" CXXFLAGS="${{ matrix.build.cxxflags }}" LDFLAGS="-L$(brew --prefix)/lib ${{ matrix.build.ldflags }}" CC="${{ matrix.build.cc }}" CXX="${{ matrix.build.cxx }}" GTK="${{ matrix.build.gtk }}" ${{ matrix.build.make_opts }} XML_CATALOG_FILES="$(brew --prefix)/etc/xml/catalog" ${{ matrix.build.target }}
       - name: smoke test
         run: ./gpscorrelate -V
       - name: test
