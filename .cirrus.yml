@@ -122,7 +122,7 @@ linux_musl_task:
 
   pkginstall_script:
     - uname -a
-    - apk add --no-cache build-base exiv2-dev libxml2-dev gettext-dev "gtk+${GTK}.0-dev" desktop-file-utils
+    - apk add --no-cache build-base exiv2 exiv2-dev libxml2-dev gettext-dev "gtk+${GTK}.0-dev" desktop-file-utils
     # Create a user for running tests
     - adduser -D build
 
