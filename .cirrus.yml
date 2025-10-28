@@ -88,6 +88,7 @@ linux_arm_task:
     # tests as a normal user to get around that problem. The log directory
     # must be world-writable since files will be written there.
     - install -d -m 0777 tests/log
+    - chmod a-w tests/staging/*
     - su build -c 'make check CHECK_OPTIONS=-v'
 
   install_script:
@@ -103,8 +104,8 @@ linux_musl_task:
     memory: 320M
     cpu: 1
     matrix:
-      - image: alpine:3.21
-      - image: alpine:3.18
+      - image: alpine:3.22
+      - image: alpine:3.19
 
   env:
     # Set to 10 instead of 1 to avoid problems when new commits are submitted
@@ -121,7 +122,7 @@ linux_musl_task:
 
   pkginstall_script:
     - uname -a
-    - apk add --no-cache build-base exiv2-dev libxml2-dev gettext-dev "gtk+${GTK}.0-dev" desktop-file-utils
+    - apk add --no-cache build-base exiv2 exiv2-dev libxml2-dev gettext-dev "gtk+${GTK}.0-dev" desktop-file-utils
     # Create a user for running tests
     - adduser -D build
 
