@@ -88,6 +88,7 @@ linux_arm_task:
     # tests as a normal user to get around that problem. The log directory
     # must be world-writable since files will be written there.
     - install -d -m 0777 tests/log
+    - chmod a-w tests/staging/*
     - su build -c 'make check CHECK_OPTIONS=-v'
 
   install_script:
