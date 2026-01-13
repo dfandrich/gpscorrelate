@@ -8,9 +8,10 @@ freebsd_task:
     '.github/**'
     )"
   freebsd_instance:
-    memory: 950M
+    memory: 2100M
     cpu: 1
     matrix:
+      image_family: freebsd-15-0-amd64-zfs
       image_family: freebsd-14-3
       image_family: freebsd-13-5
 
@@ -104,8 +105,8 @@ linux_musl_task:
     memory: 320M
     cpu: 1
     matrix:
-      - image: alpine:3.22
-      - image: alpine:3.19
+      - image: alpine:3.23
+      - image: alpine:3.20
 
   env:
     # Set to 10 instead of 1 to avoid problems when new commits are submitted
