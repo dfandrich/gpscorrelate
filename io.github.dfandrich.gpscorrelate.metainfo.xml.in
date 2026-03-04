@@ -33,6 +33,7 @@
   <url type="help">https://dfandrich.github.io/gpscorrelate/gui.html</url>
   <url type="bugtracker">https://github.com/dfandrich/gpscorrelate/issues</url>
   <url type="translate">https://github.com/dfandrich/gpscorrelate/tree/master/po</url>
+  <url type="vcs-browser">https://github.com/dfandrich/gpscorrelate/</url>
   <update_contact>dan_at_coneharvesters.com</update_contact>
   <launchable type="desktop-id">gpscorrelate.desktop</launchable>
   <kudos>
