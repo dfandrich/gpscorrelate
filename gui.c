@@ -211,11 +211,11 @@ static void FreeAllTracks(void);
 static void GtkGUIUpdate(void);
 
 /* Load settings, insert defaults. */
-void LoadSettings(void)
+static void LoadSettings(void)
 {
 	/* Generate the filename. */
 	const char* UserHomeDir = g_get_user_config_dir();
-	const int FilenameLength = strlen(UserHomeDir) + 30;
+	const size_t FilenameLength = strlen(UserHomeDir) + 30;
 	SettingsFilename = (char*) malloc(sizeof(char) * FilenameLength);
 	if (SettingsFilename == NULL) {
 		fprintf(stderr, _("Out of memory.\n"));
@@ -250,7 +250,7 @@ void LoadSettings(void)
 	GPXOpenDir = g_key_file_get_value(GUISettings, "default", "gpxopendir", NULL);
 }
 
-void SaveSettings(void)
+static void SaveSettings(void)
 {
 	/* Save the settings to file, and deallocate the settings. */
 	FILE* OutputFile;
@@ -1362,7 +1362,7 @@ void SetListItem(GtkTreeIter* Iter, const char* Filename, const char* Time, doub
 
 }
 
-void SetState(GtkTreeIter* Iter, const char* State)
+static void SetState(GtkTreeIter* Iter, const char* State)
 {
 	/* Set the state on the item... just the state. */
 	gtk_list_store_set(PhotoListStore, Iter,
@@ -1645,7 +1645,7 @@ void CorrelateButtonPress( GtkWidget *Widget, gpointer Data )
 		Options.AutoTimeZone;
 	Options.TimeZoneHours = 0;
 	Options.TimeZoneMins = 0;
-	char* TZString = (char*) gtk_entry_get_text(GTK_ENTRY(TimeZoneEntry));
+	const char* TZString = gtk_entry_get_text(GTK_ENTRY(TimeZoneEntry));
 	/* Check the string. If there is a colon, then it's a time in xx:xx format.
 	 * If not, it's probably just a +/-xx format. In all other cases,
 	 * it will be interpreted as +/-xx, which, if given a string, returns 0. */

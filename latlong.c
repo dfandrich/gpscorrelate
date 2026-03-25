@@ -62,7 +62,7 @@ int NumDecimals(const char *Decimal)
 {
 	const char *Dec = strchr(Decimal, '.');
 	if (Dec) {
-		return strspn(Dec+1,"0123456789");
+		return (int)strspn(Dec+1,"0123456789");
 	}
 	return 0;
 }

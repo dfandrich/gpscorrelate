@@ -76,8 +76,8 @@ void SetAutoTimeZoneOptions(const char *Time,
 
 	/* Finally, RealTime is the proper Epoch time of the photo.
 	 * The difference from PhotoTime is the time zone offset. */
-	Options->TimeZoneHours = (PhotoTime.tv_sec - RealTime) / 3600;
-	Options->TimeZoneMins = ((PhotoTime.tv_sec - RealTime) % 3600) / 60;
+	Options->TimeZoneHours = (int)((PhotoTime.tv_sec - RealTime) / 3600);
+	Options->TimeZoneMins = (int)(((PhotoTime.tv_sec - RealTime) % 3600) / 60);
 }
 
 /* Convert a time into Unixtime with the configured time zone conversion. */
@@ -99,8 +99,8 @@ struct timespec ConvertTimeToUnixTime(const char *Time, const char *TimeFormat,
 	 * the GPS time - i.e., it is (GPS - Photo). */
 	double IntPart;
 	double FracPart = modf(Options->PhotoOffset, &IntPart);
-	PhotoTime.tv_sec += (long)IntPart;
-	long NewNs = PhotoTime.tv_nsec + (long)round(FracPart * 1e9);
+	PhotoTime.tv_sec += lround(IntPart);
+	long NewNs = PhotoTime.tv_nsec + lround(FracPart * 1e9);
 	/* Handle over/underflow out of the nanoseconds part which must be
 	 * 0 <= nsec <= 999999999 */
 	if (NewNs < 0) {
@@ -313,23 +313,18 @@ struct GPSPoint* CorrelatePhoto(const char* Filename,
 	{
 		/* Don't write exif tags. Just return. */
 		return Actual;
-	} else {
-		/* Do write the exif tags. And then return. */
-		if (WriteGPSData(Filename, Actual, Options->Datum, Options->NoChangeMtime, Options->DegMinSecs))
-		{
-			/* All ok. Good! Return. */
-			return Actual;
-		} else {
-			/* Not good. Return point, but note failure. */
-			Options->Result = CORR_EXIFWRITEFAIL;
-			return Actual;
-		}
 	}
 
-	/* Looks like nothing matched. Free the prepared memory,
-	 * and return nothing. */
-	free(Actual);
-	return NULL;
+	/* Do write the exif tags. And then return. */
+	if (WriteGPSData(Filename, Actual, Options->Datum, Options->NoChangeMtime, Options->DegMinSecs))
+	{
+		/* All ok. Good! Return. */
+		return Actual;
+	}
+
+	/* Not good. Return point, but note failure. */
+	Options->Result = CORR_EXIFWRITEFAIL;
+	return Actual;
 }
 
 void Round(const struct GPSPoint* First, struct GPSPoint* Result,

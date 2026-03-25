@@ -137,7 +137,7 @@ static char *CsvEscape(const char *str)
 /* Make the string safe for inclusion in an XML comment.
  * Such strings are not allowed to contain the sequence -- so if it's found,
  * the second dash is replaced with a question mark. */
-void XmlCommentSafe(char *SafeFile)
+static void XmlCommentSafe(char *SafeFile)
 {
 	while (1)
 	{
