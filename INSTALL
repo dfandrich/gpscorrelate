@@ -6,9 +6,10 @@ To build, you will need these prerequisites:
   (ver. 0.27.4 or newer is required for time zone tag support)
 * libxml2 (XML parsing): http://www.xmlsoft.org/
 * pkgconfig: https://pkg-config.freedesktop.org/
-* make, such as GNU makes: https://www.gnu.org/software/make/make.html
-* GTK+ 2 or 3 (only if compiling the GUI)s: https://www.gtk.org
-* xsltproc (only for building the man page): http://xmlsoft.org/XSLT/
+* make, such as GNU make: https://www.gnu.org/software/make/make.html
+* GTK+ 2 or 3 (only if compiling the GUI): https://www.gtk.org/
+* xsltproc (only for building the man page):
+  https://gitlab.gnome.org/GNOME/libxslt/-/wikis/home
   with manpages/docbook.xsl properly installed from
   https://docbook.sourceforge.net/ or an OS package (often named something like
   docbook-xsl or docbook-style-xsl)
