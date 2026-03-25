@@ -69,25 +69,25 @@ distclean: clean clean-po
 
 # install CLI and docs
 install-gpscorrelate$(EXEEXT): gpscorrelate$(EXEEXT) docs
-	install -d $(DESTDIR)$(bindir)
-	install -m 0755 gpscorrelate$(EXEEXT) $(DESTDIR)$(bindir)
-	install -d $(DESTDIR)$(mandir)/man1
-	install -m 0644 doc/gpscorrelate.1 $(DESTDIR)$(mandir)/man1
-	install -d $(DESTDIR)$(docdir)
-	install -p -m 0644 doc/*.html doc/*.png README.md $(DESTDIR)$(docdir)
-	install -m 0644 gpscorrelate-gui.svg $(DESTDIR)$(docdir)
-	install -d $(DESTDIR)$(docdir)/fr
-	install -p -m 0644 doc/fr/*.html doc/fr/*.png $(DESTDIR)$(docdir)/fr
+	install -d "$(DESTDIR)$(bindir)"
+	install -m 0755 gpscorrelate$(EXEEXT) "$(DESTDIR)$(bindir)"
+	install -d "$(DESTDIR)$(mandir)/man1"
+	install -m 0644 doc/gpscorrelate.1 "$(DESTDIR)$(mandir)/man1"
+	install -d "$(DESTDIR)$(docdir)"
+	install -p -m 0644 doc/*.html doc/*.png README.md "$(DESTDIR)$(docdir)"
+	install -m 0644 gpscorrelate-gui.svg "$(DESTDIR)$(docdir)"
+	install -d "$(DESTDIR)$(docdir)/fr"
+	install -p -m 0644 doc/fr/*.html doc/fr/*.png "$(DESTDIR)$(docdir)/fr"
 
 # install GUI
 install-gpscorrelate-gui$(EXEEXT): gpscorrelate-gui$(EXEEXT) install-desktop-file
-	install -d $(DESTDIR)$(bindir)
-	install -m 0755 gpscorrelate-gui$(EXEEXT) $(DESTDIR)$(bindir)
+	install -d "$(DESTDIR)$(bindir)"
+	install -m 0755 gpscorrelate-gui$(EXEEXT) "$(DESTDIR)$(bindir)"
 
 install-desktop-file:
 	desktop-file-install --vendor="" --dir="$(DESTDIR)$(applicationsdir)" gpscorrelate.desktop
-	install -d $(DESTDIR)$(datadir)/icons/hicolor/scalable/apps
-	install -p -m 0644 gpscorrelate-gui.svg $(DESTDIR)$(datadir)/icons/hicolor/scalable/apps/gpscorrelate-gui.svg
+	install -d "$(DESTDIR)$(datadir)/icons/hicolor/scalable/apps"
+	install -p -m 0644 gpscorrelate-gui.svg "$(DESTDIR)$(datadir)/icons/hicolor/scalable/apps/gpscorrelate-gui.svg"
 
 install: $(foreach target,$(TARGETS),install-$(target))
 
