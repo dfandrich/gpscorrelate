@@ -27,7 +27,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        osver: [22.04, 24.04]
+        osver: [22.04, 24.04, 26.04]
         build:
           - cc: gcc-10
             gtk: 2
@@ -143,6 +143,9 @@ jobs:
           - osver: 24.04
             build:
               osver: 22.04
+          - osver: 26.04
+            build:
+              osver: 22.04
 
     steps:
       - uses: actions/checkout@v6
@@ -214,6 +217,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       MAKEFLAGS: -j 3
+      # This becomes the default in Homebrew 6 and 5.2
+      HOMEBREW_REQUIRE_TAP_TRUST: 1
     strategy:
       fail-fast: false
       matrix:
