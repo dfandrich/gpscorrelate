@@ -11,13 +11,11 @@ on:
       - master
       - ci
     paths-ignore:
-      - '.cirrus.yml'
       - '.appveyor.yml'
   pull_request:
     branches:
       - master
     paths-ignore:
-      - '.cirrus.yml'
       - '.appveyor.yml'
 
 env:
@@ -360,3 +358,69 @@ jobs:
         run: ./gpscorrelate -V
       - name: 'tests'
         run: su build -c 'make check CHECK_OPTIONS=-v'
+
+  freebsd:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        osver: [13.5, 14.3]
+        arch: ['x86_64', 'aarch64']
+        gtk: [3]
+        build:
+          - cc: cc
+            cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
+            cxx: c++
+            ldflags: -O3 -lintl
+    steps:
+      - uses: actions/checkout@v6
+      - name: build
+        uses: cross-platform-actions/action@v1
+        with:
+          operating_system: 'freebsd'
+          version: ${{ matrix.osver }}
+          architecture: ${{ matrix.arch }}
+          run: |
+            sudo pkg install -y pkgconf docbook-xsl exiv2 libxml2 gtk"${{ matrix.gtk }}" libxslt gettext-tools desktop-file-utils
+            make -j 3 CC="${{ matrix.build.cc }}" CXX="${{ matrix.build.cxx }}" CFLAGS="${{ matrix.build.cflags }}" LDFLAGS="${{ matrix.build.ldflags }}" GTK="${{ matrix.gtk }}"
+            make check CHECK_OPTIONS=-v
+            make prefix= DESTDIR="${HOME}" install install-po install-desktop-file
+
+  build-alpine:
+    runs-on: ubuntu-latest
+    container: alpine:${{ matrix.osver }}
+    strategy:
+      fail-fast: false
+      matrix:
+        osver: ['3.20', '3.23']
+        gtk: [2, 3]
+        build:
+          - install: gcc g++ make diffutils desktop-file-utils docbook-style-xsl exiv2 exiv2-devel gtk3-devel xsltproc gettext-devel
+            cc: gcc
+            cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
+            ldflags: -O3 -lm -lintl
+            cxx: g++
+            target: all
+            install_target: install install-po install-desktop-file
+
+    steps:
+      - uses: actions/checkout@v6
+      - name: install deps
+        run: |
+          apk add --no-cache build-base exiv2 exiv2-dev libxml2-dev gettext-dev "gtk+${{ matrix.gtk }}.0-dev" desktop-file-utils
+      - name: build
+        run: make CFLAGS="${{ matrix.build.cflags }}" LDFLAGS="${{ matrix.build.ldflags }}" CC="${{ matrix.build.cc }}" CXX="${{ matrix.build.cxx }}" GTK="${{ matrix.gtk }}" ${{ matrix.build.make_opts }} ${{ matrix.build.target }}
+      - name: smoke test
+        run: ./gpscorrelate -V
+      - name: test
+        run: |
+          # Create a user for running tests
+          adduser -D build
+          # The tests involving writing to read-only files fail when run as root
+          # (because the OS allows the files to be overwritten then). Run the
+          # tests as a normal user to get around that problem. The log directory
+          # must be world-writable since files will be written there.
+          install -d -m 0777 tests/log
+          su build -c 'make check CHECK_OPTIONS=-v'
+      - name: install test
+        run: make prefix= DESTDIR="${PWD}" ${{ matrix.build.install_target }}
