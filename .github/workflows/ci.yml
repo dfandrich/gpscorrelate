@@ -361,10 +361,13 @@ jobs:
 
   freebsd:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: cpa.sh {0}
     strategy:
       fail-fast: false
       matrix:
-        osver: [13.5, 14.3]
+        osver: ['13.5', '14.3', '15.0']
         arch: ['x86_64', 'aarch64']
         gtk: [3]
         build:
@@ -374,17 +377,22 @@ jobs:
             ldflags: -O3 -lintl
     steps:
       - uses: actions/checkout@v6
-      - name: build
+      - name: start VM
         uses: cross-platform-actions/action@v1
         with:
           operating_system: 'freebsd'
           version: ${{ matrix.osver }}
           architecture: ${{ matrix.arch }}
-          run: |
-            sudo pkg install -y pkgconf docbook-xsl exiv2 libxml2 gtk"${{ matrix.gtk }}" libxslt gettext-tools desktop-file-utils
-            make -j 3 CC="${{ matrix.build.cc }}" CXX="${{ matrix.build.cxx }}" CFLAGS="${{ matrix.build.cflags }}" LDFLAGS="${{ matrix.build.ldflags }}" GTK="${{ matrix.gtk }}"
-            make check CHECK_OPTIONS=-v
-            make prefix= DESTDIR="${HOME}" install install-po install-desktop-file
+      - name: install deps
+        run: sudo pkg install -y pkgconf docbook-xsl exiv2 libxml2 gtk"${{ matrix.gtk }}" libxslt gettext-tools desktop-file-utils
+      - name: build
+        run: make -j 3 CC="${{ matrix.build.cc }}" CXX="${{ matrix.build.cxx }}" CFLAGS="${{ matrix.build.cflags }}" LDFLAGS="${{ matrix.build.ldflags }}" GTK="${{ matrix.gtk }}"
+      - name: smoke test
+        run: ./gpscorrelate -V
+      - name: test
+        run: make check CHECK_OPTIONS=-v
+      - name: install test
+        run: make prefix= DESTDIR="${HOME}" install install-po install-desktop-file
 
   build-alpine:
     runs-on: ubuntu-latest
