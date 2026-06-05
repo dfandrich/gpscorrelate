@@ -16,4 +16,4 @@ update:
 	tidy -m -q -ascii --doctype loose gpscorrelate.html || test $$? -eq 1
 
 check: *.html fr/*.html
-	tidy -q -e -utf8 $^
+	tidy -q -e -utf8 $^ || test $$? -eq 1
