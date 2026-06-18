@@ -24,6 +24,7 @@ env:
 jobs:
   build-ubuntu:
     runs-on: ubuntu-${{ matrix.osver }}
+    timeout-minutes: 10
     strategy:
       fail-fast: false
       matrix:
@@ -185,6 +186,7 @@ jobs:
 
   coverage:
     runs-on: ubuntu-24.04
+    timeout-minutes: 10
     strategy:
       matrix:
         build:
@@ -215,6 +217,7 @@ jobs:
 
   build-osx:
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
     env:
       MAKEFLAGS: -j 3
       # This becomes the default in Homebrew 6 and 5.2
@@ -284,6 +287,7 @@ jobs:
   build-fedora:
     runs-on: ubuntu-latest
     container: fedora:${{ matrix.osver }}
+    timeout-minutes: 10
     strategy:
       fail-fast: false
       matrix:
@@ -321,6 +325,7 @@ jobs:
 
   build-debian:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     strategy:
       fail-fast: false
       matrix:
@@ -366,6 +371,7 @@ jobs:
 
   freebsd:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     defaults:
       run:
         shell: cpa.sh {0}
@@ -402,6 +408,7 @@ jobs:
   build-alpine:
     runs-on: ubuntu-latest
     container: alpine:${{ matrix.osver }}
+    timeout-minutes: 10
     strategy:
       fail-fast: false
       matrix:
