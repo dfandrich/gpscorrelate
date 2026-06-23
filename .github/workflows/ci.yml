@@ -185,7 +185,7 @@ jobs:
         run: make prefix= DESTDIR="${PWD}" ${{ matrix.build.install_target }}
 
   coverage:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 10
     strategy:
       matrix:
@@ -225,7 +225,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-14, macos-15]
+        os: [macos-14, macos-15, macos-26]
         build:
           - cc: gcc
             gtk: 2
@@ -378,7 +378,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        osver: ['13.5', '14.3', '15.0']
+        osver: ['13.5', '14.3', '15.1']
         arch: ['x86_64', 'aarch64']
         gtk: [3]
         build:
@@ -412,7 +412,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        osver: ['3.20', '3.23']
+        osver: ['3.20', '3.24']
         gtk: [2, 3]
         build:
           - install: gcc g++ make diffutils desktop-file-utils docbook-style-xsl exiv2 exiv2-devel gtk3-devel xsltproc gettext-devel
