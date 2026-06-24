@@ -207,9 +207,9 @@ jobs:
       - name: 'smoke test'
         run: ./gpscorrelate -V
       - name: 'test'
-        run: make check CHECK_OPTIONS=-v ASAN_OPTIONS="${{ matrix.build.asan_options }}"
+        run: make check CHECK_OPTIONS=-v
       - name: coverage analysis
-        run: mkdir coverage && lcov -c -d . -o coverage/lcov.info
+        run: mkdir coverage && lcov -c -d . -o coverage/lcov.info --exclude "/usr/include/*"
       - name: push to Coveralls
         uses: coverallsapp/github-action@v2
         with:
