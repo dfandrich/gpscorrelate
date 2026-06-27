@@ -2,9 +2,9 @@ name: "CodeQL"
 
 on:
   push:
-    branches: [ "master", "ci" ]
+    branches: ["master", "ci"]
   pull_request:
-    branches: [ "master" ]
+    branches: ["master"]
   schedule:
     # monthly analysis
     - cron: "47 0 15 * *"
@@ -24,11 +24,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ cpp ]
+        language: [cpp]
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4

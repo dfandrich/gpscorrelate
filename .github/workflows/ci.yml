@@ -149,7 +149,9 @@ jobs:
               osver: 22.04
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - name: 'install deps'
         run: sudo apt-get update -y; sudo apt-get install -y --no-install-suggests --no-install-recommends ${{ matrix.build.install }}
       - name: 'build'
@@ -199,7 +201,9 @@ jobs:
             target: gpscorrelate
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - name: 'install deps'
         run: sudo apt-get update -y; sudo apt-get install -y --no-install-suggests --no-install-recommends ${{ matrix.build.install }}
       - name: 'build'
@@ -265,7 +269,9 @@ jobs:
             install_target: install install-po install-desktop-file
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - name: install deps
         run: brew install ${{ matrix.build.install }}
       - name: build
@@ -302,7 +308,9 @@ jobs:
             install_target: install install-po install-desktop-file
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - name: install deps
         run: |
           dnf install -y --setopt=install_weak_deps=False ${{ matrix.build.install }}
@@ -351,7 +359,9 @@ jobs:
             container: debian:testing
     container: ${{ matrix.build.container }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - name: 'install deps'
         env:
           DEBIAN_FRONTEND: noninteractive
@@ -387,7 +397,9 @@ jobs:
             cxx: c++
             ldflags: -O3 -lintl
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - name: start VM
         uses: cross-platform-actions/action@v1
         with:
@@ -424,7 +436,9 @@ jobs:
             install_target: install install-po install-desktop-file
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - name: install deps
         run: |
           apk add --no-cache build-base exiv2 exiv2-dev libxml2-dev gettext-dev "gtk+${{ matrix.gtk }}.0-dev" desktop-file-utils
