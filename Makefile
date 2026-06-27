@@ -39,6 +39,7 @@ localedir = $(datadir)/locale
 DEFS = -DPACKAGE_VERSION=\"$(PACKAGE_VERSION)\" -DPACKAGE_LOCALE_DIR=\"$(localedir)\" -DPACKAGE_DOC_DIR=\"$(docdir)\"
 
 TARGETS = gpscorrelate$(EXEEXT) gpscorrelate-gui$(EXEEXT)
+INSTALLTARGETS = install-gpscorrelate install-gpscorrelate-gui
 DOCTARGETS = doc/gpscorrelate.1 doc/gpscorrelate.html
 
 all: $(TARGETS) docs
@@ -89,7 +90,7 @@ install-desktop-file:
 	install -d "$(DESTDIR)$(datadir)/icons/hicolor/scalable/apps"
 	install -p -m 0644 gpscorrelate-gui.svg "$(DESTDIR)$(datadir)/icons/hicolor/scalable/apps/gpscorrelate-gui.svg"
 
-install: $(foreach target,$(TARGETS),install-$(target))
+install: $(INSTALLTARGETS)
 
 docs: $(DOCTARGETS)
 

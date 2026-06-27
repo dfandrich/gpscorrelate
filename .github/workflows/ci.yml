@@ -415,7 +415,9 @@ jobs:
       - name: test
         run: make check CHECK_OPTIONS=-v
       - name: install test
-        run: make prefix= DESTDIR="${HOME}" install install-po install-desktop-file
+        run: |
+          make prefix= DESTDIR="${HOME}" install install-desktop-file
+          gmake prefix= DESTDIR="${HOME}" install-po
 
   build-alpine:
     runs-on: ubuntu-latest
