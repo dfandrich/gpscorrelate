@@ -184,7 +184,9 @@ jobs:
             make check CHECK_OPTIONS="-v ${{ matrix.build.check_options }}" | tee /dev/stderr | grep -Fq "${{ matrix.build.failing_tests }} test(s) have FAILED"
           fi
       - name: 'install test'
-        run: make prefix= DESTDIR="${PWD}" ${{ matrix.build.install_target }}
+        run: |
+          make prefix= DESTDIR="${PWD}" ${{ matrix.build.install_target }}
+          ls -l bin/gpscorrelate
 
   coverage:
     runs-on: ubuntu-26.04
@@ -288,7 +290,9 @@ jobs:
             make check CHECK_OPTIONS=-v | tee /dev/stderr | grep -q '${{ matrix.build.failing_tests }} test(s) have FAILED'
           fi
       - name: install test
-        run: make prefix= DESTDIR="${PWD}" -j 1 ${{ matrix.build.install_target }}
+        run: |
+          make prefix= DESTDIR="${PWD}" -j 1 ${{ matrix.build.install_target }}
+          ls -l bin/gpscorrelate share/locale/de/LC_MESSAGES/gpscorrelate.mo share/applications/gpscorrelate.desktop
 
   build-fedora:
     runs-on: ubuntu-latest
@@ -329,7 +333,9 @@ jobs:
             sudo -u nobody make check CHECK_OPTIONS=-v | tee /dev/stderr | grep -q '${{ matrix.build.failing_tests }} test(s) have FAILED'
           fi
       - name: install test
-        run: make prefix= DESTDIR="${PWD}" ${{ matrix.build.install_target }}
+        run: |
+          make prefix=/opt/g DESTDIR="${PWD}" ${{ matrix.build.install_target }}
+          ls -l opt/g/bin/gpscorrelate opt/g/share/locale/de/LC_MESSAGES/gpscorrelate.mo opt/g/share/applications/gpscorrelate.desktop
 
   build-debian:
     runs-on: ubuntu-latest
@@ -407,7 +413,7 @@ jobs:
           version: ${{ matrix.osver }}
           architecture: ${{ matrix.arch }}
       - name: install deps
-        run: sudo pkg install -y pkgconf docbook-xsl exiv2 libxml2 gtk"${{ matrix.gtk }}" libxslt gettext-tools desktop-file-utils
+        run: sudo pkg install -y pkgconf docbook-xsl exiv2 libxml2 gtk"${{ matrix.gtk }}" libxslt gettext-tools desktop-file-utils gmake
       - name: build
         run: make -j 3 CC="${{ matrix.build.cc }}" CXX="${{ matrix.build.cxx }}" CFLAGS="${{ matrix.build.cflags }}" LDFLAGS="${{ matrix.build.ldflags }}" GTK="${{ matrix.gtk }}"
       - name: smoke test
@@ -415,7 +421,10 @@ jobs:
       - name: test
         run: make check CHECK_OPTIONS=-v
       - name: install test
-        run: make prefix= DESTDIR="${HOME}" install install-po install-desktop-file
+        run: |
+          make prefix= DESTDIR="${PWD}" install install-desktop-file
+          gmake prefix= DESTDIR="${PWD}" install-po
+          ls -l bin/gpscorrelate share/locale/de/LC_MESSAGES/gpscorrelate.mo share/applications/gpscorrelate.desktop
 
   build-alpine:
     runs-on: ubuntu-latest
@@ -457,4 +466,6 @@ jobs:
           install -d -m 0777 tests/log
           su build -c 'make check CHECK_OPTIONS=-v'
       - name: install test
-        run: make prefix= DESTDIR="${PWD}" ${{ matrix.build.install_target }}
+        run: |
+          make prefix= DESTDIR="${PWD}" ${{ matrix.build.install_target }}
+          ls -l bin/gpscorrelate share/locale/de/LC_MESSAGES/gpscorrelate.mo share/applications/gpscorrelate.desktop
