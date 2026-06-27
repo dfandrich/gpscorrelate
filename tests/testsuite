@@ -50,12 +50,12 @@ fi
 if [ -n "$1" ] ; then
 	TESTLIST="$*"
 else
-	TESTLIST="$DATADIR"/*.param
+	TESTLIST="$DATADIR/*.param"
 fi
 
 POSTCOMMAND=
 # Clean up on test abort
-trap 'eval $POSTCOMMAND; exit 1' INT HUP TERM
+trap 'eval "$POSTCOMMAND"; exit 1' INT HUP TERM
 
 FAILEDTESTS=0
 
@@ -86,7 +86,7 @@ for TEST in $TESTLIST ; do
   # Load the test parameters, which can override the above
   if [ ! -e "$TEST" ] ; then
 	echo "Test $TESTNAME FAILED: invalid test parameter file $TEST"
-	FAILEDTESTS=$(($FAILEDTESTS + 1))
+	FAILEDTESTS=$((FAILEDTESTS + 1))
 	continue
   fi
   . "$TEST"
@@ -101,23 +101,23 @@ for TEST in $TESTLIST ; do
   rm -f "$OUTFILE" "$ERRFILE"
 
   # Run a pre-test command
-  if ! eval $PRECOMMAND ; then
+  if ! eval "$PRECOMMAND" ; then
 	echo "Test $TESTNAME FAILED: pre test command failure"
-	FAILEDTESTS=$(($FAILEDTESTS + 1))
+	FAILEDTESTS=$((FAILEDTESTS + 1))
 	# Unconditionally run post command to clean up
-	eval $POSTCOMMAND
+	eval "$POSTCOMMAND"
 	POSTCOMMAND=
 	continue
   fi
 
   #eval echo `echo "$COMMAND" | sed -e 's/>/\\\\>/g' -e "s/'/\\\\'/g" -e 's/\"/\\\\"/g'`
-  eval $VERBOSECOMMAND $COMMAND
+  eval "$VERBOSECOMMAND $COMMAND"
   EXITCODE=$?
   set +x
   if [ $EXITCODE -ne "$RESULTCODE" ] ; then
 	echo "Test $TESTNAME FAILED: got exit $EXITCODE, expected $RESULTCODE"
 	# Don't abort now--run the post-test command to clean up first
-	FAILEDTESTS=$(($FAILEDTESTS + 1))
+	FAILEDTESTS=$((FAILEDTESTS + 1))
 	if [ -n "$VERBOSECOMMAND" ] ; then
 	        test -e "$ERRFILE" && cat "$ERRFILE"
 	        test -e "$OUTFILE" && echo "Command output was:" && cat "$OUTFILE"
@@ -125,10 +125,10 @@ for TEST in $TESTLIST ; do
   fi
 
   # Run a post-test command
-  if ! eval $POSTCOMMAND ; then
+  if ! eval "$POSTCOMMAND" ; then
 	POSTCOMMAND=
 	echo "Test $TESTNAME FAILED: post test command failure"
-	FAILEDTESTS=$(($FAILEDTESTS + 1))
+	FAILEDTESTS=$((FAILEDTESTS + 1))
 	continue
   fi
   POSTCOMMAND=
@@ -157,7 +157,7 @@ for TEST in $TESTLIST ; do
   if ! cmp "$RESULTFILE" "$OUTFILE" >/dev/null ; then
 	echo "Test $TESTNAME FAILED: unexpected output"
 	test -n "$VERBOSECOMMAND" && diff -u "$RESULTFILE" "$OUTFILE"
-	FAILEDTESTS=$(($FAILEDTESTS + 1))
+	FAILEDTESTS=$((FAILEDTESTS + 1))
 	continue
   fi
 
