@@ -186,7 +186,7 @@ jobs:
       - name: 'install test'
         run: |
           make prefix= DESTDIR="${PWD}" ${{ matrix.build.install_target }}
-          ls -l usr/local/bin/gpscorrelate
+          ls -l bin/gpscorrelate
 
   coverage:
     runs-on: ubuntu-26.04
@@ -292,7 +292,7 @@ jobs:
       - name: install test
         run: |
           make prefix= DESTDIR="${PWD}" -j 1 ${{ matrix.build.install_target }}
-          ls -l usr/local/bin/gpscorrelate usr/local/share/locale/de/LC_MESSAGES/gpscorrelate.mo usr/local/share/applications/gpscorrelate.desktop
+          ls -l bin/gpscorrelate share/locale/de/LC_MESSAGES/gpscorrelate.mo share/applications/gpscorrelate.desktop
 
   build-fedora:
     runs-on: ubuntu-latest
@@ -335,7 +335,7 @@ jobs:
       - name: install test
         run: |
           make prefix= DESTDIR="${PWD}" ${{ matrix.build.install_target }}
-          ls -l usr/local/bin/gpscorrelate usr/local/share/locale/de/LC_MESSAGES/gpscorrelate.mo usr/local/share/applications/gpscorrelate.desktop
+          ls -l bin/gpscorrelate share/locale/de/LC_MESSAGES/gpscorrelate.mo share/applications/gpscorrelate.desktop
 
   build-debian:
     runs-on: ubuntu-latest
@@ -424,7 +424,7 @@ jobs:
         run: |
           make prefix= DESTDIR="${HOME}" install install-desktop-file
           gmake prefix= DESTDIR="${HOME}" install-po
-          ls -l usr/local/bin/gpscorrelate usr/local/share/locale/de/LC_MESSAGES/gpscorrelate.mo usr/local/share/applications/gpscorrelate.desktop
+          ls -l bin/gpscorrelate share/locale/de/LC_MESSAGES/gpscorrelate.mo share/applications/gpscorrelate.desktop
 
   build-alpine:
     runs-on: ubuntu-latest
@@ -468,4 +468,4 @@ jobs:
       - name: install test
         run: |
           make prefix= DESTDIR="${PWD}" ${{ matrix.build.install_target }}
-          ls -l usr/local/bin/gpscorrelate usr/local/share/locale/de/LC_MESSAGES/gpscorrelate.mo usr/local/share/applications/gpscorrelate.desktop
+          ls -l bin/gpscorrelate share/locale/de/LC_MESSAGES/gpscorrelate.mo share/applications/gpscorrelate.desktop
