@@ -1,0 +1,6 @@
+TITLE='Correlate a file with invalid OffsetTime tag'
+PRECOMMAND='cat "$STAGINGDIR/badoffsettime.jpg" >"$LOGDIR/test.jpg"'
+COMMAND='env TZ=UTC $PROGRAM -v -g "$STAGINGDIR/track10.gpx" "$LOGDIR/test.jpg" > "$OUTFILE" 2>&1 && exiv2 -pv pr "$LOGDIR/test.jpg" >> "$OUTFILE" 2>&1'
+POSTCOMMAND='rm -f "$LOGDIR/test.jpg"'
+RESULTCODE=2
+SEDCOMMAND='s@^([a-zA-Z]:)?/.*/|.*Copyright.*$@@' # strip path and copyright line
