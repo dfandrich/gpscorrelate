@@ -422,8 +422,8 @@ jobs:
         run: make check CHECK_OPTIONS=-v
       - name: install test
         run: |
-          make prefix= DESTDIR="${HOME}" install install-desktop-file
-          gmake prefix= DESTDIR="${HOME}" install-po
+          make prefix= DESTDIR="${PWD}" install install-desktop-file
+          gmake prefix= DESTDIR="${PWD}" install-po
           ls -l bin/gpscorrelate share/locale/de/LC_MESSAGES/gpscorrelate.mo share/applications/gpscorrelate.desktop
 
   build-alpine:
