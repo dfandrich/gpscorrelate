@@ -436,7 +436,7 @@ jobs:
         osver: ['3.20', '3.24']
         gtk: [2, 3]
         build:
-          - install: gcc g++ make diffutils desktop-file-utils docbook-style-xsl exiv2 exiv2-devel gtk3-devel xsltproc gettext-devel
+          - install: exiv2 exiv2-dev libxml2-dev gettext-dev desktop-file-utils
             cc: gcc
             cflags: -Wall -Wextra -Werror -Wno-error=deprecated-declarations -O3 -DENABLE_NLS=1
             ldflags: -O3 -lm -lintl
@@ -450,7 +450,7 @@ jobs:
           persist-credentials: false
       - name: install deps
         run: |
-          apk add --no-cache build-base exiv2 exiv2-dev libxml2-dev gettext-dev "gtk+${{ matrix.gtk }}.0-dev" desktop-file-utils
+          apk add --no-cache build-base ${{ matrix.build.install }} "gtk+${{ matrix.gtk }}.0-dev"
       - name: build
         run: make CFLAGS="${{ matrix.build.cflags }}" LDFLAGS="${{ matrix.build.ldflags }}" CC="${{ matrix.build.cc }}" CXX="${{ matrix.build.cxx }}" GTK="${{ matrix.gtk }}" ${{ matrix.build.make_opts }} ${{ matrix.build.target }}
       - name: smoke test
