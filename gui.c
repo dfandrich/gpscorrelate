@@ -50,6 +50,7 @@
 /* Declare all our widgets. Global to this module. */
 GtkWidget *MatchWindow;
 GtkWidget *WindowHBox;
+GtkWidget *ScrolledWindow;
 GtkWidget *ControlsVBox;
 
 GtkWidget *AddPhotosFrame;
@@ -317,6 +318,31 @@ static gboolean bounds_clamp_180(GtkWidget *widget, GdkEventFocus *event)
   return FALSE;
 }
 
+/* Dynamically calculate the default window size to fit the screen */
+static void MatchWindowRealize(GtkWidget *widget, gpointer control)
+{
+#if GTK_CHECK_VERSION(3, 22, 0)
+  GtkRequisition req;
+  gtk_widget_get_preferred_size((GtkWidget*) control, NULL, &req);
+
+  GdkDisplay *display = gtk_widget_get_display(widget);
+  GdkWindow *window = gtk_widget_get_window(widget);
+  GdkMonitor *monitor = gdk_display_get_monitor_at_window(display, window);
+
+  GdkRectangle workarea;
+  gdk_monitor_get_workarea(monitor, &workarea);
+
+  int window_width = MIN(1050, workarea.width);
+  int window_height = MIN(req.height, workarea.height);
+  gtk_window_set_default_size (GTK_WINDOW (widget), window_width, window_height);
+
+#else
+  GtkRequisition req;
+  gtk_widget_size_request((GtkWidget*) control, &req);
+  gtk_window_set_default_size (GTK_WINDOW (widget), 1050, MIN(946, req.height));
+#endif
+}
+
 GtkWidget* CreateMatchWindow (void)
 {
   GError *error = NULL;
@@ -334,7 +360,6 @@ GtkWidget* CreateMatchWindow (void)
   char title[80];
   snprintf(title, sizeof(title), _("GPS Photo Correlate %s"), PACKAGE_VERSION);
   gtk_window_set_title (GTK_WINDOW (MatchWindow), title);
-  gtk_window_set_default_size (GTK_WINDOW (MatchWindow), 1050, -1);
 
   g_signal_connect (G_OBJECT (MatchWindow), "delete_event",
   		G_CALLBACK (DestroyWindow), NULL);
@@ -343,10 +368,16 @@ GtkWidget* CreateMatchWindow (void)
   gtk_widget_show (WindowHBox);
   gtk_container_add (GTK_CONTAINER (MatchWindow), WindowHBox);
 
+  ScrolledWindow = gtk_scrolled_window_new (NULL, NULL);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (ScrolledWindow), GTK_POLICY_NEVER,
+                                  GTK_POLICY_AUTOMATIC);
+  gtk_widget_show (ScrolledWindow);
+  gtk_box_pack_start (GTK_BOX (WindowHBox), ScrolledWindow, FALSE, TRUE, 0);
+
   /* The controls side of the window. */
   ControlsVBox = gtk_vbox_new (FALSE, 0);
   gtk_widget_show (ControlsVBox);
-  gtk_box_pack_start (GTK_BOX (WindowHBox), ControlsVBox, FALSE, TRUE, 0);
+  gtk_container_add (GTK_CONTAINER (ScrolledWindow), ControlsVBox);
 
   /* Add/remove photos area. */
   AddPhotosFrame = gtk_frame_new (NULL);
@@ -975,6 +1006,9 @@ GtkWidget* CreateMatchWindow (void)
   /* Get the track list store ready. */
   NumTracks = 0;
   FreeAllTracks();
+
+  /* Calculate window size to fit into the screen. */
+  g_signal_connect(MatchWindow, "realize", G_CALLBACK(MatchWindowRealize), ControlsVBox);
 
   /* Final thing: show the window. */
   gtk_widget_show(MatchWindow);
