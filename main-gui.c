@@ -47,6 +47,9 @@ int main(int argc, char* argv[])
 	 * (We ignore passed parameters) */
 	gtk_init(&argc, &argv);
 
+	g_set_prgname ("gpscorrelate");
+	gtk_window_set_default_icon_name ("gpscorrelate-gui");
+
 	/* Create and show the window. */
 	CreateMatchWindow();
 
