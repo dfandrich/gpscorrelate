@@ -133,7 +133,7 @@ msgid "Don't change file modification time of the photos."
 msgstr "Не обновлять время изменения файлов."
 
 #: gui.c:464
-msgid "Between Segments"
+msgid "Between segments"
 msgstr "Между сегментами"
 
 #: gui.c:469 gui.c:474
@@ -212,15 +212,15 @@ msgid "Camera direction:"
 msgstr ""
 
 #: gui.c:585
-msgid "Time Zone:"
+msgid "Time zone:"
 msgstr "Часовой пояс:"
 
 #: gui.c:593
-msgid "Photo Offset:"
+msgid "Photo offset:"
 msgstr "Смещение фотографии:"
 
 #: gui.c:601
-msgid "GPS Datum:"
+msgid "GPS datum:"
 msgstr "GPS датум:"
 
 #: gui.c:617 gui.c:623
@@ -278,7 +278,7 @@ msgstr ""
 "датум источника. WGS-84 очень широко используется."
 
 #: gui.c:757
-msgid "<b>3. Set options</b>"
+msgid "<b>3. Set Options</b>"
 msgstr "<b>3. Установить параметры</b>"
 
 #: gui.c:772
@@ -429,7 +429,7 @@ msgid "No GPS data loaded! Please select a GPX file to read GPS data from."
 msgstr "GPS данные не загружены! Выберите GPX файл."
 
 #: gui.c:1696
-msgid "Internal error"
+msgid "Internal Error"
 msgstr "Внутренняя ошибка"
 
 #: gui.c:1712
@@ -461,11 +461,11 @@ msgid "No Match"
 msgstr "Нет совпадений"
 
 #: gui.c:1774
-msgid "Too far"
+msgid "Too Far"
 msgstr "Слишком далеко"
 
 #: gui.c:1778
-msgid "No data"
+msgid "No Data"
 msgstr "Нет данных"
 
 #: gui.c:1831

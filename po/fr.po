@@ -136,7 +136,7 @@ msgid "Don't change file modification time of the photos."
 msgstr "Ne pas changer la date de modification des fichiers photo."
 
 #: gui.c:464
-msgid "Between Segments"
+msgid "Between segments"
 msgstr "Entre les segments"
 
 #: gui.c:469 gui.c:474
@@ -225,15 +225,15 @@ msgid "Camera direction:"
 msgstr "Direction de l'appareil photo :"
 
 #: gui.c:585
-msgid "Time Zone:"
+msgid "Time zone:"
 msgstr "Fuseau horaire :"
 
 #: gui.c:593
-msgid "Photo Offset:"
+msgid "Photo offset:"
 msgstr "Décalage des photos :"
 
 #: gui.c:601
-msgid "GPS Datum:"
+msgid "GPS datum:"
 msgstr "Datum GPS :"
 
 #: gui.c:617 gui.c:623
@@ -295,7 +295,7 @@ msgstr ""
 "les tags EXIF en tant que datum source. WSG-84 est communément utilisé."
 
 #: gui.c:757
-msgid "<b>3. Set options</b>"
+msgid "<b>3. Set Options</b>"
 msgstr "<b>3. Options</b>"
 
 #: gui.c:772
@@ -449,7 +449,7 @@ msgstr ""
 "GPS."
 
 #: gui.c:1696
-msgid "Internal error"
+msgid "Internal Error"
 msgstr "Erreur interne"
 
 #: gui.c:1712
@@ -481,11 +481,11 @@ msgid "No Match"
 msgstr "Aucune correspondance"
 
 #: gui.c:1774
-msgid "Too far"
+msgid "Too Far"
 msgstr "Trop loin"
 
 #: gui.c:1778
-msgid "No data"
+msgid "No Data"
 msgstr "Aucune données"
 
 #: gui.c:1831

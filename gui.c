@@ -467,7 +467,7 @@ GtkWidget* CreateMatchWindow (void)
 #endif
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (NoMtimeCheck), g_key_file_get_boolean(GUISettings, "default", "nochangemtime", NULL));
 
-  BetweenSegmentsCheck = gtk_check_button_new_with_mnemonic (_("Between Segments"));
+  BetweenSegmentsCheck = gtk_check_button_new_with_mnemonic (_("Between segments"));
   gtk_widget_show (BetweenSegmentsCheck);
   gtk_box_pack_start (GTK_BOX (OptionsVBox), BetweenSegmentsCheck, FALSE, FALSE, 0);
 #if GTK_CHECK_VERSION(2, 12, 0)
@@ -588,7 +588,7 @@ GtkWidget* CreateMatchWindow (void)
   gtk_misc_set_alignment (GTK_MISC (CameraDirectionLabel), 0, 0.5);
   ++row;
 
-  TimeZoneLabel = gtk_label_new (_("Time Zone:"));
+  TimeZoneLabel = gtk_label_new (_("Time zone:"));
   gtk_widget_show (TimeZoneLabel);
   gtk_table_attach (GTK_TABLE (OptionsTable), TimeZoneLabel, 0, 1, row, row+1,
                     (GtkAttachOptions) (GTK_FILL),
@@ -596,7 +596,7 @@ GtkWidget* CreateMatchWindow (void)
   gtk_misc_set_alignment (GTK_MISC (TimeZoneLabel), 0, 0.5);
   ++row;
 
-  PhotoOffsetLabel = gtk_label_new (_("Photo Offset:"));
+  PhotoOffsetLabel = gtk_label_new (_("Photo offset:"));
   gtk_widget_show (PhotoOffsetLabel);
   gtk_table_attach (GTK_TABLE (OptionsTable), PhotoOffsetLabel, 0, 1, row, row+1,
                     (GtkAttachOptions) (GTK_FILL),
@@ -604,7 +604,7 @@ GtkWidget* CreateMatchWindow (void)
   gtk_misc_set_alignment (GTK_MISC (PhotoOffsetLabel), 0, 0.5);
   ++row;
 
-  GPSDatumLabel = gtk_label_new (_("GPS Datum:"));
+  GPSDatumLabel = gtk_label_new (_("GPS datum:"));
   gtk_widget_show (GPSDatumLabel);
   gtk_table_attach (GTK_TABLE (OptionsTable), GPSDatumLabel, 0, 1, row, row+1,
                     (GtkAttachOptions) (GTK_FILL),
@@ -760,7 +760,7 @@ GtkWidget* CreateMatchWindow (void)
   gtk_entry_set_width_chars (GTK_ENTRY (GPSDatumEntry), 7);
   ++row;
 
-  OptionsFrameLable = gtk_label_new (_("<b>3. Set options</b>"));
+  OptionsFrameLable = gtk_label_new (_("<b>3. Set Options</b>"));
   gtk_widget_show (OptionsFrameLable);
   gtk_frame_set_label_widget (GTK_FRAME (OptionsFrame), OptionsFrameLable);
   gtk_label_set_use_markup (GTK_LABEL (OptionsFrameLable), TRUE);
@@ -1713,7 +1713,7 @@ void CorrelateButtonPress( GtkWidget *Widget, gpointer Data )
 	}
 
 	/* Walk through the list, correlating, and updating the screen. */
-	const char* State = _("Internal error");
+	const char* State = _("Internal Error");
 	for (GList *Walk = g_list_first(Selected); Walk; Walk = g_list_next(Walk))
 	{
 		const GdkColor* Color = &BadColor;
@@ -1797,12 +1797,12 @@ void CorrelateButtonPress( GtkWidget *Widget, gpointer Data )
 					break;
 				case CORR_TOOFAR:
 					/* Too far from any point. */
-					State = _("Too far");
+					State = _("Too Far");
 					Color = &BadColor;
 					break;
 				case CORR_NOEXIFINPUT:
 					/* No exif data input. */
-					State = _("No data");
+					State = _("No Data");
 					Color = &BadColor;
 					break;
 			}

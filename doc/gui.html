@@ -27,7 +27,7 @@
 
 <p>Clicking the "Choose..." button will bring up a dialog asking the GPX file to read GPS data from. Once you have selected the file or files, it will be loaded into memory. While the loading is proceeding, you will see a dialog asking you to wait while the data is loaded. Once loaded, the name of the file that the data is coming from will be shown above the button. GPX files can also be added with drag-and-drop from the desktop onto the photo list window. Each time a GPX file is chosen, any files previously loaded are forgotten. To select more than one file, they must all be chosen at the same time from the same file dialog or dropped onto the window in a single batch.</p>
 
-<h3>Step 3: Set options</h3>
+<h3>Step 3: Set Options</h3>
 
 <p>The <b>"Interpolate"</b> checkbox defines whether or not to interpolate between GPS points. By default, this is checked. Clearing this box makes the algorithm round points.</p>
 
@@ -37,7 +37,7 @@
 
 <p>The <b>"Don't change mtime"</b> checkbox, if checked, will prevent changes to the JPEG files from updating the files mtime.</p>
 
-<p>The <b>"Between Segments"</b> checkbox, if checked, will ignore track segments, and match photos between track segments. Usually a track segment differentiates between multiple GPS data logging sessions, so interpolating between track segments could well be interpolating when there was no GPS data.</p>
+<p>The <b>"Between segments"</b> checkbox, if checked, will ignore track segments, and match photos between track segments. Usually a track segment differentiates between multiple GPS data logging sessions, so interpolating between track segments could well be interpolating when there was no GPS data.</p>
 
 <p>The <b>"Write DD MM SS.SS"</b> checkbox, if un-checked, will force the pre 1.5.3 behaviour of writing Longitude and Latitude as DD MM.MM values. The default is now to write values in DD MM SS.SS.</p>
 
@@ -55,11 +55,11 @@
 
 <p>The <b>"Camera direction"</b> box specifies the offset between the direction of movement and the direction the camera is facing. If the camera is pointing out the right-hand window of a car, this would be 90. In degrees.</p>
 
-<p>The <b>"Time Zone"</b> box specifies the time zone that the photos were taken in so that the times of the photos can be adjusted to match the GPS data. The format is hours from UTC or HH:MM and may be negative. This can only be specified if "Auto time zone" is unset.</p>
+<p>The <b>"Time zone"</b> box specifies the time zone that the photos were taken in so that the times of the photos can be adjusted to match the GPS data. The format is hours from UTC or HH:MM and may be negative. This can only be specified if "Auto time zone" is unset.</p>
 
-<p>The <b>"Photo Offset"</b> box specifies the number of seconds to add to the photos time to match the GPS data (fractional seconds are allowed). See the <a href="concepts.html">GPS Correlate Concepts</a> documentation to understand this value.</p>
+<p>The <b>"Photo offset"</b> box specifies the number of seconds to add to the photos time to match the GPS data (fractional seconds are allowed). See the <a href="concepts.html">GPS Correlate Concepts</a> documentation to understand this value.</p>
 
-<p>The <b>"GPS Datum"</b> box specifies the Datum of the source GPS data, which is written into the GPS EXIF tags. By default this is "WGS-84", but really should not be changed, as the GPX format is only supposed to store WGS-84 data. However, you can change this if you wish.</p>
+<p>The <b>"GPS datum"</b> box specifies the Datum of the source GPS data, which is written into the GPS EXIF tags. By default this is "WGS-84", but really should not be changed, as the GPX format is only supposed to store WGS-84 data. However, you can change this if you wish.</p>
 
 <h3>Step 4: Correlate!</h3>
 
