@@ -249,10 +249,10 @@ msgstr ""
 #: gui.c:641 gui.c:645
 msgid ""
 "Maximum number of degrees of rotation allowed between points while still "
-"writing a heading tag. -1 means no maximum."
+"writing a heading tag. 180 means no maximum."
 msgstr ""
 "Nombre maximum de degrés de rotation permis parmi les points lors de "
-"l'écriture d'une étiquette d'entête. -1 signifie sans limite."
+"l'écriture d'une étiquette d'entête. 180 signifie sans limite."
 
 #: gui.c:666 gui.c:671
 msgid ""

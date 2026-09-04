@@ -290,6 +290,20 @@ static void entry_toggle_visibility_inv(GtkWidget *widget,
   gtk_widget_set_sensitive(entry, !active);
 }
 
+static gboolean bounds_clamp_180(GtkWidget *widget, GdkEventFocus *event)
+{
+  (void) event;  // Unused
+  int val = atoi(gtk_entry_get_text(GTK_ENTRY(widget)));
+  if (val < 0)
+	  val = -val;
+  if (val > 180)
+	  val = 180;
+  char value[4];
+  snprintf(value, sizeof(value), "%d", val);
+  gtk_entry_set_text(GTK_ENTRY(widget), value);
+  return FALSE;
+}
+
 GtkWidget* CreateMatchWindow (void)
 {
   GError *error = NULL;
@@ -645,16 +659,22 @@ GtkWidget* CreateMatchWindow (void)
 #if GTK_CHECK_VERSION(2, 12, 0)
   gtk_widget_set_tooltip_text (MaxHeadingEntry,
         _("Maximum number of degrees of rotation allowed between points "
-          "while still writing a heading tag. -1 means no maximum."));
+          "while still writing a heading tag. 180 means no maximum."));
 #else
   gtk_tooltips_set_tip (tooltips, MaxHeadingEntry,
         _("Maximum number of degrees of rotation allowed between points "
-          "while still writing a heading tag. -1 means no maximum."), NULL);
+          "while still writing a heading tag. 180 means no maximum."), NULL);
 #endif
   value = g_key_file_get_value(GUISettings, "default", "maxheading", NULL);
   gtk_entry_set_text (GTK_ENTRY (MaxHeadingEntry), value);
   g_free(value);
   gtk_entry_set_width_chars (GTK_ENTRY (MaxHeadingEntry), 7);
+
+  /* Bounds check MaxHeadingEntry when leaving the widget or hitting enter */
+  g_signal_connect(G_OBJECT (MaxHeadingEntry), "focus-out-event",
+                   G_CALLBACK (bounds_clamp_180), NULL);
+  g_signal_connect(G_OBJECT (MaxHeadingEntry), "activate",
+                   G_CALLBACK (bounds_clamp_180), NULL);
 
   /* Toggle visibility of max heading entry when heading is toggled */
   entry_toggle_visibility_inv(HeadingCheck, MaxHeadingEntry);
