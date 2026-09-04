@@ -123,6 +123,7 @@ enum
 	LIST_ELEV,
 	LIST_TIME,
 	LIST_STATE,
+	LIST_COLOR,
 	LIST_POINTER,
 	LIST_NOCOLUMNS
 };
@@ -175,6 +176,11 @@ static const char* const ConfigDefaults[] = {
 	NULL, NULL
 };
 
+static const GdkColor GoodColor = { .pixel = 0, .red = 0xb333, .green = 0xffff, .blue = 0xb333 };
+static const GdkColor WarnColor = { .pixel = 0, .red = 0xffff, .green = 0xffff, .blue = 0xcccc };
+static const GdkColor BadColor = { .pixel = 0, .red = 0xffff, .green = 0xcccc, .blue = 0xcccc };
+static const GdkColor NeutralColor = { .pixel = 0, .red = 0xffff, .green = 0xffff, .blue = 0xffff };
+
 GKeyFile* GUISettings;
 char* SettingsFilename;
 gchar* GPXOpenDir = NULL;
@@ -189,7 +195,7 @@ static void RemovePhotosButtonPress( GtkWidget *Widget, gpointer Data );
 
 static void SetListItem(GtkTreeIter* Iter, const char* Filename,
 			const char* Time, double Lat, double Long, double Elev,
-			const char* PassedState, int IncludesGPS);
+			const char* PassedState, const GdkColor* PassedColor, int IncludesGPS);
 
 static void SelectGPSButtonPress( GtkWidget *Widget, gpointer Data );
 static void CorrelateButtonPress( GtkWidget *Widget, gpointer Data );
@@ -871,6 +877,7 @@ GtkWidget* CreateMatchWindow (void)
 		  G_TYPE_STRING,   /* LIST_ELEV     Elevation    */
 		  G_TYPE_STRING,   /* LIST_TIME     The Time     */
 		  G_TYPE_STRING,   /* LIST_STATE    The State    */
+		  GDK_TYPE_COLOR,  /* LIST_COLOR    Color of Row (attribute)           */
 		  G_TYPE_POINTER); /* LIST_POINTER  Pointer to the matching list item. */
 
   PhotoList = gtk_tree_view_new_with_model (GTK_TREE_MODEL(PhotoListStore));
@@ -922,6 +929,9 @@ GtkWidget* CreateMatchWindow (void)
 							"text", LIST_STATE,
 							NULL);
   gtk_tree_view_column_set_resizable (StateColumn, TRUE);
+  // Bind the "cell-background-gdk" attribute to the LIST_COLOR index
+  gtk_tree_view_column_add_attribute(StateColumn, PhotoListRenderer, "cell-background-gdk",
+	                                 LIST_COLOR);
   gtk_tree_view_append_column (GTK_TREE_VIEW (PhotoList), StateColumn);
 
   /* Display image when double clicked */
@@ -1115,7 +1125,7 @@ void AddPhotoToList(const char* Filename)
 
 	/* Add the data to the list. */
 	gtk_list_store_append(PhotoListStore, &AddStuff);
-	SetListItem(&AddStuff, Filename, Time, Lat, Long, Elev, NULL, IncludesGPS);
+	SetListItem(&AddStuff, Filename, Time, Lat, Long, Elev, NULL, &GoodColor, IncludesGPS);
 
 	/* Save away the filename and the TreeIter information in the internal
 	 * singly-linked list. */
@@ -1297,13 +1307,15 @@ void RemovePhotosButtonPress( GtkWidget *Widget, gpointer Data )
 }
 
 void SetListItem(GtkTreeIter* Iter, const char* Filename, const char* Time, double Lat,
-		double Long, double Elev, const char* PassedState, int IncludesGPS)
+		double Long, double Elev, const char* PassedState, const GdkColor* PassedColor,
+		int IncludesGPS)
 {
 	/* Scratch areas. */
 	char LatScratch[100] = "";
 	char LongScratch[100] = "";
 	char ElevScratch[100] = "";
 	const char* State = NULL;
+	const GdkColor* Color = &BadColor;
 
 	/* Format all the data. */
 	if (!Time)
@@ -1311,11 +1323,13 @@ void SetListItem(GtkTreeIter* Iter, const char* Filename, const char* Time, doub
 		/* Not good. Failure. */
 		Time = "";
 		State = _("No EXIF data");
+		Color = &BadColor;
 	} else {
 		/* All ok. Get ready. */
 		if (IncludesGPS)
 		{
 			State = _("GPS Data Present");
+			Color = &WarnColor;
 			/* In each case below, consider the values
 			 * that are invalid for each - if that's the case,
 			 * consider the spots as "blank". */
@@ -1345,11 +1359,15 @@ void SetListItem(GtkTreeIter* Iter, const char* Filename, const char* Time, doub
 		} else {
 			/* Placeholders for the lack of data. */
 			State = _("Ready");
+			Color = &GoodColor;
 		}
 	}
 
 	/* Overwrite state with what we want, if needed. */
-	if (PassedState) State = PassedState;
+	if (PassedState) {
+		State = PassedState;
+		Color = PassedColor;
+	}
 	/* And set all the appropriate data. */
 	gtk_list_store_set(PhotoListStore, Iter,
 		LIST_FILENAME, strrchr(Filename, G_DIR_SEPARATOR)+1,
@@ -1358,15 +1376,17 @@ void SetListItem(GtkTreeIter* Iter, const char* Filename, const char* Time, doub
 		LIST_ELEV, ElevScratch,
 		LIST_TIME, Time,
 		LIST_STATE, State,
+		LIST_COLOR, Color,
 		-1);
 
 }
 
-static void SetState(GtkTreeIter* Iter, const char* State)
+static void SetState(GtkTreeIter* Iter, const char* State, const GdkColor* Color)
 {
 	/* Set the state on the item... just the state. */
 	gtk_list_store_set(PhotoListStore, Iter,
 		LIST_STATE, State,
+		LIST_COLOR, Color,
 		-1);
 }
 
@@ -1696,6 +1716,7 @@ void CorrelateButtonPress( GtkWidget *Widget, gpointer Data )
 	const char* State = _("Internal error");
 	for (GList *Walk = g_list_first(Selected); Walk; Walk = g_list_next(Walk))
 	{
+		const GdkColor* Color = &BadColor;
 		/* Get an Iter for this selected row. */
 		GtkTreeIter Iter;
 		struct GUIPhotoList* PhotoData = NULL;
@@ -1709,7 +1730,7 @@ void CorrelateButtonPress( GtkWidget *Widget, gpointer Data )
 			continue;
 		}
 		/* Say that we're doing it... */
-		SetState(&Iter, _("Correlating..."));
+		SetState(&Iter, _("Correlating..."), &NeutralColor);
 
 		/* Point to the cell, too... ie, scroll the tree view
 		 * to ensure that the one we're playing with can be seen on screen. */
@@ -1734,24 +1755,28 @@ void CorrelateButtonPress( GtkWidget *Widget, gpointer Data )
 				case CORR_OK:
 					/* All cool! Exact match! */
 					State = _("Exact Match");
+					Color = &GoodColor;
 					break;
 				case CORR_INTERPOLATED:
 					/* All cool! Interpolated match. */
 					State = _("Interpolated Match");
+					Color = &WarnColor;
 					break;
 				case CORR_ROUND:
 					/* All cool! Rounded match. */
 					State = _("Rounded Match");
+					Color = &WarnColor;
 					break;
 				case CORR_EXIFWRITEFAIL:
 					/* Not cool - matched, not written. */
 					State = _("Write Failure");
+					Color = &BadColor;
 					break;
 			}
 			/* Now update the screen with the numbers. */
 			SetListItem(&Iter, PhotoData->Filename,
 					PhotoData->Time, Result->Lat, Result->Long,
-					Result->Elev, State, 1);
+					Result->Elev, State, Color, 1);
 			free(Result);
 		} else {
 			/* Result was null. This means something
@@ -1760,7 +1785,7 @@ void CorrelateButtonPress( GtkWidget *Widget, gpointer Data )
 			if (Options.Result == CORR_GPSDATAEXISTS)
 			{
 				/* Do nothing... */
-				SetState(&Iter, _("Data Already Present"));
+				SetState(&Iter, _("Data Already Present"), &BadColor);
 				continue;
 			}
 			switch (Options.Result)
@@ -1768,18 +1793,21 @@ void CorrelateButtonPress( GtkWidget *Widget, gpointer Data )
 				case CORR_NOMATCH:
 					/* No match: outside data. */
 					State = _("No Match");
+					Color = &BadColor;
 					break;
 				case CORR_TOOFAR:
 					/* Too far from any point. */
 					State = _("Too far");
+					Color = &BadColor;
 					break;
 				case CORR_NOEXIFINPUT:
 					/* No exif data input. */
 					State = _("No data");
+					Color = &BadColor;
 					break;
 			}
 			/* Now update the screen with the changed state. */
-			SetListItem(&Iter, PhotoData->Filename, PhotoData->Time, 0, 0, 0, State, 0);
+			SetListItem(&Iter, PhotoData->Filename, PhotoData->Time, 0, 0, 0, State, Color, 0);
 		} /* End if Result */
 	} /* End for Walk the list ... */
 
@@ -1828,7 +1856,7 @@ void StripGPSButtonPress( GtkWidget *Widget, gpointer Data )
 		}
 
 		/* Say that we're doing it... */
-		SetState(&PhotoData->ListPointer, _("Stripping..."));
+		SetState(&PhotoData->ListPointer, _("Stripping..."), &NeutralColor);
 
 		/* Point to the cell, too... ie, scroll the tree view
 		 * to ensure that the one we're playing with can be seen on screen. */
@@ -1842,10 +1870,10 @@ void StripGPSButtonPress( GtkWidget *Widget, gpointer Data )
 		if (RemoveGPSExif(PhotoData->Filename, NoChangeMtime, NoWriteExif))
 		{
 			SetListItem(&PhotoData->ListPointer, PhotoData->Filename,
-				PhotoData->Time, 200, 200, -7000000, "", 1);
+				PhotoData->Time, 200, 200, -7000000, "", &GoodColor, 1);
 		} else {
 			SetListItem(&PhotoData->ListPointer, PhotoData->Filename,
-				PhotoData->Time, 200, 200, -7000000, _("Error Stripping"), 1);
+				PhotoData->Time, 200, 200, -7000000, _("Error Stripping"), &BadColor, 1);
 		}
 
 	} /* End for Walk the GList. */
