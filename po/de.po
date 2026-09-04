@@ -496,8 +496,8 @@ msgid "GPS Correlate attaches EXIF GPS location tags to images."
 msgstr "GPS Correlate fügt Bildern EXIF GPS-Standort-Metadaten bei."
 
 #: gui.c:1936
-msgid "Copyright © 2005-2025 Daniel Foote, Dan Fandrich"
-msgstr "Copyright © 2005-2025 Daniel Foote, Dan Fandrich"
+msgid "Copyright © 2005-2026 Daniel Foote, Dan Fandrich et al."
+msgstr "Copyright © 2005-2026 Daniel Foote, Dan Fandrich u. a."
 
 #: main-command.c:84
 #, c-format
@@ -505,8 +505,8 @@ msgid "%s, ver. %s. %s\n"
 msgstr "%s, Ver. %s. %s\n"
 
 #: main-command.c:86
-msgid "Copyright (C) 2005-2025 Daniel Foote, Dan Fandrich"
-msgstr "Copyright © 2005-2025 Daniel Foote, Dan Fandrich"
+msgid "Copyright (C) 2005-2026 Daniel Foote, Dan Fandrich et al."
+msgstr "Copyright © 2005-2026 Daniel Foote, Dan Fandrich u. a."
 
 #: main-command.c:92
 #, c-format
