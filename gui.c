@@ -1812,7 +1812,7 @@ void CorrelateButtonPress( GtkWidget *Widget, gpointer Data )
 			if (Options.Result == CORR_GPSDATAEXISTS)
 			{
 				/* Do nothing... */
-				SetState(&Iter, _("Data Already Present"), &BadColor);
+				SetState(&Iter, _("Data Already Present"), &WarnColor);
 				continue;
 			}
 			switch (Options.Result)
