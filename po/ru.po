@@ -298,7 +298,7 @@ msgid "<b>4. Correlate!</b>"
 msgstr "<b>4. Привязать!</b>"
 
 #: gui.c:806
-msgid "Strip GPS tags"
+msgid "Strip GPS Tags"
 msgstr "Очистить GPS теги"
 
 #: gui.c:811 gui.c:814

@@ -829,7 +829,7 @@ GtkWidget* CreateMatchWindow (void)
   gtk_widget_show (OtherOptionsVBox);
   gtk_container_add (GTK_CONTAINER (OtherOptionsAlignment), OtherOptionsVBox);
 
-  StripGPSButton = gtk_button_new_with_mnemonic (_("Strip GPS tags"));
+  StripGPSButton = gtk_button_new_with_mnemonic (_("Strip GPS Tags"));
   gtk_widget_show (StripGPSButton);
   gtk_box_pack_start (GTK_BOX (OtherOptionsVBox), StripGPSButton, FALSE, FALSE, 0);
 #if GTK_CHECK_VERSION(2, 12, 0)

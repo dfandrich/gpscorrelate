@@ -315,7 +315,7 @@ msgid "<b>4. Correlate!</b>"
 msgstr "<b>4. Corrélation !</b>"
 
 #: gui.c:806
-msgid "Strip GPS tags"
+msgid "Strip GPS Tags"
 msgstr "Supprimer les tags GPS"
 
 #: gui.c:811 gui.c:814

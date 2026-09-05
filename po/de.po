@@ -312,7 +312,7 @@ msgid "<b>4. Correlate!</b>"
 msgstr "<b>4. Korrelieren</b>"
 
 #: gui.c:806
-msgid "Strip GPS tags"
+msgid "Strip GPS Tags"
 msgstr "GPS-Metadaten entfernen"
 
 #: gui.c:811 gui.c:814
