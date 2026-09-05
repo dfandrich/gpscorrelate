@@ -1614,7 +1614,7 @@ void SelectGPSButtonPress( GtkWidget *Widget, gpointer Data )
 
 }
 
-GList* GetPhotoList(void)
+static GList* GetPhotoList(void)
 {
 	/* Get the list of photos on which to operate */
 	/* First, see if any photos have been individually selected */
