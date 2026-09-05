@@ -1614,6 +1614,25 @@ void SelectGPSButtonPress( GtkWidget *Widget, gpointer Data )
 
 }
 
+GList* GetPhotoList(void)
+{
+	/* Get the list of photos on which to operate */
+	/* First, see if any photos have been individually selected */
+	GtkTreeSelection* Selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(PhotoList));
+	GList* Selected = gtk_tree_selection_get_selected_rows(Selection, NULL);
+	if (!Selected) {
+		/* No photos have been individually selected */
+		/* Create a new GList with all photos */
+		for (struct GUIPhotoList* Walk = FirstPhoto; Walk; Walk = Walk->Next)
+		{
+			GtkTreePath *Path = gtk_tree_model_get_path(GTK_TREE_MODEL(PhotoListStore), &Walk->ListPointer);
+			Selected = g_list_prepend(Selected, Path);
+		}
+		Selected = g_list_reverse(Selected);
+	}
+	return Selected;
+}
+
 void CorrelateButtonPress( GtkWidget *Widget, gpointer Data )
 {
 	(void) Widget;  // Unused
@@ -1718,19 +1737,7 @@ void CorrelateButtonPress( GtkWidget *Widget, gpointer Data )
 	Options.Track = GPSData;
 
 	/* Get the list of photos on which to operate */
-	/* First, see if any photos have been individually selected */
-	GtkTreeSelection* Selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(PhotoList));
-	GList* Selected = gtk_tree_selection_get_selected_rows(Selection, NULL);
-	if (!Selected) {
-		/* No photos have been individually selected */
-		/* Create a GList with all photos */
-		for (struct GUIPhotoList* Walk = FirstPhoto; Walk; Walk = Walk->Next)
-		{
-			GtkTreePath *Path = gtk_tree_model_get_path(GTK_TREE_MODEL(PhotoListStore), &Walk->ListPointer);
-			Selected = g_list_prepend(Selected, Path);
-		}
-		Selected = g_list_reverse(Selected);
-	}
+	GList* Selected = GetPhotoList();
 
 	/* Walk through the list, correlating, and updating the screen. */
 	const char* State = _("Internal Error");
@@ -1841,21 +1848,9 @@ void StripGPSButtonPress( GtkWidget *Widget, gpointer Data )
 	(void) Widget;  // Unused
 	(void) Data;    // Unused
 
-	/* Someone clicked the Strip GPS Data button. So make it happen!
-	 * First, query out what was selected. */
-	GtkTreeIter Iter;
-
-	GtkTreeSelection* Selection;
-	Selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(PhotoList));
-
-	GList* Selected = gtk_tree_selection_get_selected_rows(Selection, NULL);
-
-	/* Sanity check: was anything selected? */
-	if (Selected == NULL)
-	{
-		/* Nothing is selected. Do nothing. */
-		return;
-	}
+	/* Someone clicked the Strip GPS Data button. So make it happen! */
+	/* Get the list of photos on which to operate */
+	GList* Selected = GetPhotoList();
 
 	int NoChangeMtime = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(NoMtimeCheck));
 	int NoWriteExif = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(NoWriteCheck));
@@ -1865,6 +1860,7 @@ void StripGPSButtonPress( GtkWidget *Widget, gpointer Data )
 	{
 		/* Get an Iter for this selected row. */
 		struct GUIPhotoList* PhotoData = NULL;
+		GtkTreeIter Iter;
 		if (gtk_tree_model_get_iter(GTK_TREE_MODEL(PhotoListStore), &Iter,
 					    (GtkTreePath*) Walk->data)) {
 			/* Fetch out the data... */
