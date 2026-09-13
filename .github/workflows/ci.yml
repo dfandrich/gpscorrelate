@@ -394,7 +394,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        osver: ['13.5', '14.4', '15.1']
+        osver: ['13.5', '14.5', '15.1']
         arch: ['x86_64', 'aarch64']
         gtk: [3]
         build:
