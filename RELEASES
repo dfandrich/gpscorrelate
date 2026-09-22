@@ -1,6 +1,24 @@
 Release History:
 
-v2.x: X
+v2.4: 21 September 2026
+	- Make the controls side scrollable for small displays
+	- Strip all GPS tags when none selected
+	- Clamp the max heading change value in the GUI
+	- Make capitalization more consistent in the GUI
+	- Show the state in the GUI in an appropriate color
+	- Set window icon
+	- Fix some shellcheck issues in the testsuite script
+	- Add two more tests that check bad data handling
+	- Exclude compiler files from coverage analysis in CI
+	- Update OS versions in CI
+	- Remove Cirrus and move CI builds to GitHub Actions
+	- Fix some compile warnings
+	- Quote install directories in case of embedded spaces in makefile
+	- Create install per target in makefile
+	- Update links in INSTALL
+	- Add vcs-browser to metainfo
+	- Stop xsltproc from downloading DTDs by default
+	- Improve man page
 
 v2.3: 13 February 2025
 	- Use subsecond times in an image for better interpolation
