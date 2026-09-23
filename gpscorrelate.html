@@ -366,7 +366,8 @@ and <code class="option">--direction</code> for images where the
 heading has changed by more than the specified number of degrees
 between the GPX points being used. This prevents writing a value
 that is likely to be inaccurate because the image was taken during
-a sharp turn. This is off by default.</p>
+a sharp turn. This is off by default and must be less than 180 if
+given.</p>
 <p>This option won't prevent writing an incorrect heading or
 direction in the case where GPS points are sparser than the time it
 takes the recording vehicle to make a nearly 360&deg; turn. For
