@@ -1,5 +1,7 @@
 Release History:
 
+v2.x: X
+
 v2.4: 21 September 2026
 	- Make the controls side scrollable for small displays
 	- Strip all GPS tags when none selected
