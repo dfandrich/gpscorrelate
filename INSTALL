@@ -2,6 +2,7 @@ Installation of GPS Correlate
 =============================
 To build, you will need these prerequisites:
 
+* A C++ compiler supporting C++11 and (optional) a C compiler supporting C99
 * The Exiv2 library (C++ EXIF tag handling): https://www.exiv2.org/
   (ver. 0.27.4 or newer is required for time zone tag support)
 * libxml2 (XML parsing): http://www.xmlsoft.org/
